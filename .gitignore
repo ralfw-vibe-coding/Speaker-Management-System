@@ -1,0 +1,14 @@
+# Abhängigkeiten und Build-Ergebnis
+node_modules/
+plugin/main.js
+plugin/*.js.map
+
+# Obsidian-Zustand des Test-Vaults (Layout, Cache, Plugin-Daten)
+test-vault/.obsidian/workspace.json
+test-vault/.obsidian/workspace-mobile.json
+test-vault/.obsidian/cache/
+test-vault/.obsidian/plugins/*/data.json
+test-vault/.trash/
+
+# macOS
+.DS_Store
