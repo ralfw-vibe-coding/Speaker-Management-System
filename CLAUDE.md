@@ -109,7 +109,24 @@ Es steht bisher nur das Gerüst:
 Es gibt noch kein Lesen und kein Schreiben von Notizen, keine Datenschicht, keine der
 drei Sichten. Alles Fachliche ist offen.
 
+### Reihenfolge
+
+Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen:
+
+1. **Datenschicht und Statustafel, lesend.** Kopf mit den Kennzahlen, die acht Spalten,
+   Karten mit Themen, Beitragszahl, Honorar, Checklistenbalken und Hinweisen. Prüfbar
+   gegen die Kennzahlen in `Demodaten.md`.
+2. **Statustafel, schreibend.** Karten zwischen den Spalten ziehen und umsortieren; das
+   schreibt `status` und `position`.
+3. **Agenda.**
+
+Die Statustafel zuerst, weil dort die tägliche Arbeit liegt und weil sie die ganze
+Projektionslogik einmal durchspielt: Frontmatter lesen, Checklisten aus dem Body
+zählen, Beiträge über Wikilinks den Speakern zuordnen, Summen gegen das Budget. Vom
+Raster braucht sie allein die Blöcke, um heimatlose Beiträge zu erkennen. Danach ist die
+Agenda vor allem noch Darstellung und Drag & Drop.
+
 Am Ende von [docs/Konzept.md](docs/Konzept.md) steht eine Liste offener Punkte
-(Beiträge über mehrere Blöcke, mehrere Speaker je Beitrag, Reisekosten, Bedarfsplanung
-und anderes). Die sind bewusst noch nicht entschieden — nicht einfach etwas annehmen,
-sondern nachfragen.
+(Beiträge über mehrere Blöcke, Reisekosten, Bedarfsplanung, wo Konferenz und
+Veranstalter entstehen, wer das Raster schreibt, und anderes). Die sind bewusst noch
+nicht entschieden — nicht einfach etwas annehmen, sondern nachfragen.

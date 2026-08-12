@@ -514,6 +514,25 @@ deren Speaker noch nicht zugesagt hat.
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
+- **Wo Konferenz und Veranstalter entstehen** — Für den Speakerkatalog gibt es eine
+  Sicht, für die Stammdaten nicht. Bei zwei bis drei Veranstaltern insgesamt und ein
+  bis zwei Konferenzen je Veranstalter und Jahr lohnt kein eigener Reiter; er stünde
+  die übrige Zeit im Weg. Vorschlag: ein Konferenz-Umschalter im Kopf des Views — den
+  gemeinsamen Zustand „welche Konferenz ist dran" braucht es ohnehin — und darin
+  „+ Neue Konferenz". Der Veranstalter entsteht dabei nebenbei mit seinem Namen, alles
+  Weitere steht in seiner Notiz. Noch nicht entschieden.
+- **Wer das Raster schreibt** — Von Hand ist verschachteltes YAML heikel: Ein falsches
+  Leerzeichen zerlegt nicht ein Feld, sondern das ganze Frontmatter, und die
+  Konferenznotiz verliert auf einen Schlag auch Veranstalter, Budget und Deadline.
+  Drei Wege: (a) das Plugin schreibt das Raster und der Mensch fasst es nicht an — dann
+  kann nichts verrutschen; (b) eine Markdown-Tabelle im Body, robuster und mit
+  Tabelleneditor, aber ein zweites Format und Struktur außerhalb des Frontmatters;
+  (c) Handarbeit im YAML, nur mit sehr flacher Syntax vertretbar. Empfehlung ist (a).
+  Eilig ist es nicht: Die Statustafel liest vom Raster allein die Blöcke, um heimatlose
+  Beiträge zu erkennen.
+- **Konferenz oder Veranstaltung** — im Modell heißt es durchgehend Konferenz, im
+  Gespräch fiel „Veranstaltung". Vor dem ersten Code klären; das Vokabular kommt vom
+  Auftraggeber und steckt danach in Feldnamen und Dateinamen.
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?
