@@ -4,11 +4,11 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Marlene Ostrowski]]"
 status: gemerkt
 position: 2
+honorar:
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

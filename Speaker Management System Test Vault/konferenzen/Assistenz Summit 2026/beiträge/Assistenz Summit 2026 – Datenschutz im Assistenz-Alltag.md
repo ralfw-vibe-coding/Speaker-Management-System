@@ -4,10 +4,14 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: []
 titel: "Datenschutz im Assistenz-Alltag"
 format: vortrag
-honorar:
 block: b9
 track: t2
 ---
+## Zu klären
+- [ ] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 Noch offen — das Thema steht, die Person nicht.
 

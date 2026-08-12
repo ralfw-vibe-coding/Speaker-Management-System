@@ -4,12 +4,12 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Christa Nowak]]"
 status: angefragt
 position: 0
+honorar: 2700
 angefragt_am: 2026-06-12
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

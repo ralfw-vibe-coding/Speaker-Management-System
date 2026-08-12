@@ -4,13 +4,13 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Yannick Sobotta]]"
 status: zugesagt
 position: 2
+honorar: 3000
 angefragt_am: 2026-04-20
 geantwortet_am: 2026-04-22
 ---
 ## Zu klären
 - [x] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [x] Vertrag zurück
 - [x] Reisekosten geklärt
 

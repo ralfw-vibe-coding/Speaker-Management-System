@@ -4,10 +4,14 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Dr. Antje Rohleder]]"]
 titel: "Die Assistenz als Chief of Staff"
 format: keynote
-honorar: 2800
 block: b1
 track:
 ---
+## Zu klären
+- [x] Abstract eingereicht
+- [ ] Folien eingereicht
+- [x] Technikbedarf geklärt
+
 ## Abstract
 Die Rolle verschiebt sich vom Vorzimmer in den Maschinenraum der
 Entscheidungen. Wer heute einen Vorstand unterstützt, koordiniert

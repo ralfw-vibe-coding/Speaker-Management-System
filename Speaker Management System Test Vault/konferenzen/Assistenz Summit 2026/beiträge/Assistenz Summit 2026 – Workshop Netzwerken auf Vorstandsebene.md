@@ -4,10 +4,15 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Bettina Kuraszkiewicz]]"]
 titel: "Workshop: Netzwerken auf Vorstandsebene"
 format: workshop
-honorar: 1500
+max_teilnehmer: 20
 block: b7
 track: t4
 ---
+## Zu klären
+- [ ] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 Kontakte, die tragen, wenn man sie braucht — und wie man sie pflegt,
 ohne aufdringlich zu werden.

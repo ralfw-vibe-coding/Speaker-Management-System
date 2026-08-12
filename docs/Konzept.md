@@ -37,12 +37,12 @@ Veranstalter ──< Konferenz ──< Tag ──< Block ─┐
 | **Veranstalter** | Auftraggeber. Kommt über Jahre wieder, trägt wiederverwendbare Konditionen. |
 | **Konferenz** | Eine Veranstaltung eines Veranstalters, bestehend aus Tagen. |
 | **Tag** | Ein Konferenztag mit eigener **Agenda**. |
-| **Track** | Parallele Programmlinie — eine Spalte im Raster. Konferenzweit definiert, je Tag ausgewählt. |
+| **Track** | Parallele Programmlinie — eine Spalte im Raster. Konferenzweit definiert, je Tag ausgewählt. Trägt meist auch Raum und Kapazität. |
 | **Block** | Zeitliche Zeile im Raster: alle Beiträge verschiedener Tracks zum selben Zeitpunkt. |
-| **Slot** | Kreuzungspunkt von Block und Track. Der Arbeitsvorrat. |
-| **Beitrag** | Was in einem Slot stattfindet: Keynote, Vortrag, Workshop. Hat Thema, Abstract, Honorar. |
+| **Slot** | Kreuzungspunkt von Block und Track. Der Arbeitsvorrat. Erbt Raum und Kapazität vom Track, kann sie überschreiben. |
+| **Beitrag** | Was in einem Slot stattfindet: Keynote, Vortrag, Workshop. Hat Thema, Abstract und eine eigene Checkliste. |
 | **Speaker** | Person im Katalog, konferenzübergreifend. Das Langzeitkapital. |
-| **Engagement** | Die Beziehung Speaker × Konferenz. Trägt Funnel-Status, Verhandlungsnotizen, Checkliste. |
+| **Engagement** | Die Beziehung Speaker × Konferenz. Trägt Funnel-Status, Honorar, Verhandlungsnotizen, Checkliste. |
 
 ### Die tragenden Entscheidungen
 
@@ -169,14 +169,15 @@ Tracks konferenzweit, Blöcke je Tag. Block-IDs sind innerhalb der Konferenz ein
 ```yaml
 ---
 type: konferenz
+untertitel: Praxis statt Folien
 veranstalter: "[[Acme Events]]"
 status: planung          # idee | planung | programm-steht | gelaufen | abgesagt
 deadline_programm: 2026-06-30
 honorarbudget: 25000
 tracks:
-  - { id: t1, name: Hauptbühne }
-  - { id: t2, name: Track B }
-  - { id: t3, name: Workshop-Raum }
+  - { id: t1, name: Hauptbühne, raum: Saal Hanse, kapazitaet: 400 }
+  - { id: t2, name: Vertiefung, raum: Saal Elbe, kapazitaet: 150 }
+  - { id: t3, name: Workshops, raum: Raum Speicher, kapazitaet: 30 }
 tage:
   - datum: 2026-11-04
     tracks: [t1, t2, t3]
@@ -190,6 +191,9 @@ tage:
     tracks: [t3]
     bloecke:
       - { id: b6, von: "09:00", bis: "12:00" }
+slots:
+  - { block: b1, raum: Saal Hanse, kapazitaet: 400 }
+  - { block: b3, track: t3, raum: Raum Werft, kapazitaet: 20 }
 ---
 ## Ausrichtung
 Thema, Zielgruppe, Ton — wonach ich Speaker auswähle.
@@ -206,6 +210,34 @@ Block-Attribute: `plenar` belegt alle Tracks des Tages, `fix` ist ein Programmpu
 ohne Speaker (Pause, Registrierung, Abendprogramm), `nur` schränkt den Block auf
 bestimmte Tracks ein.
 
+Der `untertitel` ist der thematische Zusatz, der im Kopf der Sichten neben dem
+Veranstalter und der Datumsspanne steht. Die Spanne selbst wird aus `tage` gerechnet
+und nicht gepflegt.
+
+#### Raum und Kapazität
+
+Beide Angaben sind optional und stehen dort, wo sie gelten. Am **Track** stehen sie für
+alle seine Slots — ein Track ist in aller Regel den ganzen Tag derselbe Raum. Die Liste
+`slots` trägt nur die **Ausnahmen** davon, gelesen von unten nach oben:
+
+| Eintrag | gilt für |
+|---|---|
+| `{ block, track, … }` | genau diesen einen Slot |
+| `{ block, … }` | alle Slots dieser Zeile — und den plenaren Slot, der gar keinen Track hat |
+| Track | alle Slots dieser Spalte |
+
+Der speziellere Eintrag gewinnt. Fehlt alles, hat der Slot keinen Raum — das ist kein
+Fehler, sondern der Normalfall am Anfang der Planung.
+
+Der Eintrag ohne `track` verdient sich zweimal: Ein plenarer Block belegt alle Tracks
+und erbt deshalb von keinem, er braucht seine eigene Angabe. Und wenn eine ganze Zeile
+umzieht, ist es ein Eintrag statt drei.
+
+`slots` steht auf Konferenzebene und nicht im Tag, weil Block-IDs konferenzweit
+eindeutig sind und das Paar `(Block-ID, Track-ID)` den Slot schon vollständig
+bezeichnet. Ein Eintrag hier ist **keine Slot-Notiz** — der leere Slot bleibt ein Loch
+im Raster. Es ist eine Eigenschaft des Rasters, so wie die Uhrzeit eines Blocks.
+
 ### Engagement
 
 ```yaml
@@ -215,6 +247,7 @@ konferenz: "[[.NET Day 2026]]"
 speaker: "[[Ralf Westphal]]"
 status: zugesagt
 position: 1
+honorar: 3000
 angefragt_am: 2026-03-01
 geantwortet_am: 2026-03-04
 rechnung_am:
@@ -223,7 +256,6 @@ bezahlt_am:
 ## Zu klären
 - [x] Bio erhalten
 - [x] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 
@@ -236,6 +268,17 @@ lassen sich im Editor oder im Board abhaken, und das Plugin liest den Fortschrit
 mit. Die Beiträge werden hier **nicht** gelistet — sie verlinken selbst auf Konferenz
 und Speaker, das Plugin findet sie. So gibt es keine zwei Wahrheiten.
 
+Am Engagement steht, was **am Menschen** hängt und einmal je Konferenz anfällt: Bio,
+Foto, Vertrag, Reisekosten. Was am einzelnen Beitrag hängt, steht dort — sonst könnte
+ein Häkchen für jemanden mit zwei Vorträgen nicht stimmen.
+
+**Das Honorar gehört ebenfalls hierher, nicht an den Beitrag.** Verhandelt wird mit dem
+Menschen, und zwar über das Paket: Wer zwei Beiträge liefert und 3.000 € vereinbart, für
+den ist es gleichgültig, ob davon rechnerisch 2.000 € auf den Vortrag und 1.000 € auf
+den Workshop entfallen oder 1.500 € auf jeden. Eine Aufteilung wäre erfunden. Sie
+stünde außerdem quer zu allem anderen: Eine Rechnung, ein Vertrag, ein Honorar. Das Feld
+trägt den vereinbarten Betrag — oder, solange nicht zugesagt ist, den angebotenen.
+
 ### Beitrag
 
 ```yaml
@@ -245,10 +288,15 @@ konferenz: "[[.NET Day 2026]]"
 speaker: ["[[Ralf Westphal]]"]   # darf leer sein
 titel: Wieder mehr Substanz      # darf leer sein
 format: keynote
-honorar: 2500
+max_teilnehmer: 20               # optional, meist nur bei Workshops
 block: b1                        # leer = im Pool
 track:                           # entfällt bei plenaren Blöcken
 ---
+## Zu klären
+- [x] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 …
 
@@ -257,6 +305,28 @@ Technik-Wünsche, Vorstellungstext.
 ```
 
 Die Dauer ergibt sich aus dem Block und wird nicht doppelt gepflegt.
+
+Auf die Checkliste kommt nur, **wofür es kein Feld gibt.** Ob ein Titel da ist, steht in
+`titel`, ob der Beitrag einen Platz hat, in `block` und `track` — dafür braucht es kein
+Häkchen, das wäre eine zweite Wahrheit. Übrig bleiben die
+Zulieferungen und Absprachen zum einzelnen Beitrag: Abstract, Folien, Technikbedarf. Der
+Technikbedarf steht hier und nicht am Engagement, weil er am Format hängt: derselbe
+Mensch braucht für die Live-Demo WLAN und für den Workshop bewegliche Stühle.
+
+`max_teilnehmer` ist die Obergrenze, die der Beitrag selbst mitbringt — meist ein
+Workshop, der in kleiner Runde stattfinden soll. Sie ist optional und hat nichts mit der
+`kapazitaet` des Raums zu tun: die eine ist ein Wunsch, die andere eine Wand. Wo beide
+gesetzt sind, vergleicht das Plugin sie.
+
+**Ein Beitrag, ein Speaker.** Das Feld ist eine Liste, das Plugin schreibt aber immer
+genau einen Namen hinein; es gibt keine Bedienung für einen zweiten, keine
+Honoraraufteilung, keine Sollzahl an Plätzen. Weitere Beteiligte — Moderation, ein
+Vorstand, den der Veranstalter mitbringt — stehen als Prosa im Body. Wer dort steht, hat
+kein Engagement und damit auch keinen Vertrag und kein Honorar; braucht er beides, legt
+man ihm ein eigenes Engagement an, das dann eben ohne Beitrag dasteht — mit seinem
+eigenen Honorar, das dadurch ganz von selbst in der Summe landet. Gelesen wird trotzdem
+tolerant: Stehen von Hand zwei Namen in der Liste, erscheint der Beitrag auf beiden
+Karten.
 
 ---
 
@@ -277,12 +347,14 @@ Die Werte im Feld `status` heißen: `gemerkt`, `angefragt`, `geantwortet`,
 `verhandlung`, `zugesagt`, `rechnung`, `bezahlt`, `gestrichen`. Ihre Reihenfolge steht
 im Plugin, nicht in den Daten.
 
-In der Spalte **zugesagt** läuft die Checkliste als Fortschrittsbalken. Die Karte wird
-grün, wenn alle Punkte unter der Überschrift `## Zu klären` abgehakt sind — das ist
-„inhaltlich fertig", noch vor der
-Veranstaltung. Rechnung und Zahlung liegen zeitlich danach und sind deshalb eigene
-Spalten. Die Rechnung hängt am Engagement, nicht am Beitrag: ein Speaker mit zwei
-Vorträgen stellt eine Rechnung.
+In der Spalte **zugesagt** läuft die Checkliste als Fortschrittsbalken. Gezählt werden
+die Punkte unter der Überschrift `## Zu klären` im Engagement **und in allen Beiträgen
+dieses Speakers in dieser Konferenz**. Die Karte wird grün, wenn alle abgehakt sind —
+das ist „inhaltlich fertig", noch vor der Veranstaltung. Sonst wäre jemand grün, dessen
+Abstract noch fehlt. Rechnung und Zahlung liegen zeitlich danach und sind deshalb
+eigene Spalten. Die Rechnung hängt am Engagement, nicht am Beitrag: ein Speaker mit
+zwei Vorträgen stellt eine Rechnung — und kann durchaus schon abgerechnet haben,
+während seine Folien noch fehlen.
 
 ### Position in der Spalte
 
@@ -357,14 +429,19 @@ Beitragsnotizen. Es gibt keine Datenbank neben den Notizen.
 | Auf der Karte | Kommt her |
 |---|---|
 | Spalte und Zeile | `status` und `position` im Engagement |
-| „2 Beiträge · 2.400 €" | die Beitragsnotizen, die auf diesen Speaker und diese Konferenz zeigen |
-| Fortschrittsbalken „4 von 5" | die Markdown-Tasks im Body des Engagements |
+| „2 Beiträge" | die Beitragsnotizen, die auf diesen Speaker und diese Konferenz zeigen |
+| „2.400 €" | das Feld `honorar` des Engagements — nicht gerechnet, sondern verhandelt |
+| Fortschrittsbalken „4 von 8" | die Markdown-Tasks im Engagement und in seinen Beiträgen |
 | „⏱ 8 Wochen ohne Antwort" | `angefragt_am` gegen heute |
 | „1 Beitrag heimatlos" | ein Beitrag, dessen `block` es im Raster nicht mehr gibt |
 | „1 im Pool" | ein Beitrag ohne `block` |
+| „Saal Elbe · 150 Plätze" am Slot | der Track, überschrieben durch einen Eintrag in `slots` |
+| „⚠ Workshop für 40, Raum für 30" | `max_teilnehmer` des Beitrags gegen die `kapazitaet` des Slots |
 
-Nichts davon wird gespeichert — deshalb hat das Engagement weder eine Beitragsliste
-noch eine Honorarsumme im Frontmatter. Sie wären eine zweite Wahrheit, die veraltet.
+Nichts davon wird gespeichert — deshalb hat das Engagement keine Beitragsliste im
+Frontmatter. Sie wäre eine zweite Wahrheit, die veraltet. Das `honorar` ist kein
+Gegenbeispiel: Es ist nicht aus den Beiträgen gerechnet, sondern die vereinbarte Zahl
+selbst, und steht damit auf derselben Stufe wie `status`.
 
 Geschrieben wird entsprechend wenig: Karte in eine andere Spalte ziehen ändert
 `status`, Umsortieren die `position`, ein Häkchen eine Zeile im Body.
@@ -372,6 +449,28 @@ Geschrieben wird entsprechend wenig: Karte in eine andere Spalte ziehen ändert
 Obsidians `metadataCache` liefert Frontmatter und Tasks fertig geparst und meldet
 Änderungen. Das gilt auch in der Gegenrichtung: Wird in der Notiz von Hand ein Häkchen
 gesetzt, wandert der Balken auf der Tafel sofort mit.
+
+### Was auf einer Karte stehen darf
+
+Nur, was sich aus Frontmatter und Tasks rechnen lässt — dazu höchstens ein wörtlicher
+Auszug aus dem Body. **Nichts, was aus Fließtext gedeutet werden müsste.** „Honorar noch
+strittig" oder „3 Plätze gesucht" stehen in den Demodaten nur als Prosa; solche Sätze
+zeigt die Karte allenfalls als Zitat der ersten Notizzeile, nie als gerechnete Aussage.
+
+Damit sind die UI-Entwürfe in `docs/ui/` an einigen Stellen weiter, als die Daten
+tragen. Sie bleiben das Zielbild für Aufbau, Zustände und Farben, aber im Zweifel gilt,
+was hier und im Vault steht. Ersatzlos entfallen vorerst:
+
+- die Track-Buchstaben „Track A/B/C" in den Spaltenköpfen — es gibt nur `id` und `name`.
+  Aus der Position abgeleitet wären sie gefährlich: fiele ein Track in der Mitte weg,
+  würde aus „Track C" plötzlich „Track B" und alle Notizen zeigten ins Leere.
+- „3 Plätze gesucht" am Panel — solange ein Beitrag nur einen Speaker kennt, gibt es
+  keine Zahl dafür.
+- die gedeuteten Zeilen auf den Statustafel-Karten („will 2.400 €, Budget 1.800 €",
+  „fällig am 01.09.", „Slot 11:00 Track A ist frei").
+- das Honorar auf den Karten im Agenda-Raster („2.800 €" an der Keynote). Es hängt am
+  Engagement und gilt für alle Beiträge eines Speakers zusammen — an einem einzelnen
+  Slot wäre jede Zahl erfunden. Es steht auf der Statustafel, wo der Mensch steht.
 
 ### Überblick im View, Details in der Notiz
 
@@ -390,19 +489,24 @@ Notizen im Zentrum.
 - **Block verschieben** — Ändert nur das Zeit-Attribut des Blocks; alle Beiträge
   wandern mit, weil sie an der Block-ID hängen.
 - **Track oder Block löschen** — Die betroffenen Beiträge werden nicht gelöscht,
-  sondern **heimatlos** und landen sichtbar im Pool.
+  sondern **heimatlos** und landen sichtbar im Pool. Einträge in `slots`, die auf den
+  gelöschten Track oder Block zeigen, verschwinden dagegen mit: Sie bezeichnen keinen
+  Slot mehr, und im Gegensatz zu einem Beitrag steckt in ihnen keine Arbeit.
 - **Streichen** — Alle Beiträge dieses Speakers in dieser Konferenz werden geleert, die
   Slots sind wieder Löcher, das Engagement wandert nach `gestrichen`. Welche Slots und
   Themen vorgesehen waren, bleibt als Spur im Engagement.
 - **Umsortieren** — Eine Karte zu verschieben schreibt `position` in allen Engagements
   der betroffenen Spalten neu, in einem Durchgang.
-- **Honorar** — Summe der Beitragshonorare je Konferenz, gegen das `honorarbudget`.
+- **Honorar** — Summe der Engagement-Honorare je Konferenz, gegen das `honorarbudget`.
+  Gestrichene Engagements zählen nicht mit; ein Betrag, der nur angeboten und noch nicht
+  zugesagt ist, dagegen schon — sonst wüsste man erst hinterher, ob es reicht.
 
 ### Was das Plugin prüft, ohne dass man fragt
 
 Doppelbelegung eines Slots · derselbe Speaker in zwei parallelen Tracks · ein Beitrag,
-dessen Format nicht in die Blockdauer passt · offene Slots · heimatlose Beiträge ·
-Beiträge, deren Speaker noch nicht zugesagt hat.
+dessen Format nicht in die Blockdauer passt · ein Beitrag, dessen `max_teilnehmer` über
+der `kapazitaet` seines Slots liegt · offene Slots · heimatlose Beiträge · Beiträge,
+deren Speaker noch nicht zugesagt hat.
 
 ---
 
@@ -410,8 +514,9 @@ Beiträge, deren Speaker noch nicht zugesagt hat.
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
-- **Mehrere Speaker je Beitrag** — im Format vorgesehen. Wie wird das Honorar dann
-  aufgeteilt, und hat jeder ein eigenes Engagement?
+- **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
+  behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
+  Reicht das, oder gehören Raum und Kapazität doch an den Block?
 - **Reisekosten** — eigenes Feld am Engagement oder Teil des Honorars?
 - **Wiederverwendung** — soll beim Füllen eines Slots vorgeschlagen werden, welche
   Beiträge ein Speaker in früheren Jahren gehalten hat?

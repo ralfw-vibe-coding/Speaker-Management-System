@@ -4,13 +4,13 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Sonja Ehrlich]]"
 status: verhandlung
 position: 0
+honorar:
 angefragt_am: 2026-05-20
 geantwortet_am: 2026-05-25
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

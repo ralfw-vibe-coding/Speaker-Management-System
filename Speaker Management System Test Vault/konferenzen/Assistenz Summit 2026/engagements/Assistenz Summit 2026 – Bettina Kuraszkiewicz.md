@@ -4,13 +4,13 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Bettina Kuraszkiewicz]]"
 status: zugesagt
 position: 3
+honorar: 2900
 angefragt_am: 2026-05-06
 geantwortet_am: 2026-05-19
 ---
 ## Zu klären
 - [x] Bio erhalten
 - [x] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

@@ -4,10 +4,14 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Sonja Ehrlich]]"]
 titel: "Gatekeeper der Aufmerksamkeit"
 format: vortrag
-honorar:
 block: b9
 track: t1
 ---
+## Zu klären
+- [ ] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 Wer entscheidet, was auf den Schreibtisch des Vorstands kommt, entscheidet
 mit, worüber das Unternehmen nachdenkt.

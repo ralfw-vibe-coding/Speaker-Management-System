@@ -4,11 +4,11 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Ines Falkenrath]]"
 status: gemerkt
 position: 0
+honorar:
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

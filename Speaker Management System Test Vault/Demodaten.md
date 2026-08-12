@@ -31,14 +31,30 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 - **Ein plenarer Block** (die Keynote) über alle Tracks.
 - **Ein Beitrag mit Titel, aber ohne Speaker** — das Panel am Tagesende.
 - **Zwei gestrichene Engagements** mit ihrer Begründung.
-- **Checklisten in jedem Reifegrad** — 5/5, 4/5, 3/5, 2/5 und unberührt.
+- **Checklisten in jedem Reifegrad.** Jedes Engagement hat vier Punkte (Bio, Foto,
+  Vertrag, Reisekosten), jeder Beitrag drei (Abstract, Folien, Technikbedarf).
+  Zusammengezählt ergibt das je Speaker 10/10, 9/10, 6/10, 4/10, 3/10 und unberührt.
+- **Nur ein einziger Speaker ist inhaltlich fertig** — Marek Lindqvist, 10 von 10. Alle
+  anderen haben irgendwo ein offenes Häkchen.
+- **Rechnung gestellt, Folien fehlen** — Petra Vahlbruch steht in der Spalte `rechnung`
+  und ist mit 9/10 trotzdem nicht fertig. Die beiden Achsen laufen unabhängig.
+- **Alle drei Stufen der Raum-Kaskade.** Jeder Track hat einen Raum, die Keynote
+  überschreibt ihn für ihren plenaren Block, und der Workshop um 14:00 zieht als
+  einzelner Slot in den Raum Werft. Tag 2 erbt stillschweigend vom Track.
+- **Ein Beitrag, der nicht in seinen Raum passt** — „Workshop: Protokoll in 15 Minuten"
+  ist auf 40 Teilnehmende angelegt, der Raum Speicher fasst 30. Genau darauf soll die
+  Prüfung anspringen.
 - **Ein zweiter Tag mit anderem Raster** — nur ein Track, zwei lange Blöcke, noch leer.
 
 ## Kennzahlen, die stimmen sollten
 
-- Honorarsumme **18.400 €** von 25.000 € Budget
+- Honorarsumme **18.400 €** von 25.000 € Budget — aus sechs Engagements: 4.000 €,
+  3.400 €, 3.000 €, 2.900 €, 2.700 €, 2.400 €. Die übrigen sieben tragen keinen Betrag,
+  darunter Sonja Ehrlich, mit der noch verhandelt wird.
 - 21 Slots, davon 15 belegt und 6 frei
 - 11 aktive Kandidaten, 2 gestrichen
+- 1 von 11 Kandidaten inhaltlich fertig — alle Häkchen im Engagement und in beiden
+  Beiträgen
 
 Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
 

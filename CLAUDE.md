@@ -13,6 +13,12 @@ Die UI-Entwürfe in `docs/ui/` (SVG und PNG) zeigen das Zielbild für Agenda-Ras
 Statustafel. Sie sind Entwürfe, keine Spezifikation bis auf den Pixel, aber die
 Zustände und ihre Farben sind so gemeint.
 
+**Im Zweifel gilt der Vault, nicht der Entwurf.** Die Entwürfe zeigen an einigen Stellen
+Angaben, die nur als Fließtext in den Notizen stehen und sich nicht rechnen lassen. Was
+nicht strukturiert im Frontmatter oder in einer Checkliste steht, wird auch nicht
+angezeigt — die entfallenen Stellen sind im Konzept unter „Was auf einer Karte stehen
+darf" aufgezählt.
+
 Der Test-Vault ist mit einem vollständigen Datensatz gefüllt, der **genau diese
 Entwürfe abbildet** — siehe `Speaker Management System Test Vault/Demodaten.md`. Er enthält absichtlich jeden
 Sonderfall: titelloser Beitrag, heimatloser Beitrag, Pool, plenarer Block, Speaker mit
@@ -68,6 +74,12 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   Präfix.
 - **Slot-Identität ist `(Block-ID, Track-ID)`.** Die Uhrzeit ist ein Attribut des
   Blocks. Ein Block lässt sich verschieben, ohne dass Beiträge ausfallen.
+- **Raum und Kapazität kaskadieren** vom Track über die Blockzeile zum einzelnen Slot;
+  die Liste `slots` in der Konferenznotiz trägt nur die Ausnahmen.
+- **Das Honorar hängt am Engagement, nicht am Beitrag.** Verhandelt wird mit dem
+  Menschen über das Paket; eine Aufteilung auf einzelne Beiträge wäre erfunden.
+- **Ein Beitrag, ein Speaker.** Das Feld ist eine Liste und wird tolerant gelesen, aber
+  das Plugin schreibt nur einen. Weitere Beteiligte stehen als Prosa im Body.
 - **Nichts sortiert sich von selbst.** Die Reihenfolge auf der Statustafel steht als
   `position` im Engagement und ändert sich nur, wenn jemand sie ändert.
 

@@ -4,13 +4,13 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Prof. Dr. Elke Warnke]]"
 status: gestrichen
 position: 0
+honorar:
 angefragt_am: 2026-02-10
 geantwortet_am: 2026-02-24
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

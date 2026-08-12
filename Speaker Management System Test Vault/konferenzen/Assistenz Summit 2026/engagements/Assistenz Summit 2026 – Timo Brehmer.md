@@ -4,13 +4,13 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Timo Brehmer]]"
 status: geantwortet
 position: 0
+honorar:
 angefragt_am: 2026-06-05
 geantwortet_am: 2026-06-28
 ---
 ## Zu klären
 - [ ] Bio erhalten
 - [ ] Foto erhalten
-- [ ] Abstract final
 - [ ] Vertrag zurück
 - [ ] Reisekosten geklärt
 

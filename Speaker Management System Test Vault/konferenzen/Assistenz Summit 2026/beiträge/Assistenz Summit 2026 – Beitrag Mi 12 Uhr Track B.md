@@ -4,10 +4,14 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Yannick Sobotta]]"]
 titel:
 format: vortrag
-honorar: 1500
 block: b7
 track: t2
 ---
+## Zu klären
+- [ ] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 Noch offen — Yannick Sobotta hat den Slot, will das Thema aber
 kurzfristig festlegen. Deadline ist der 30.09.

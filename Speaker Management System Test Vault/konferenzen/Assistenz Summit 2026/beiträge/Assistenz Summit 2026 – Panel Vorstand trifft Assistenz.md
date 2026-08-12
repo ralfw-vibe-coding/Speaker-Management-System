@@ -4,10 +4,14 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: []
 titel: "Panel: Vorstand trifft Assistenz"
 format: panel
-honorar:
 block: b13
 track: t1
 ---
+## Zu klären
+- [ ] Abstract eingereicht
+- [ ] Folien eingereicht
+- [ ] Technikbedarf geklärt
+
 ## Abstract
 Zum Abschluss des Tages: ein Vorstand, zwei Assistenzen, moderiert.
 
