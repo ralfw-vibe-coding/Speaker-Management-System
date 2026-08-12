@@ -12,9 +12,21 @@
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 
+.sms-titelzeile {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
 .sms-titel {
-	margin: 0 0 12px;
+	margin: 0;
 	font-size: 1.35em;
+}
+
+.sms-version {
+	color: var(--text-muted);
+	font-size: 0.8em;
 }
 
 .sms-reiter {

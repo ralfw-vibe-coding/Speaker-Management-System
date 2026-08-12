@@ -46,7 +46,15 @@ export class SmsView extends ItemView {
 		root.addClass("sms-view");
 
 		const kopf = root.createDiv({ cls: "sms-kopf" });
-		kopf.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
+
+		// Die Version steht sichtbar im Kopf, damit man nach einem Pull erkennt,
+		// ob der eigene Build schon der neue ist.
+		const titelzeile = kopf.createDiv({ cls: "sms-titelzeile" });
+		titelzeile.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
+		titelzeile.createEl("span", {
+			text: `v${this.plugin.manifest.version}`,
+			cls: "sms-version",
+		});
 
 		const reiter = kopf.createDiv({ cls: "sms-reiter" });
 		for (const { id, titel } of SICHTEN) {
