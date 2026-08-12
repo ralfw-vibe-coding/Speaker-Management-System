@@ -48,11 +48,12 @@ export class SmsView extends ItemView {
 		const kopf = root.createDiv({ cls: "sms-kopf" });
 
 		// Die Version steht sichtbar im Kopf, damit man nach einem Pull erkennt,
-		// ob der eigene Build schon der neue ist.
+		// ob der eigene Build schon der neue ist. Sie ist beim Bauen ins Bundle
+		// eingesetzt — siehe globals.d.ts.
 		const titelzeile = kopf.createDiv({ cls: "sms-titelzeile" });
 		titelzeile.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
 		titelzeile.createEl("span", {
-			text: `v${this.plugin.manifest.version}`,
+			text: `v${__SMS_VERSION__}`,
 			cls: "sms-version",
 		});
 

@@ -55,6 +55,13 @@ mit Cmd+R neu.
 Auf einem zweiten Rechner gilt nach jedem Pull dieselbe Reihenfolge: `npm run build`
 (und `npm install`, wenn sich `package-lock.json` geändert hat), dann Cmd+R.
 
+Die Version im Kopf des Views kommt aus `package.json` und wird beim Bauen ins Bundle
+eingesetzt — nicht aus `plugin.manifest`, den Obsidian beim Start liest und danach
+festhält. Sie ändert sich damit genau dann, wenn sich `main.js` ändert, und verrät
+zuverlässig, ob der eigene Build der neue ist. **Bei jeder Änderung die Version in
+`package.json` und `manifest.json` gemeinsam hochziehen** — `manifest.json` ist das,
+was Obsidian in seiner Plugin-Liste zeigt.
+
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
 auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
 
