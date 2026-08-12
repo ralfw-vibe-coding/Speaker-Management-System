@@ -6,14 +6,14 @@ export interface SmsSettings {
 	speakerOrdner: string;
 	/** Ordner für die Veranstalter. */
 	veranstalterOrdner: string;
-	/** Ordner, unter dem je Veranstaltung ein Unterordner liegt. */
-	veranstaltungenOrdner: string;
+	/** Ordner, unter dem je Konferenz ein Unterordner liegt. */
+	konferenzenOrdner: string;
 }
 
 export const DEFAULT_SETTINGS: SmsSettings = {
 	speakerOrdner: "speaker",
 	veranstalterOrdner: "veranstalter",
-	veranstaltungenOrdner: "veranstaltungen",
+	konferenzenOrdner: "konferenzen",
 };
 
 export class SmsSettingTab extends PluginSettingTab {
@@ -52,14 +52,14 @@ export class SmsSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Veranstaltungen")
-			.setDesc("Ordner, unter dem je Veranstaltung ein eigener Unterordner liegt.")
+			.setName("Konferenzen")
+			.setDesc("Ordner, unter dem je Konferenz ein eigener Unterordner liegt.")
 			.addText((text) =>
 				text
-					.setPlaceholder(DEFAULT_SETTINGS.veranstaltungenOrdner)
-					.setValue(this.plugin.settings.veranstaltungenOrdner)
+					.setPlaceholder(DEFAULT_SETTINGS.konferenzenOrdner)
+					.setValue(this.plugin.settings.konferenzenOrdner)
 					.onChange(async (value) => {
-						this.plugin.settings.veranstaltungenOrdner = value.trim();
+						this.plugin.settings.konferenzenOrdner = value.trim();
 						await this.plugin.saveSettings();
 					}),
 			);

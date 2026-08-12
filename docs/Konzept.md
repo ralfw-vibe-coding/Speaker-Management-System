@@ -8,7 +8,7 @@ die Tagesagenden einplanen.
 
 ## 1. Das Vorgehen, das abgebildet wird
 
-1. **Auftrag** — Ich bekomme das Content Management für eine Veranstaltung. Ich lege
+1. **Auftrag** — Ich bekomme das Content Management für eine Konferenz. Ich lege
    Veranstalter und Konferenz an, dazu je Tag das Raster aus Blöcken und Tracks.
    Ab jetzt habe ich **Slots zu füllen**.
 2. **Katalogpflege** — Ich recherchiere Speaker und trage sie in den Katalog ein,
@@ -75,15 +75,56 @@ Body. Beziehungen sind Wikilinks — damit übernimmt Obsidian das Umbenennen, u
 braucht keine künstliche ID-Verwaltung. Die Daten bleiben ohne das Plugin lesbar,
 editierbar und durchsuchbar.
 
-Ordnerstruktur unterhalb eines konfigurierbaren Basisordners:
+### Ordner
+
+Alles Konferenzspezifische liegt im Ordner seiner Konferenz. Eine gelaufene Konferenz
+archiviert man, indem man einen Ordner verschiebt. Die drei obersten Ordner sind in
+den Plugin-Einstellungen konfigurierbar.
 
 ```
-Speaker/Ralf Westphal.md
-Veranstalter/Acme Events.md
-Konferenzen/.NET Day 2026.md
-Engagements/2026 .NET Day – Ralf Westphal.md
-Beiträge/2026 .NET Day – Wieder mehr Substanz.md
+speaker/
+  Ralf Westphal.md
+veranstalter/
+  Acme Events.md
+konferenzen/
+  .NET Day 2026/
+    .NET Day 2026.md                          ← die Konferenz samt Raster
+    engagements/
+      .NET Day 2026 – Ralf Westphal.md
+    beiträge/
+      .NET Day 2026 – Wieder mehr Substanz.md
 ```
+
+### Dateinamen
+
+Obsidian löst Wikilinks über den **Dateinamen** auf, nicht über den Pfad. Zwei Dateien
+`Ralf Westphal.md` in verschiedenen Ordnern machen `[[Ralf Westphal]]` mehrdeutig.
+Deshalb muss jede Notiz vault-weit eindeutig heißen:
+
+- **Speaker** tragen ihren blanken Namen — sie sind das, was man meint, wenn man die
+  Person verlinkt.
+- **Engagements und Beiträge** tragen den Konferenznamen als Präfix.
+
+Das Präfix wirkt innerhalb des Konferenzordners redundant, verdient sich aber zweimal:
+Es macht die Namen eindeutig, und es macht die **Backlink-Liste am Speaker zu seiner
+Historie** — dort steht nur der Dateiname, nicht der Pfad. Auf der Notiz eines Speakers
+liest man dann untereinander seine Auftritte über die Jahre.
+
+Ein Beitrag darf titellos entstehen (Speaker steht, Thema offen). Er heißt dann
+vorläufig `.NET Day 2026 – Beitrag Mi 10:00 Track A.md` und wird umbenannt, sobald ein
+Titel da ist; Obsidian zieht die Links dabei mit.
+
+### Wer die Dateien anlegt
+
+Notizen entstehen **durch den View**, nicht von Hand. Das Plugin besitzt die Dateien:
+Es legt sie an, benennt sie, garantiert eindeutige Namen und korrektes Frontmatter.
+Damit braucht es keine Reparaturlogik für Zustände, die gar nicht erst entstehen.
+
+Trotzdem gilt: **eng schreiben, tolerant lesen.** In die Notizen wird von Hand
+hineingeschrieben — Gesprächsnotizen, Abstracts, ein Häkchen zwischendurch. Das Plugin
+fasst beim Schreiben nur die Felder an, die ihm gehören, und lässt Body und Fremdfelder
+unangetastet. Beim Lesen verträgt es ein fehlendes Feld, statt sich zu verschlucken.
+Sonst wäre der Vorteil von Markdown wieder verspielt.
 
 ### Speaker
 
@@ -167,6 +208,7 @@ type: engagement
 konferenz: "[[.NET Day 2026]]"
 speaker: "[[Ralf Westphal]]"
 status: zugesagt
+position: 1
 angefragt_am: 2026-03-01
 geantwortet_am: 2026-03-04
 rechnung_am:
@@ -231,6 +273,27 @@ Veranstaltung. Rechnung und Zahlung liegen zeitlich danach und sind deshalb eige
 Spalten. Die Rechnung hängt am Engagement, nicht am Beitrag: ein Speaker mit zwei
 Vorträgen stellt eine Rechnung.
 
+### Position in der Spalte
+
+Die Karte hat zwei Koordinaten, und beide stehen im Engagement:
+
+- `status` — die Spalte, der waagerechte Fortschritt.
+- `position` — die Zeile, senkrecht von `0` bis `n`.
+
+`position` zählt **innerhalb einer Spalte einer Konferenz**. Beim Umsortieren wird die
+betroffene Spalte neu durchnummeriert; wandert eine Karte in eine andere Spalte, wird
+die Quellspalte geschlossen und die Zielspalte an der Einfügestelle aufgerückt. Neue
+Karten hängen sich hinten an, damit eine aufgebaute Ordnung nicht von oben zerdrückt
+wird.
+
+Es wird nichts abgeleitet und nichts automatisch umgestellt. Die Tafel steht so, wie
+sie gestellt wurde.
+
+Lesen bleibt trotzdem tolerant: Lücken oder doppelte Nummern — etwa nachdem von Hand
+eine Notiz gelöscht wurde — sind kein Fehler. Sortiert wird nach `position`, bei
+Gleichstand nach Name, und beim nächsten Umsortieren ist die Spalte wieder sauber
+durchgezählt.
+
 ### Reifegrad am Slot
 
 | Zustand | Anzeige |
@@ -281,6 +344,8 @@ muss von beiden Seiten gearbeitet werden können.
 - **Streichen** — Alle Beiträge dieses Speakers in dieser Konferenz werden geleert, die
   Slots sind wieder Löcher, das Engagement wandert nach `gestrichen`. Welche Slots und
   Themen vorgesehen waren, bleibt als Spur im Engagement.
+- **Umsortieren** — Eine Karte zu verschieben schreibt `position` in allen Engagements
+  der betroffenen Spalten neu, in einem Durchgang.
 - **Honorar** — Summe der Beitragshonorare je Konferenz, gegen das `honorarbudget`.
 
 ### Was das Plugin prüft, ohne dass man fragt
