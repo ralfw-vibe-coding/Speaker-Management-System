@@ -14,7 +14,7 @@ Statustafel. Sie sind Entwürfe, keine Spezifikation bis auf den Pixel, aber die
 Zustände und ihre Farben sind so gemeint.
 
 Der Test-Vault ist mit einem vollständigen Datensatz gefüllt, der **genau diese
-Entwürfe abbildet** — siehe `test-vault/Demodaten.md`. Er enthält absichtlich jeden
+Entwürfe abbildet** — siehe `Speaker Management System Test Vault/Demodaten.md`. Er enthält absichtlich jeden
 Sonderfall: titelloser Beitrag, heimatloser Beitrag, Pool, plenarer Block, Speaker mit
 mehreren Beiträgen, Checklisten in jedem Reifegrad, ein zweiter Tag mit anderem Raster.
 Beim Bauen einer Sicht ist er Testdatensatz und Sollbild zugleich; die Kennzahlen dort
@@ -23,9 +23,10 @@ Beim Bauen einer Sicht ist er Testdatensatz und Sollbild zugleich; die Kennzahle
 ## Aufbau
 
 ```
-plugin/        das Obsidian-Plugin (TypeScript, esbuild)
-test-vault/    Vault zum Entwickeln; plugin/ hängt per Symlink unter .obsidian/plugins/
-docs/          Konzept und UI-Entwürfe
+plugin/                                 das Obsidian-Plugin (TypeScript, esbuild)
+Speaker Management System Test Vault/   Vault zum Entwickeln; plugin/ hängt
+                                        per Symlink unter .obsidian/plugins/
+docs/                                   Konzept und UI-Entwürfe
 ```
 
 ## Entwickeln
@@ -39,7 +40,7 @@ Produktionsbuild und prüft vorher die Typen. `plugin/main.js` ist Build-Ergebni
 nicht im Git — nach einem frischen Clone zeigt der Symlink also auf einen Ordner ohne
 `main.js`, und Obsidian meldet einen Ladefehler, bis einmal gebaut wurde.
 
-Den Vault öffnet man in Obsidian über *Open folder as vault* mit `test-vault`; das
+Den Vault öffnet man in Obsidian über *Open folder as vault* mit `Speaker Management System Test Vault`; das
 Plugin ist dort bereits aktiviert. Nach einem Build lädt man es mit Cmd+R neu.
 
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
