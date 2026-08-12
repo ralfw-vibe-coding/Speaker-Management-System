@@ -35,7 +35,7 @@ Veranstalter ──< Konferenz ──< Tag ──< Block ─┐
 | Begriff | Bedeutung |
 |---|---|
 | **Veranstalter** | Auftraggeber. Kommt über Jahre wieder, trägt wiederverwendbare Konditionen. |
-| **Konferenz** | Eine Veranstaltung eines Veranstalters, bestehend aus Tagen. |
+| **Konferenz** | Das mehrtägige Ereignis eines Veranstalters, bestehend aus Tagen. |
 | **Tag** | Ein Konferenztag mit eigener **Agenda**. |
 | **Track** | Parallele Programmlinie — eine Spalte im Raster. Konferenzweit definiert, je Tag ausgewählt. Trägt meist auch Raum und Kapazität. |
 | **Block** | Zeitliche Zeile im Raster: alle Beiträge verschiedener Tracks zum selben Zeitpunkt. |
@@ -45,6 +45,13 @@ Veranstalter ──< Konferenz ──< Tag ──< Block ─┐
 | **Engagement** | Die Beziehung Speaker × Konferenz. Trägt Funnel-Status, Honorar, Verhandlungsnotizen, Checkliste. |
 
 ### Die tragenden Entscheidungen
+
+**Es heißt Konferenz, nicht Veranstaltung.** Entschieden, nicht mehr offen. „Veranstaltung"
+ist zu weit und schlösse ein Seminar ein; hier geht es um viele Slots, viele Speaker und
+parallele Tracks. Der Begriff steckt in Feldnamen, Ordnernamen und Dateinamen und wird
+nicht mehr angefasst — auch nicht durch ein beiläufiges „Veranstaltung" im Gespräch.
+Einzig der **Veranstalter** behält seinen Namen; er ist der Auftraggeber, nicht das
+Ereignis.
 
 **Der Slot ist zuerst da, nicht der Beitrag.** Das Raster steht ab Schritt 1. Slot und
 Beitrag sind dasselbe Ding in verschiedenen Reifegraden — ein leerer Slot ist ein
@@ -350,7 +357,7 @@ im Plugin, nicht in den Daten.
 In der Spalte **zugesagt** läuft die Checkliste als Fortschrittsbalken. Gezählt werden
 die Punkte unter der Überschrift `## Zu klären` im Engagement **und in allen Beiträgen
 dieses Speakers in dieser Konferenz**. Die Karte wird grün, wenn alle abgehakt sind —
-das ist „inhaltlich fertig", noch vor der Veranstaltung. Sonst wäre jemand grün, dessen
+das ist „inhaltlich fertig", noch vor der Konferenz. Sonst wäre jemand grün, dessen
 Abstract noch fehlt. Rechnung und Zahlung liegen zeitlich danach und sind deshalb
 eigene Spalten. Die Rechnung hängt am Engagement, nicht am Beitrag: ein Speaker mit
 zwei Vorträgen stellt eine Rechnung — und kann durchaus schon abgerechnet haben,
@@ -530,9 +537,6 @@ deren Speaker noch nicht zugesagt hat.
   (c) Handarbeit im YAML, nur mit sehr flacher Syntax vertretbar. Empfehlung ist (a).
   Eilig ist es nicht: Die Statustafel liest vom Raster allein die Blöcke, um heimatlose
   Beiträge zu erkennen.
-- **Konferenz oder Veranstaltung** — im Modell heißt es durchgehend Konferenz, im
-  Gespräch fiel „Veranstaltung". Vor dem ersten Code klären; das Vokabular kommt vom
-  Auftraggeber und steckt danach in Feldnamen und Dateinamen.
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?

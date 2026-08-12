@@ -62,6 +62,9 @@ auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
 
 Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
 
+- **Es heißt Konferenz, nicht Veranstaltung.** Endgültig. „Veranstaltung" schlösse ein
+  Seminar ein; hier geht es um viele Slots und viele Speaker. Nur der **Veranstalter**
+  behält seinen Namen — er ist der Auftraggeber, nicht das Ereignis.
 - **Die Notizen sind die Wahrheit.** Kein eigener Datenspeicher neben dem Vault.
   Strukturierte Felder im YAML-Frontmatter, Freitext im Body, Beziehungen als
   Wikilinks.
