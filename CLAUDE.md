@@ -46,8 +46,14 @@ Produktionsbuild und prüft vorher die Typen. `plugin/main.js` ist Build-Ergebni
 nicht im Git — nach einem frischen Clone zeigt der Symlink also auf einen Ordner ohne
 `main.js`, und Obsidian meldet einen Ladefehler, bis einmal gebaut wurde.
 
-Den Vault öffnet man in Obsidian über *Open folder as vault* mit `Speaker Management System Test Vault`; das
-Plugin ist dort bereits aktiviert. Nach einem Build lädt man es mit Cmd+R neu.
+Den Vault öffnet man in Obsidian über *Open folder as vault* mit `Speaker Management System Test Vault`. Das
+Plugin muss man dort **einmal je Rechner** unter *Einstellungen → Community-Plugins*
+einschalten; der Aktivierungszustand ist bewusst nicht im Git, weil Obsidian ihn beim
+Start ausschaltet, solange noch nicht gebaut wurde. Nach einem Build lädt man das Plugin
+mit Cmd+R neu.
+
+Auf einem zweiten Rechner gilt nach jedem Pull dieselbe Reihenfolge: `npm run build`
+(und `npm install`, wenn sich `package-lock.json` geändert hat), dann Cmd+R.
 
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
 auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.

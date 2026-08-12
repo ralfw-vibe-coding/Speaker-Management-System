@@ -4,6 +4,10 @@ plugin/main.js
 plugin/*.js.map
 
 # Obsidian-Zustand des Test-Vaults (Layout, Cache, Plugin-Daten)
+# community-plugins.json gehört dazu: Obsidian schreibt die Datei beim Start leer,
+# wenn plugin/main.js noch nicht gebaut ist — eingecheckt würde das die Aktivierung
+# reihum auf allen Rechnern ausknipsen.
+Speaker Management System Test Vault/.obsidian/community-plugins.json
 Speaker Management System Test Vault/.obsidian/workspace.json
 Speaker Management System Test Vault/.obsidian/workspace-mobile.json
 Speaker Management System Test Vault/.obsidian/cache/
