@@ -110,8 +110,14 @@ Es macht die Namen eindeutig, und es macht die **Backlink-Liste am Speaker zu se
 Historie** — dort steht nur der Dateiname, nicht der Pfad. Auf der Notiz eines Speakers
 liest man dann untereinander seine Auftritte über die Jahre.
 
+Der Dateiname eines Beitrags ist sein Titel, bereinigt um die Zeichen, die Obsidian in
+Notiznamen verbietet: `* " \ / < > : | ? # ^ [ ]`. Aus dem Titel
+`Workshop: Der perfekte Board-Report` wird also die Datei
+`… – Workshop Der perfekte Board-Report.md`. Der ungekürzte Titel steht im Feld
+`titel` — Dateiname und Titel dürfen auseinandergehen.
+
 Ein Beitrag darf titellos entstehen (Speaker steht, Thema offen). Er heißt dann
-vorläufig `.NET Day 2026 – Beitrag Mi 10:00 Track A.md` und wird umbenannt, sobald ein
+vorläufig `.NET Day 2026 – Beitrag Mi 12 Uhr Track B.md` und wird umbenannt, sobald ein
 Titel da ist; Obsidian zieht die Links dabei mit.
 
 ### Wer die Dateien anlegt
@@ -267,8 +273,13 @@ gemerkt → angefragt → geantwortet → in Verhandlung → zugesagt → Rechnu
 `gestrichen` ist keine Spalte in der Reihe, sondern ein Ausgang, den man von überall
 nimmt — ein eingeklapptes Fach am Rand.
 
+Die Werte im Feld `status` heißen: `gemerkt`, `angefragt`, `geantwortet`,
+`verhandlung`, `zugesagt`, `rechnung`, `bezahlt`, `gestrichen`. Ihre Reihenfolge steht
+im Plugin, nicht in den Daten.
+
 In der Spalte **zugesagt** läuft die Checkliste als Fortschrittsbalken. Die Karte wird
-grün, wenn alle Pflichtpunkte erledigt sind — das ist „inhaltlich fertig", noch vor der
+grün, wenn alle Punkte unter der Überschrift `## Zu klären` abgehakt sind — das ist
+„inhaltlich fertig", noch vor der
 Veranstaltung. Rechnung und Zahlung liegen zeitlich danach und sind deshalb eigene
 Spalten. Die Rechnung hängt am Engagement, nicht am Beitrag: ein Speaker mit zwei
 Vorträgen stellt eine Rechnung.

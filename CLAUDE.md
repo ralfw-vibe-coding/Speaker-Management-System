@@ -13,6 +13,13 @@ Die UI-Entwürfe in `docs/ui/` (SVG und PNG) zeigen das Zielbild für Agenda-Ras
 Statustafel. Sie sind Entwürfe, keine Spezifikation bis auf den Pixel, aber die
 Zustände und ihre Farben sind so gemeint.
 
+Der Test-Vault ist mit einem vollständigen Datensatz gefüllt, der **genau diese
+Entwürfe abbildet** — siehe `test-vault/Demodaten.md`. Er enthält absichtlich jeden
+Sonderfall: titelloser Beitrag, heimatloser Beitrag, Pool, plenarer Block, Speaker mit
+mehreren Beiträgen, Checklisten in jedem Reifegrad, ein zweiter Tag mit anderem Raster.
+Beim Bauen einer Sicht ist er Testdatensatz und Sollbild zugleich; die Kennzahlen dort
+(18.400 €, 21 Slots, 15 belegt) müssen herauskommen.
+
 ## Aufbau
 
 ```
