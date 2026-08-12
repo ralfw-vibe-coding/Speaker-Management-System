@@ -1,0 +1,89 @@
+# SMS – Speaker Management System
+
+Obsidian-Plugin für Content Manager von Konferenzen: Speaker über Jahre
+katalogisieren, je Konferenz durch einen Akquise-Funnel führen, ihre Beiträge in die
+Tagesagenden einplanen.
+
+**[docs/Konzept.md](docs/Konzept.md) ist die verbindliche Quelle** für Domänenmodell,
+Dateiformate, Statusmodell, Sichten und Regeln. Vor Änderungen am Datenmodell oder an
+den Sichten dort nachlesen — und bei neuen Entscheidungen dort nachziehen, sonst
+verläuft sich das Wissen im Chat.
+
+Die UI-Entwürfe in `docs/ui/` (SVG und PNG) zeigen das Zielbild für Agenda-Raster und
+Statustafel. Sie sind Entwürfe, keine Spezifikation bis auf den Pixel, aber die
+Zustände und ihre Farben sind so gemeint.
+
+## Aufbau
+
+```
+plugin/        das Obsidian-Plugin (TypeScript, esbuild)
+test-vault/    Vault zum Entwickeln; plugin/ hängt per Symlink unter .obsidian/plugins/
+docs/          Konzept und UI-Entwürfe
+```
+
+## Entwickeln
+
+```bash
+cd plugin && npm install && npm run dev
+```
+
+`npm run dev` baut bei jeder Änderung neu, `npm run build` erzeugt den
+Produktionsbuild und prüft vorher die Typen. `plugin/main.js` ist Build-Ergebnis und
+nicht im Git — nach einem frischen Clone zeigt der Symlink also auf einen Ordner ohne
+`main.js`, und Obsidian meldet einen Ladefehler, bis einmal gebaut wurde.
+
+Den Vault öffnet man in Obsidian über *Open folder as vault* mit `test-vault`; das
+Plugin ist dort bereits aktiviert. Nach einem Build lädt man es mit Cmd+R neu.
+
+Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
+auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
+
+## Verbindliche Entscheidungen
+
+Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
+
+- **Die Notizen sind die Wahrheit.** Kein eigener Datenspeicher neben dem Vault.
+  Strukturierte Felder im YAML-Frontmatter, Freitext im Body, Beziehungen als
+  Wikilinks.
+- **Sichten sind Projektionen.** Statustafel und Agenda halten keinen eigenen Zustand;
+  alles auf den Karten ist gerechnet. Nichts Abgeleitetes wird zusätzlich gespeichert.
+- **Ein einziger View** mit interner Umschaltung zwischen Speakerkatalog, Statustafel
+  und Agenda — kein eigener View-Typ je Sicht.
+- **Details in der Notiz, nicht im Formular.** Ein Klick auf eine Karte öffnet die
+  Notiz im Nachbar-Pane.
+- **Das Plugin besitzt die Dateien.** Notizen entstehen durch den View, nicht von Hand;
+  damit sind Namen eindeutig und Frontmatter korrekt.
+- **Eng schreiben, tolerant lesen.** Beim Schreiben nur die eigenen Felder anfassen,
+  Body und Fremdfelder unangetastet lassen. Beim Lesen ein fehlendes Feld verkraften.
+- **Dateinamen müssen vault-weit eindeutig sein**, weil Obsidian Wikilinks über den
+  Dateinamen auflöst. Engagements und Beiträge tragen deshalb den Konferenznamen als
+  Präfix.
+- **Slot-Identität ist `(Block-ID, Track-ID)`.** Die Uhrzeit ist ein Attribut des
+  Blocks. Ein Block lässt sich verschieben, ohne dass Beiträge ausfallen.
+- **Nichts sortiert sich von selbst.** Die Reihenfolge auf der Statustafel steht als
+  `position` im Engagement und ändert sich nur, wenn jemand sie ändert.
+
+## Konventionen
+
+- **Domänenvokabular ist deutsch** und stammt vom Auftraggeber: Konferenz, Tag, Block,
+  Track, Slot, Beitrag, Speaker, Engagement, Veranstalter. `track`, `block` und `slot`
+  funktionieren in beiden Sprachen und bleiben so auch im Code.
+- Frontmatter-Felder, Bezeichner, Kommentare, UI-Texte und Commit-Nachrichten sind
+  deutsch.
+- Tabs zur Einrückung im Plugin-Code (Obsidian-Konvention).
+
+## Stand der Umsetzung
+
+Es steht bisher nur das Gerüst:
+
+- `src/main.ts` — Plugin, Ribbon-Icon, Kommando, Öffnen des Views
+- `src/settings.ts` — die drei Datenordner konfigurierbar
+- `src/view/SmsView.ts` — der View mit drei Reitern, **Inhalte sind Platzhalter**
+
+Es gibt noch kein Lesen und kein Schreiben von Notizen, keine Datenschicht, keine der
+drei Sichten. Alles Fachliche ist offen.
+
+Am Ende von [docs/Konzept.md](docs/Konzept.md) steht eine Liste offener Punkte
+(Beiträge über mehrere Blöcke, mehrere Speaker je Beitrag, Reisekosten, Bedarfsplanung
+und anderes). Die sind bewusst noch nicht entschieden — nicht einfach etwas annehmen,
+sondern nachfragen.

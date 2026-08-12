@@ -317,6 +317,12 @@ Status des zugehörigen Engagements.
 
 ## 5. Sichten
 
+Alle drei leben in **einem einzigen Obsidian-View**, der über ein Ribbon-Icon geöffnet
+wird und intern umschaltet. Sie teilen sich denselben Zustand — welche Konferenz gerade
+dran ist —, man springt ständig zwischen ihnen, und Drag & Drop zwischen Pool und
+Raster funktioniert ohnehin nur innerhalb eines Views. Drei eigene View-Typen wären
+drei Obsidian-Tabs, die man einzeln aufräumen muss.
+
 **Speakerkatalog** — konferenzübergreifend. Suchen und filtern nach Thema, Format,
 Sprache, Historie. Aktion: „als Kandidat für ⟨Konferenz⟩ merken".
 
@@ -330,6 +336,39 @@ die noch nirgends platziert sind, als auch heimatlose, die ihren Slot verloren h
 
 Statustafel und Agenda schauen aus verschiedenen Winkeln auf dieselben Daten, deshalb
 muss von beiden Seiten gearbeitet werden können.
+
+### Sichten sind Projektionen
+
+Keine Sicht hält eigenen Zustand. Die Statustafel ist gerechnet aus den
+Engagement-Notizen, die Agenda aus dem Raster der Konferenznotiz plus den
+Beitragsnotizen. Es gibt keine Datenbank neben den Notizen.
+
+| Auf der Karte | Kommt her |
+|---|---|
+| Spalte und Zeile | `status` und `position` im Engagement |
+| „2 Beiträge · 2.400 €" | die Beitragsnotizen, die auf diesen Speaker und diese Konferenz zeigen |
+| Fortschrittsbalken „4 von 5" | die Markdown-Tasks im Body des Engagements |
+| „⏱ 8 Wochen ohne Antwort" | `angefragt_am` gegen heute |
+| „1 Beitrag heimatlos" | ein Beitrag, dessen `block` es im Raster nicht mehr gibt |
+| „1 im Pool" | ein Beitrag ohne `block` |
+
+Nichts davon wird gespeichert — deshalb hat das Engagement weder eine Beitragsliste
+noch eine Honorarsumme im Frontmatter. Sie wären eine zweite Wahrheit, die veraltet.
+
+Geschrieben wird entsprechend wenig: Karte in eine andere Spalte ziehen ändert
+`status`, Umsortieren die `position`, ein Häkchen eine Zeile im Body.
+
+Obsidians `metadataCache` liefert Frontmatter und Tasks fertig geparst und meldet
+Änderungen. Das gilt auch in der Gegenrichtung: Wird in der Notiz von Hand ein Häkchen
+gesetzt, wandert der Balken auf der Tafel sofort mit.
+
+### Überblick im View, Details in der Notiz
+
+Der View ist für Überblick und Bewegung — blättern, ziehen, Status ändern, abhaken.
+Für Details wird nichts nachgebaut: Ein Klick auf eine Karte öffnet die Speaker- oder
+Beitragsnotiz im Nachbar-Pane, und dort werden Abstract, Bio und Gesprächsnotizen im
+normalen Editor geschrieben. Das spart die halbe Formular-Oberfläche und hält die
+Notizen im Zentrum.
 
 ---
 
