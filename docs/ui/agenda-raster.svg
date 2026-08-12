@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1548" height="1150" viewBox="0 0 1548 1150" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+
+  <rect width="1548" height="1150" fill="#ffffff"/>
+
+  <!-- ============ Kopfbereich ============ -->
+  <text x="32" y="52" font-size="25" font-weight="700" fill="#1f2124">Assistenz Summit 2026</text>
+  <text x="32" y="76" font-size="13.5" fill="#656a71">Die Zukunft der Vorstandsassistenz · Acme Events · 4.–5. November 2026</text>
+
+  <!-- Kennzahlen rechts -->
+  <g font-size="12">
+    <rect x="1088" y="34" width="98" height="26" rx="13" fill="#f2f3f5"/>
+    <circle cx="1104" cy="47" r="4" fill="#c2c6cc"/>
+    <text x="1114" y="51" fill="#4a4f56">4 Löcher</text>
+
+    <rect x="1194" y="34" width="106" height="26" rx="13" fill="#f2f3f5"/>
+    <circle cx="1210" cy="47" r="4" fill="#3573b9"/>
+    <text x="1220" y="51" fill="#4a4f56">3 im Pool</text>
+
+    <rect x="1308" y="34" width="118" height="26" rx="13" fill="#fbeeee"/>
+    <circle cx="1324" cy="47" r="4" fill="#b04a4a"/>
+    <text x="1334" y="51" fill="#8f3d3d">1 heimatlos</text>
+  </g>
+  <text x="1516" y="78" font-size="12.5" fill="#656a71" text-anchor="end">Honorar <tspan font-weight="700" fill="#1f2124">18.400 €</tspan> von 25.000 €</text>
+
+  <!-- Tagesreiter -->
+  <g>
+    <rect x="32" y="102" width="132" height="34" rx="8" fill="#efecfb" stroke="#7b6cd9"/>
+    <text x="98" y="124" font-size="13" font-weight="600" fill="#5a4bbd" text-anchor="middle">Mi · 4. Nov</text>
+
+    <rect x="172" y="102" width="132" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="238" y="124" font-size="13" fill="#767b82" text-anchor="middle">Do · 5. Nov</text>
+
+    <rect x="320" y="102" width="112" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9" stroke-dasharray="4 3"/>
+    <text x="376" y="124" font-size="13" fill="#a2a7ae" text-anchor="middle">+ Tag</text>
+  </g>
+
+  <!-- ============ Spaltenköpfe ============ -->
+  <g>
+    <text x="32" y="184" font-size="11.5" font-weight="600" fill="#9298a0" letter-spacing="0.6">ZEIT</text>
+
+    <rect x="120" y="160" width="320" height="34" rx="8" fill="#f5f6f8"/>
+    <text x="136" y="182" font-size="13.5" font-weight="600" fill="#3b4046">Rolle &amp; Zukunft</text>
+    <text x="424" y="182" font-size="11.5" fill="#9298a0" text-anchor="end">Track A</text>
+
+    <rect x="452" y="160" width="320" height="34" rx="8" fill="#f5f6f8"/>
+    <text x="468" y="182" font-size="13.5" font-weight="600" fill="#3b4046">Werkzeuge &amp; KI</text>
+    <text x="756" y="182" font-size="11.5" fill="#9298a0" text-anchor="end">Track B</text>
+
+    <rect x="784" y="160" width="320" height="34" rx="8" fill="#f5f6f8"/>
+    <text x="800" y="182" font-size="13.5" font-weight="600" fill="#3b4046">Praxis-Workshops</text>
+    <text x="1088" y="182" font-size="11.5" fill="#9298a0" text-anchor="end">Track C</text>
+  </g>
+
+  <!-- ============ Zeitspalte ============ -->
+  <g font-size="13">
+    <text x="32" y="234" font-weight="700" fill="#3b4046">09:00</text>
+    <text x="32" y="252" font-size="11.5" fill="#a2a7ae">09:30</text>
+
+    <text x="32" y="356" font-weight="700" fill="#3b4046">10:00</text>
+    <text x="32" y="374" font-size="11.5" fill="#a2a7ae">10:45</text>
+
+    <text x="32" y="482" font-weight="700" fill="#3b4046">11:00</text>
+    <text x="32" y="500" font-size="11.5" fill="#a2a7ae">11:45</text>
+
+    <text x="32" y="608" font-weight="700" fill="#3b4046">12:00</text>
+    <text x="32" y="626" font-size="11.5" fill="#a2a7ae">12:45</text>
+
+    <text x="32" y="742" font-weight="700" fill="#3b4046">14:00</text>
+    <text x="32" y="760" font-size="11.5" fill="#a2a7ae">14:45</text>
+
+    <text x="32" y="868" font-weight="700" fill="#3b4046">15:00</text>
+    <text x="32" y="886" font-size="11.5" fill="#a2a7ae">15:45</text>
+
+    <text x="32" y="994" font-weight="700" fill="#3b4046">16:00</text>
+    <text x="32" y="1012" font-size="11.5" fill="#a2a7ae">16:45</text>
+  </g>
+
+  <!-- ============ Block 1 · Keynote, plenar ============ -->
+  <g>
+    <rect x="120" y="208" width="984" height="84" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="120" y="218" width="3.5" height="64" rx="1.75" fill="#1f9d5b"/>
+    <text x="140" y="240" font-size="16" font-weight="700" fill="#1f2124">Die Assistenz als Chief of Staff</text>
+    <text x="140" y="262" font-size="13" fill="#4a4f56">Dr. Antje Rohleder</text>
+    <text x="140" y="280" font-size="11.5" fill="#7d838a">Keynote · 30 Min · Abstract liegt vor</text>
+
+    <rect x="946" y="224" width="60" height="20" rx="10" fill="#ffffff" stroke="#c6cbd2"/>
+    <text x="976" y="238" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">plenar</text>
+    <rect x="1014" y="224" width="74" height="20" rx="10" fill="#1f9d5b"/>
+    <text x="1051" y="238" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="1088" y="272" font-size="12" fill="#4a4f56" text-anchor="end" font-weight="600">2.800 €</text>
+  </g>
+
+  <!-- Pause -->
+  <rect x="120" y="298" width="984" height="26" rx="6" fill="#f2f3f5"/>
+  <text x="612" y="316" font-size="11.5" fill="#8b9098" text-anchor="middle">Ankommen &amp; Kaffee · 09:30 – 10:00</text>
+
+  <!-- ============ Block 2 · 10:00 ============ -->
+  <g>
+    <rect x="120" y="330" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="120" y="340" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="138" y="358" font-size="13.5" font-weight="700" fill="#1f2124">Vom Vorzimmer zum Maschinenraum</text>
+    <text x="138" y="378" font-size="12.5" fill="#4a4f56">Marek Lindqvist</text>
+    <rect x="138" y="388" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="171" y="401" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="424" y="401" font-size="11.5" fill="#656a71" text-anchor="end">1.500 €</text>
+  </g>
+  <g>
+    <rect x="452" y="330" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="452" y="340" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="470" y="358" font-size="13.5" font-weight="700" fill="#1f2124">KI-Assistenten im Vorstandsbüro</text>
+    <text x="470" y="378" font-size="12.5" fill="#4a4f56">Yannick Sobotta</text>
+    <rect x="470" y="388" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="503" y="401" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="756" y="401" font-size="11.5" fill="#656a71" text-anchor="end">1.500 €</text>
+  </g>
+  <g>
+    <rect x="784" y="330" width="320" height="88" rx="9" fill="#fdf0e6" stroke="#efbe93"/>
+    <rect x="784" y="340" width="3.5" height="68" rx="1.75" fill="#d9772e"/>
+    <text x="802" y="358" font-size="13.5" font-weight="700" fill="#1f2124">Workshop: Der perfekte Board-Report</text>
+    <text x="802" y="378" font-size="12.5" fill="#4a4f56">Christa Nowak</text>
+    <rect x="802" y="388" width="74" height="18" rx="9" fill="#d9772e"/>
+    <text x="839" y="401" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">angefragt</text>
+    <text x="1088" y="401" font-size="11.5" fill="#a06b3c" text-anchor="end">auf Verdacht platziert</text>
+  </g>
+
+  <rect x="120" y="424" width="984" height="26" rx="6" fill="#f2f3f5"/>
+  <text x="612" y="442" font-size="11.5" fill="#8b9098" text-anchor="middle">Pause · 10:45 – 11:00</text>
+
+  <!-- ============ Block 3 · 11:00 ============ -->
+  <g>
+    <rect x="120" y="456" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="120" y="466" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="138" y="484" font-size="13.5" font-weight="700" fill="#1f2124">Diskretion in Zeiten von Slack</text>
+    <text x="138" y="504" font-size="12.5" fill="#4a4f56">Petra Vahlbruch</text>
+    <rect x="138" y="514" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="171" y="527" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="424" y="527" font-size="11.5" fill="#656a71" text-anchor="end">1.700 €</text>
+  </g>
+  <g>
+    <rect x="452" y="456" width="320" height="88" rx="9" fill="#e9f1fa" stroke="#9dbfe3"/>
+    <rect x="452" y="466" width="3.5" height="68" rx="1.75" fill="#3573b9"/>
+    <text x="470" y="484" font-size="13.5" font-weight="700" fill="#1f2124">Automatisierung der Reiseplanung</text>
+    <text x="470" y="504" font-size="12.5" font-style="italic" fill="#8b9098">Speaker noch offen</text>
+    <rect x="470" y="514" width="88" height="18" rx="9" fill="#3573b9"/>
+    <text x="514" y="527" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">Speaker offen</text>
+    <text x="756" y="527" font-size="11.5" fill="#5b7fa8" text-anchor="end">Thema steht</text>
+  </g>
+  <g>
+    <rect x="784" y="456" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="784" y="466" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="802" y="484" font-size="13.5" font-weight="700" fill="#1f2124">Workshop: Kalender-Triage</text>
+    <text x="802" y="504" font-size="12.5" fill="#4a4f56">Marek Lindqvist</text>
+    <rect x="802" y="514" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="835" y="527" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="1088" y="527" font-size="11.5" fill="#656a71" text-anchor="end">2. Beitrag · 900 €</text>
+  </g>
+
+  <rect x="120" y="550" width="984" height="26" rx="6" fill="#f2f3f5"/>
+  <text x="612" y="568" font-size="11.5" fill="#8b9098" text-anchor="middle">Pause · 11:45 – 12:00</text>
+
+  <!-- ============ Block 4 · 12:00 ============ -->
+  <g>
+    <rect x="120" y="582" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="120" y="592" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="138" y="610" font-size="13.5" font-weight="700" fill="#1f2124">Macht ohne Titel</text>
+    <text x="138" y="630" font-size="12.5" fill="#4a4f56">Dr. Antje Rohleder</text>
+    <rect x="138" y="640" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="171" y="653" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="424" y="653" font-size="11.5" fill="#656a71" text-anchor="end">2. Beitrag · 1.200 €</text>
+  </g>
+  <g>
+    <rect x="452" y="582" width="320" height="88" rx="9" fill="#e9f1fa" stroke="#9dbfe3"/>
+    <rect x="452" y="592" width="3.5" height="68" rx="1.75" fill="#3573b9"/>
+    <text x="470" y="610" font-size="13.5" font-weight="700" fill="#1f2124">Yannick Sobotta</text>
+    <text x="470" y="630" font-size="12.5" font-style="italic" fill="#8b9098">Thema noch offen</text>
+    <rect x="470" y="640" width="82" height="18" rx="9" fill="#3573b9"/>
+    <text x="511" y="653" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">Thema offen</text>
+    <text x="756" y="653" font-size="11.5" fill="#5b7fa8" text-anchor="end">2. Beitrag · zugesagt</text>
+  </g>
+  <g>
+    <rect x="784.5" y="582.5" width="319" height="87" rx="9" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="944" y="620" font-size="13.5" font-weight="600" fill="#a2a7ae" text-anchor="middle">frei</text>
+    <text x="944" y="640" font-size="11.5" fill="#c2c6cc" text-anchor="middle">+ Beitrag einplanen</text>
+  </g>
+
+  <!-- Mittagspause -->
+  <rect x="120" y="676" width="984" height="34" rx="7" fill="#eceef1"/>
+  <text x="612" y="698" font-size="12.5" font-weight="600" fill="#6b7078" text-anchor="middle">Mittagspause · 12:45 – 14:00</text>
+
+  <!-- ============ Block 5 · 14:00 ============ -->
+  <g>
+    <rect x="120" y="716" width="320" height="88" rx="9" fill="#fdf0e6" stroke="#efbe93"/>
+    <rect x="120" y="726" width="3.5" height="68" rx="1.75" fill="#d9772e"/>
+    <text x="138" y="744" font-size="13.5" font-weight="700" fill="#1f2124">Gatekeeper der Aufmerksamkeit</text>
+    <text x="138" y="764" font-size="12.5" fill="#4a4f56">Sonja Ehrlich</text>
+    <rect x="138" y="774" width="92" height="18" rx="9" fill="#d9772e"/>
+    <text x="184" y="787" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">in Verhandlung</text>
+    <text x="424" y="787" font-size="11.5" fill="#a06b3c" text-anchor="end">auf Verdacht platziert</text>
+  </g>
+  <g>
+    <rect x="452" y="716" width="320" height="88" rx="9" fill="#e9f1fa" stroke="#9dbfe3"/>
+    <rect x="452" y="726" width="3.5" height="68" rx="1.75" fill="#3573b9"/>
+    <text x="470" y="744" font-size="13.5" font-weight="700" fill="#1f2124">Datenschutz im Assistenz-Alltag</text>
+    <text x="470" y="764" font-size="12.5" font-style="italic" fill="#8b9098">Speaker noch offen</text>
+    <rect x="470" y="774" width="88" height="18" rx="9" fill="#3573b9"/>
+    <text x="514" y="787" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">Speaker offen</text>
+    <text x="756" y="787" font-size="11.5" fill="#5b7fa8" text-anchor="end">Thema steht</text>
+  </g>
+  <g>
+    <rect x="784" y="716" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="784" y="726" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="802" y="744" font-size="13.5" font-weight="700" fill="#1f2124">Workshop: Schwierige Gespräche</text>
+    <text x="802" y="764" font-size="12.5" fill="#4a4f56">Bettina Kuraszkiewicz</text>
+    <rect x="802" y="774" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="835" y="787" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="1088" y="787" font-size="11.5" fill="#656a71" text-anchor="end">1.400 €</text>
+  </g>
+
+  <rect x="120" y="810" width="984" height="26" rx="6" fill="#f2f3f5"/>
+  <text x="612" y="828" font-size="11.5" fill="#8b9098" text-anchor="middle">Pause · 14:45 – 15:00</text>
+
+  <!-- ============ Block 6 · 15:00 ============ -->
+  <g>
+    <rect x="120" y="842" width="320" height="88" rx="9" fill="#fdf0e6" stroke="#efbe93"/>
+    <rect x="120" y="852" width="3.5" height="68" rx="1.75" fill="#d9772e"/>
+    <text x="138" y="870" font-size="13.5" font-weight="700" fill="#1f2124">Karrierepfade jenseits der Assistenz</text>
+    <text x="138" y="890" font-size="12.5" fill="#4a4f56">Christa Nowak</text>
+    <rect x="138" y="900" width="74" height="18" rx="9" fill="#d9772e"/>
+    <text x="175" y="913" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">angefragt</text>
+    <text x="424" y="913" font-size="11.5" fill="#a06b3c" text-anchor="end">2. Beitrag</text>
+  </g>
+  <g>
+    <rect x="452.5" y="842.5" width="319" height="87" rx="9" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="612" y="880" font-size="13.5" font-weight="600" fill="#a2a7ae" text-anchor="middle">frei</text>
+    <text x="612" y="900" font-size="11.5" fill="#c2c6cc" text-anchor="middle">+ Beitrag einplanen</text>
+  </g>
+  <g>
+    <rect x="784" y="842" width="320" height="88" rx="9" fill="#e9f6ef" stroke="#8ecfae"/>
+    <rect x="784" y="852" width="3.5" height="68" rx="1.75" fill="#1f9d5b"/>
+    <text x="802" y="870" font-size="13.5" font-weight="700" fill="#1f2124">Workshop: Protokoll in 15 Minuten</text>
+    <text x="802" y="890" font-size="12.5" fill="#4a4f56">Petra Vahlbruch</text>
+    <rect x="802" y="900" width="66" height="18" rx="9" fill="#1f9d5b"/>
+    <text x="835" y="913" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">zugesagt</text>
+    <text x="1088" y="913" font-size="11.5" fill="#656a71" text-anchor="end">2. Beitrag · 1.700 €</text>
+  </g>
+
+  <rect x="120" y="936" width="984" height="26" rx="6" fill="#f2f3f5"/>
+  <text x="612" y="954" font-size="11.5" fill="#8b9098" text-anchor="middle">Pause · 15:45 – 16:00</text>
+
+  <!-- ============ Block 7 · 16:00 ============ -->
+  <g>
+    <rect x="120" y="968" width="320" height="88" rx="9" fill="#e9f1fa" stroke="#9dbfe3"/>
+    <rect x="120" y="978" width="3.5" height="68" rx="1.75" fill="#3573b9"/>
+    <text x="138" y="996" font-size="13.5" font-weight="700" fill="#1f2124">Panel: Vorstand trifft Assistenz</text>
+    <text x="138" y="1016" font-size="12.5" font-style="italic" fill="#8b9098">Speaker noch offen</text>
+    <rect x="138" y="1026" width="88" height="18" rx="9" fill="#3573b9"/>
+    <text x="182" y="1039" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">Speaker offen</text>
+    <text x="424" y="1039" font-size="11.5" fill="#5b7fa8" text-anchor="end">3 Plätze gesucht</text>
+  </g>
+  <g>
+    <rect x="452.5" y="968.5" width="319" height="87" rx="9" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="612" y="1006" font-size="13.5" font-weight="600" fill="#a2a7ae" text-anchor="middle">frei</text>
+    <text x="612" y="1026" font-size="11.5" fill="#c2c6cc" text-anchor="middle">+ Beitrag einplanen</text>
+  </g>
+  <g>
+    <rect x="784.5" y="968.5" width="319" height="87" rx="9" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="944" y="1006" font-size="13.5" font-weight="600" fill="#a2a7ae" text-anchor="middle">frei</text>
+    <text x="944" y="1026" font-size="11.5" fill="#c2c6cc" text-anchor="middle">+ Beitrag einplanen</text>
+  </g>
+
+  <!-- ============ Pool ============ -->
+  <rect x="1136" y="160" width="380" height="896" rx="10" fill="#f5f6f8" stroke="#e3e5e9"/>
+  <text x="1152" y="188" font-size="13.5" font-weight="700" fill="#3b4046">Pool</text>
+  <text x="1500" y="188" font-size="11.5" fill="#9298a0" text-anchor="end">3 Beiträge ohne Ort</text>
+  <line x1="1152" y1="202" x2="1500" y2="202" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="1152" y="218" width="348" height="82" rx="9" fill="#ffffff" stroke="#efbe93"/>
+    <rect x="1152" y="228" width="3.5" height="62" rx="1.75" fill="#d9772e"/>
+    <text x="1170" y="246" font-size="13.5" font-weight="700" fill="#1f2124">Resilienz im Dauerfeuer</text>
+    <text x="1170" y="266" font-size="12.5" fill="#4a4f56">Sonja Ehrlich</text>
+    <rect x="1170" y="274" width="92" height="18" rx="9" fill="#d9772e"/>
+    <text x="1216" y="287" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">in Verhandlung</text>
+    <text x="1484" y="287" font-size="11.5" fill="#9298a0" text-anchor="end">noch nicht platziert</text>
+  </g>
+
+  <g>
+    <rect x="1152" y="312" width="348" height="82" rx="9" fill="#fdf2f2" stroke="#e2a7a7"/>
+    <rect x="1152" y="322" width="3.5" height="62" rx="1.75" fill="#b04a4a"/>
+    <text x="1170" y="340" font-size="13.5" font-weight="700" fill="#1f2124">Workshop: Netzwerken auf Vorstandsebene</text>
+    <text x="1170" y="360" font-size="12.5" fill="#4a4f56">Bettina Kuraszkiewicz</text>
+    <rect x="1170" y="368" width="86" height="18" rx="9" fill="#b04a4a"/>
+    <text x="1213" y="381" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">⚠ heimatlos</text>
+    <text x="1484" y="381" font-size="11.5" fill="#8f3d3d" text-anchor="end">Track D entfallen</text>
+  </g>
+
+  <g>
+    <rect x="1152" y="406" width="348" height="82" rx="9" fill="#ffffff" stroke="#9dbfe3"/>
+    <rect x="1152" y="416" width="3.5" height="62" rx="1.75" fill="#3573b9"/>
+    <text x="1170" y="434" font-size="13.5" font-weight="700" fill="#1f2124">Die Assistenz im KI-Zeitalter</text>
+    <text x="1170" y="454" font-size="12.5" font-style="italic" fill="#8b9098">Speaker noch offen</text>
+    <rect x="1170" y="462" width="88" height="18" rx="9" fill="#3573b9"/>
+    <text x="1214" y="475" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="middle">Speaker offen</text>
+    <text x="1484" y="475" font-size="11.5" fill="#9298a0" text-anchor="end">Idee vom 12.05.</text>
+  </g>
+
+  <text x="1152" y="524" font-size="11.5" fill="#9298a0">Beiträge lassen sich zwischen Pool und Raster ziehen.</text>
+
+  <!-- Kandidaten-Kurzliste im Pool -->
+  <line x1="1152" y1="556" x2="1500" y2="556" stroke="#e3e5e9"/>
+  <text x="1152" y="582" font-size="13.5" font-weight="700" fill="#3b4046">Kandidaten ohne Beitrag</text>
+  <text x="1500" y="582" font-size="11.5" fill="#9298a0" text-anchor="end">4</text>
+
+  <g font-size="12.5">
+    <rect x="1152" y="596" width="348" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <circle cx="1170" cy="613" r="4" fill="#c2c6cc"/>
+    <text x="1184" y="617" fill="#3b4046">Ines Falkenrath</text>
+    <text x="1484" y="617" font-size="11" fill="#9298a0" text-anchor="end">gemerkt</text>
+
+    <rect x="1152" y="638" width="348" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <circle cx="1170" cy="655" r="4" fill="#c2c6cc"/>
+    <text x="1184" y="659" fill="#3b4046">Dr. Hakan Yildiz</text>
+    <text x="1484" y="659" font-size="11" fill="#9298a0" text-anchor="end">gemerkt</text>
+
+    <rect x="1152" y="680" width="348" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <circle cx="1170" cy="697" r="4" fill="#c2c6cc"/>
+    <text x="1184" y="701" fill="#3b4046">Marlene Ostrowski</text>
+    <text x="1484" y="701" font-size="11" fill="#9298a0" text-anchor="end">gemerkt</text>
+
+    <rect x="1152" y="722" width="348" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <circle cx="1170" cy="739" r="4" fill="#3573b9"/>
+    <text x="1184" y="743" fill="#3b4046">Timo Brehmer</text>
+    <text x="1484" y="743" font-size="11" fill="#5b7fa8" text-anchor="end">geantwortet</text>
+  </g>
+
+  <text x="1152" y="790" font-size="11.5" fill="#9298a0">Zieht man einen Kandidaten in einen Slot,</text>
+  <text x="1152" y="808" font-size="11.5" fill="#9298a0">entsteht sein Beitrag automatisch.</text>
+
+  <!-- ============ Legende ============ -->
+  <line x1="32" y1="1084" x2="1516" y2="1084" stroke="#e3e5e9"/>
+  <g font-size="11.5" fill="#656a71">
+    <rect x="32" y="1104" width="12" height="12" rx="3" fill="#e9f6ef" stroke="#8ecfae"/>
+    <text x="52" y="1114">gefüllt &amp; zugesagt</text>
+
+    <rect x="188" y="1104" width="12" height="12" rx="3" fill="#fdf0e6" stroke="#efbe93"/>
+    <text x="208" y="1114">platziert, Speaker noch nicht zugesagt</text>
+
+    <rect x="454" y="1104" width="12" height="12" rx="3" fill="#e9f1fa" stroke="#9dbfe3"/>
+    <text x="474" y="1114">halb gefüllt – Thema oder Speaker fehlt</text>
+
+    <rect x="742" y="1104" width="12" height="12" rx="3" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="3 2"/>
+    <text x="762" y="1114">frei</text>
+
+    <rect x="812" y="1104" width="12" height="12" rx="3" fill="#fdf2f2" stroke="#e2a7a7"/>
+    <text x="832" y="1114">heimatlos – Slot ist weggefallen</text>
+
+    <text x="1516" y="1114" text-anchor="end" fill="#9298a0">Ein Slot ist erst grün, wenn er gefüllt ist und das Engagement zugesagt hat.</text>
+  </g>
+
+</svg>

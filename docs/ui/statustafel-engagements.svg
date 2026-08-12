@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="800" viewBox="0 0 1720 800" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+
+  <rect width="1720" height="800" fill="#ffffff"/>
+
+  <!-- ============ Kopfbereich ============ -->
+  <text x="32" y="52" font-size="25" font-weight="700" fill="#1f2124">Assistenz Summit 2026</text>
+  <text x="32" y="76" font-size="13.5" fill="#656a71">Die Zukunft der Vorstandsassistenz · Acme Events · 4.–5. November 2026</text>
+
+  <g font-size="12">
+    <rect x="1246" y="34" width="126" height="26" rx="13" fill="#f2f3f5"/>
+    <circle cx="1262" cy="47" r="4" fill="#c2c6cc"/>
+    <text x="1272" y="51" fill="#4a4f56">11 Kandidaten</text>
+
+    <rect x="1380" y="34" width="118" height="26" rx="13" fill="#e9f6ef"/>
+    <circle cx="1396" cy="47" r="4" fill="#1f9d5b"/>
+    <text x="1406" y="51" fill="#1c6b45">5 zugesagt</text>
+
+    <rect x="1506" y="34" width="126" height="26" rx="13" fill="#fbeeee"/>
+    <circle cx="1522" cy="47" r="4" fill="#b04a4a"/>
+    <text x="1532" y="51" fill="#8f3d3d">2 gestrichen</text>
+  </g>
+  <text x="1688" y="78" font-size="12.5" fill="#656a71" text-anchor="end">Honorar <tspan font-weight="700" fill="#1f2124">18.400 €</tspan> von 25.000 € · Deadline Programm 30.09.</text>
+
+  <!-- Sichtenwechsel -->
+  <g>
+    <rect x="32" y="102" width="128" height="34" rx="8" fill="#efecfb" stroke="#7b6cd9"/>
+    <text x="96" y="124" font-size="13" font-weight="600" fill="#5a4bbd" text-anchor="middle">Statustafel</text>
+
+    <rect x="168" y="102" width="110" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="223" y="124" font-size="13" fill="#767b82" text-anchor="middle">Agenda</text>
+
+    <rect x="286" y="102" width="146" height="34" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="359" y="124" font-size="13" fill="#767b82" text-anchor="middle">Speakerkatalog</text>
+  </g>
+
+  <!-- ============ Spalte: gemerkt ============ -->
+  <rect x="32" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="48" cy="177" r="4" fill="#9298a0"/>
+  <text x="60" y="181" font-size="12.5" font-weight="700" fill="#3b4046">gemerkt</text>
+  <rect x="192" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="203" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">3</text>
+  <line x1="42" y1="192" x2="218" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="42" y="200" width="176" height="72" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="56" y="222" font-size="13" font-weight="700" fill="#1f2124">Ines Falkenrath</text>
+    <text x="56" y="240" font-size="11" fill="#656a71">New Work &amp; Führung</text>
+    <text x="56" y="257" font-size="10.5" fill="#a2a7ae">gefunden auf der ACO 2025</text>
+  </g>
+  <g>
+    <rect x="42" y="282" width="176" height="72" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="56" y="304" font-size="13" font-weight="700" fill="#1f2124">Dr. Hakan Yildiz</text>
+    <text x="56" y="322" font-size="11" fill="#656a71">Governance &amp; Compliance</text>
+    <text x="56" y="339" font-size="10.5" fill="#a2a7ae">Empfehlung von M. Kern</text>
+  </g>
+  <g>
+    <rect x="42" y="364" width="176" height="72" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <text x="56" y="386" font-size="13" font-weight="700" fill="#1f2124">Marlene Ostrowski</text>
+    <text x="56" y="404" font-size="11" fill="#656a71">Automatisierung</text>
+    <text x="56" y="421" font-size="10.5" fill="#a2a7ae">2024 schon einmal dabei</text>
+  </g>
+  <g>
+    <rect x="42.5" y="446.5" width="175" height="38" rx="8" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="130" y="470" font-size="11.5" fill="#a2a7ae" text-anchor="middle">+ aus dem Katalog</text>
+  </g>
+
+  <!-- ============ Spalte: angefragt ============ -->
+  <rect x="240" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="256" cy="177" r="4" fill="#7b6cd9"/>
+  <text x="268" y="181" font-size="12.5" font-weight="700" fill="#3b4046">angefragt</text>
+  <rect x="400" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="411" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">1</text>
+  <line x1="250" y1="192" x2="426" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="250" y="200" width="176" height="90" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="250" y="210" width="3.5" height="70" rx="1.75" fill="#7b6cd9"/>
+    <text x="266" y="222" font-size="13" font-weight="700" fill="#1f2124">Christa Nowak</text>
+    <text x="266" y="240" font-size="11" fill="#656a71">2 Beiträge angefragt</text>
+    <text x="266" y="257" font-size="10.5" fill="#a2a7ae">angefragt am 12.06.</text>
+    <rect x="266" y="266" width="140" height="18" rx="9" fill="#fdf0e6"/>
+    <text x="336" y="279" font-size="10.5" font-weight="600" fill="#a06b3c" text-anchor="middle">⏱ 8 Wochen ohne Antwort</text>
+  </g>
+
+  <!-- ============ Spalte: geantwortet ============ -->
+  <rect x="448" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="464" cy="177" r="4" fill="#3573b9"/>
+  <text x="476" y="181" font-size="12.5" font-weight="700" fill="#3b4046">geantwortet</text>
+  <rect x="608" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="619" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">1</text>
+  <line x1="458" y1="192" x2="634" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="458" y="200" width="176" height="76" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="458" y="210" width="3.5" height="56" rx="1.75" fill="#3573b9"/>
+    <text x="474" y="222" font-size="13" font-weight="700" fill="#1f2124">Timo Brehmer</text>
+    <text x="474" y="240" font-size="11" fill="#656a71">Interesse, Termin passt</text>
+    <text x="474" y="260" font-size="10.5" fill="#a2a7ae">Antwort 28.06. · Thema offen</text>
+  </g>
+
+  <!-- ============ Spalte: in Verhandlung ============ -->
+  <rect x="656" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="672" cy="177" r="4" fill="#d9772e"/>
+  <text x="684" y="181" font-size="12.5" font-weight="700" fill="#3b4046">in Verhandlung</text>
+  <rect x="816" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="827" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">1</text>
+  <line x1="666" y1="192" x2="842" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="666" y="200" width="176" height="90" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="666" y="210" width="3.5" height="70" rx="1.75" fill="#d9772e"/>
+    <text x="682" y="222" font-size="13" font-weight="700" fill="#1f2124">Sonja Ehrlich</text>
+    <text x="682" y="240" font-size="11" fill="#656a71">2 Beiträge · 1 im Pool</text>
+    <text x="682" y="257" font-size="10.5" fill="#a2a7ae">will 2.400 €, Budget 1.800 €</text>
+    <rect x="682" y="266" width="128" height="18" rx="9" fill="#fdf0e6"/>
+    <text x="746" y="279" font-size="10.5" font-weight="600" fill="#a06b3c" text-anchor="middle">Honorar noch strittig</text>
+  </g>
+
+  <!-- ============ Spalte: zugesagt ============ -->
+  <rect x="864" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="880" cy="177" r="4" fill="#1f9d5b"/>
+  <text x="892" y="181" font-size="12.5" font-weight="700" fill="#3b4046">zugesagt</text>
+  <rect x="1024" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="1035" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">4</text>
+  <line x1="874" y1="192" x2="1050" y2="192" stroke="#e3e5e9"/>
+
+  <!-- Karte 1 – vollständig -->
+  <g>
+    <rect x="874" y="200" width="176" height="98" rx="8" fill="#ffffff" stroke="#8ecfae"/>
+    <rect x="874" y="210" width="3.5" height="78" rx="1.75" fill="#1f9d5b"/>
+    <text x="890" y="222" font-size="13" font-weight="700" fill="#1f2124">Marek Lindqvist</text>
+    <text x="890" y="240" font-size="11" fill="#656a71">2 Beiträge · 2.400 €</text>
+    <rect x="890" y="252" width="146" height="5" rx="2.5" fill="#e3e5e9"/>
+    <rect x="890" y="252" width="146" height="5" rx="2.5" fill="#1f9d5b"/>
+    <text x="890" y="274" font-size="10.5" fill="#656a71">5 von 5 erledigt</text>
+    <rect x="890" y="280" width="88" height="16" rx="8" fill="#e9f6ef"/>
+    <text x="934" y="292" font-size="10" font-weight="700" fill="#1c6b45" text-anchor="middle">✓ vollständig</text>
+  </g>
+
+  <!-- Karte 2 -->
+  <g>
+    <rect x="874" y="308" width="176" height="98" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="874" y="318" width="3.5" height="78" rx="1.75" fill="#1f9d5b"/>
+    <text x="890" y="330" font-size="13" font-weight="700" fill="#1f2124">Dr. Antje Rohleder</text>
+    <text x="890" y="348" font-size="11" fill="#656a71">2 Beiträge · Keynote · 4.000 €</text>
+    <rect x="890" y="360" width="146" height="5" rx="2.5" fill="#e3e5e9"/>
+    <rect x="890" y="360" width="117" height="5" rx="2.5" fill="#1f9d5b"/>
+    <text x="890" y="382" font-size="10.5" fill="#656a71">4 von 5 erledigt</text>
+    <text x="890" y="398" font-size="10.5" fill="#a06b3c">Vertrag fehlt noch</text>
+  </g>
+
+  <!-- Karte 3 -->
+  <g>
+    <rect x="874" y="416" width="176" height="98" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="874" y="426" width="3.5" height="78" rx="1.75" fill="#1f9d5b"/>
+    <text x="890" y="438" font-size="13" font-weight="700" fill="#1f2124">Yannick Sobotta</text>
+    <text x="890" y="456" font-size="11" fill="#656a71">2 Beiträge · 1 ohne Thema</text>
+    <rect x="890" y="468" width="146" height="5" rx="2.5" fill="#e3e5e9"/>
+    <rect x="890" y="468" width="88" height="5" rx="2.5" fill="#1f9d5b"/>
+    <text x="890" y="490" font-size="10.5" fill="#656a71">3 von 5 erledigt</text>
+    <text x="890" y="506" font-size="10.5" fill="#a06b3c">Abstract und Foto fehlen</text>
+  </g>
+
+  <!-- Karte 4 -->
+  <g>
+    <rect x="874" y="524" width="176" height="98" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="874" y="534" width="3.5" height="78" rx="1.75" fill="#1f9d5b"/>
+    <text x="890" y="546" font-size="13" font-weight="700" fill="#1f2124">B. Kuraszkiewicz</text>
+    <text x="890" y="564" font-size="11" fill="#656a71">2 Beiträge · 2.900 €</text>
+    <rect x="890" y="576" width="146" height="5" rx="2.5" fill="#e3e5e9"/>
+    <rect x="890" y="576" width="58" height="5" rx="2.5" fill="#1f9d5b"/>
+    <text x="890" y="598" font-size="10.5" fill="#656a71">2 von 5 erledigt</text>
+    <rect x="890" y="604" width="106" height="16" rx="8" fill="#fdf2f2"/>
+    <text x="943" y="616" font-size="10" font-weight="700" fill="#8f3d3d" text-anchor="middle">⚠ 1 Beitrag heimatlos</text>
+  </g>
+
+  <!-- ============ Spalte: Rechnung ============ -->
+  <rect x="1072" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="1088" cy="177" r="4" fill="#0f8a8a"/>
+  <text x="1100" y="181" font-size="12.5" font-weight="700" fill="#3b4046">Rechnung</text>
+  <rect x="1232" y="168" width="22" height="18" rx="9" fill="#e3e5e9"/>
+  <text x="1243" y="181" font-size="11" font-weight="600" fill="#656a71" text-anchor="middle">1</text>
+  <line x1="1082" y1="192" x2="1258" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="1082" y="200" width="176" height="90" rx="8" fill="#ffffff" stroke="#e3e5e9"/>
+    <rect x="1082" y="210" width="3.5" height="70" rx="1.75" fill="#0f8a8a"/>
+    <text x="1098" y="222" font-size="13" font-weight="700" fill="#1f2124">Petra Vahlbruch</text>
+    <text x="1098" y="240" font-size="11" fill="#656a71">2 Beiträge · 3.400 €</text>
+    <text x="1098" y="257" font-size="10.5" fill="#a2a7ae">Agentur rechnet bei Vertrag ab</text>
+    <rect x="1098" y="266" width="120" height="18" rx="9" fill="#e6f4f4"/>
+    <text x="1158" y="279" font-size="10.5" font-weight="600" fill="#0b6a6a" text-anchor="middle">fällig am 01.09.</text>
+  </g>
+
+  <!-- ============ Spalte: bezahlt ============ -->
+  <rect x="1280" y="156" width="196" height="560" rx="10" fill="#f5f6f8"/>
+  <circle cx="1296" cy="177" r="4" fill="#14663f"/>
+  <text x="1308" y="181" font-size="12.5" font-weight="700" fill="#3b4046">bezahlt</text>
+  <text x="1440" y="181" font-size="11" fill="#9298a0" text-anchor="end">fertig</text>
+  <line x1="1290" y1="192" x2="1466" y2="192" stroke="#e3e5e9"/>
+
+  <g>
+    <rect x="1290.5" y="200.5" width="175" height="76" rx="8" fill="#fafbfc" stroke="#d5d9de" stroke-dasharray="5 4"/>
+    <text x="1378" y="230" font-size="11.5" fill="#a2a7ae" text-anchor="middle">noch niemand</text>
+    <text x="1378" y="250" font-size="10.5" fill="#c2c6cc" text-anchor="middle">füllt sich erst nach</text>
+    <text x="1378" y="264" font-size="10.5" fill="#c2c6cc" text-anchor="middle">der Veranstaltung</text>
+  </g>
+
+  <!-- ============ Ausgang: gestrichen ============ -->
+  <rect x="1496" y="156" width="192" height="560" rx="10" fill="#fbf7f7" stroke="#eddede"/>
+  <circle cx="1512" cy="177" r="4" fill="#b04a4a"/>
+  <text x="1524" y="181" font-size="12.5" font-weight="700" fill="#8f3d3d">gestrichen</text>
+  <rect x="1652" y="168" width="22" height="18" rx="9" fill="#f3e2e2"/>
+  <text x="1663" y="181" font-size="11" font-weight="600" fill="#8f3d3d" text-anchor="middle">2</text>
+  <line x1="1506" y1="192" x2="1678" y2="192" stroke="#eddede"/>
+
+  <g>
+    <rect x="1506" y="200" width="172" height="66" rx="8" fill="#ffffff" stroke="#eddede"/>
+    <text x="1520" y="222" font-size="12.5" font-weight="700" fill="#6b7078">Prof. Dr. Elke Warnke</text>
+    <text x="1520" y="240" font-size="10.5" fill="#a2a7ae">Terminkonflikt</text>
+    <text x="1520" y="256" font-size="10.5" fill="#a2a7ae">Slot 11:00 Track A ist frei</text>
+  </g>
+  <g>
+    <rect x="1506" y="276" width="172" height="66" rx="8" fill="#ffffff" stroke="#eddede"/>
+    <text x="1520" y="298" font-size="12.5" font-weight="700" fill="#6b7078">Jens Brodowski</text>
+    <text x="1520" y="316" font-size="10.5" fill="#a2a7ae">Honorarvorstellung zu hoch</text>
+    <text x="1520" y="332" font-size="10.5" fill="#a2a7ae">für 2027 vormerken</text>
+  </g>
+
+  <text x="1506" y="372" font-size="10.5" fill="#b6bbc2">Spur bleibt am Engagement.</text>
+
+  <!-- ============ Legende ============ -->
+  <line x1="32" y1="744" x2="1688" y2="744" stroke="#e3e5e9"/>
+  <g font-size="11.5" fill="#656a71">
+    <text x="32" y="768">Karten werden zwischen den Spalten gezogen. Der Balken in „zugesagt" ist die Checkliste je Speaker — grün heißt inhaltlich fertig, noch vor der Veranstaltung.</text>
+    <text x="1688" y="768" text-anchor="end" fill="#9298a0">„gestrichen" erreicht man aus jeder Spalte.</text>
+  </g>
+
+</svg>
