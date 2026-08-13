@@ -157,24 +157,6 @@ export class Konferenzuebersicht {
 
 		const kopf = kasten.createDiv({ cls: "sms-karte-kopf" });
 		kopf.createSpan({ cls: "sms-name", text: konferenz.name });
-		// Der Status ist kein Etikett, sondern eine Entscheidung: Er sperrt die
-		// Agenda, sobald die Konferenz gelaufen ist. Deshalb steht er hier zum
-		// Ändern und nicht nur zum Lesen.
-		const auswahl = kopf.createEl("select", {
-			cls: `dropdown sms-statuswahl sms-status-${konferenz.status ?? "idee"}`,
-		});
-		for (const wert of KONFERENZSTATUS) {
-			const eintrag = auswahl.createEl("option", {
-				text: KONFERENZSTATUS_TITEL[wert],
-				value: wert,
-			});
-			if (wert === (konferenz.status ?? "idee")) eintrag.selected = true;
-		}
-		auswahl.addEventListener("click", (ereignis) => ereignis.stopPropagation());
-		auswahl.addEventListener("change", () => {
-			void this.statusSetzen(konferenz, auswahl.value);
-		});
-
 		const unterzeile = [konferenz.untertitel, konferenz.veranstalter, karte.spanne].filter(
 			(teil): teil is string => !!teil,
 		);
@@ -218,7 +200,28 @@ export class Konferenzuebersicht {
 			hinweise.createDiv({ cls: "sms-hinweis", text: "noch ohne Termin und Raster" });
 		}
 
-		const notiz = kasten.createSpan({ cls: "sms-umbenennen", text: "Notiz öffnen" });
+		// Der Status ist kein Etikett, sondern eine Entscheidung: Er sperrt die
+		// Agenda, sobald die Konferenz gelaufen ist. Deshalb steht er in einer
+		// eigenen Zeile zum Ändern und nicht als Plakette am Rand.
+		const statuszeile = kasten.createDiv({ cls: "sms-statuszeile" });
+		statuszeile.createSpan({ cls: "sms-statustitel", text: "Status" });
+
+		const auswahl = statuszeile.createEl("select", {
+			cls: `dropdown sms-statuswahl sms-status-${konferenz.status ?? "idee"}`,
+		});
+		for (const wert of KONFERENZSTATUS) {
+			const eintrag = auswahl.createEl("option", {
+				text: KONFERENZSTATUS_TITEL[wert],
+				value: wert,
+			});
+			if (wert === (konferenz.status ?? "idee")) eintrag.selected = true;
+		}
+		auswahl.addEventListener("click", (ereignis) => ereignis.stopPropagation());
+		auswahl.addEventListener("change", () => {
+			void this.statusSetzen(konferenz, auswahl.value);
+		});
+
+		const notiz = statuszeile.createSpan({ cls: "sms-umbenennen", text: "Notiz öffnen" });
 		notiz.addEventListener("click", (ereignis) => {
 			ereignis.stopPropagation();
 			this.notizOeffnen(konferenz.datei);

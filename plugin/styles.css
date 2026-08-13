@@ -240,13 +240,32 @@
 	margin-top: 8px;
 }
 
+.sms-statuszeile {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 12px;
+	padding-top: 10px;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.sms-statustitel {
+	color: var(--text-muted);
+	font-size: 0.8em;
+}
+
 .sms-statuswahl {
 	height: auto;
-	padding: 2px 24px 2px 8px;
-	font-size: 0.75em;
-	border-radius: 999px;
-	border: none;
+	padding: 4px 26px 4px 10px;
+	font-size: 0.8em;
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border-hover);
 	cursor: pointer;
+}
+
+.sms-statuszeile .sms-umbenennen {
+	margin-left: auto;
+	font-size: 0.8em;
 }
 
 .sms-status-idee {
