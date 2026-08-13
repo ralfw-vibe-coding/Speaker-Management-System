@@ -120,6 +120,16 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Setzt den Speaker eines Beitrags, der bisher keinen hatte — die zweite
+	 * Richtung beim Füllen eines Slots: erst das Thema, dann der Mensch.
+	 */
+	async speakerZuweisen(datei: TFile, speaker: string): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			fm.speaker = [`[[${speaker}]]`];
+		});
+	}
+
+	/**
 	 * Legt einen Beitrag an, weil ein Kandidat in einen Slot gezogen wurde.
 	 * Er entsteht titellos — der Speaker steht, das Thema kommt später — und
 	 * heißt deshalb vorläufig nach seinem Platz. Sobald ein Titel da ist, wird

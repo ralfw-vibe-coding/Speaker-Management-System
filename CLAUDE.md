@@ -140,7 +140,9 @@ einer Karte auf der Statustafel schreibt `status` und `position` — über
 In der Agenda lassen sich Beiträge zwischen Pool und Raster ziehen; das schreibt `block`
 und `track`. Ist das Ziel belegt, **tauschen** die beiden ihre Plätze, statt einen Slot
 doppelt zu belegen. Zieht man einen **Kandidaten** in einen freien Slot, entsteht seine
-Beitragsnotiz — titellos und vorläufig nach ihrem Platz benannt.
+Beitragsnotiz — titellos und vorläufig nach ihrem Platz benannt. Zieht man ihn auf ein
+Thema ohne Speaker, wird er dort eingetragen; damit funktionieren beide Richtungen des
+Füllens.
 
 Umbenannt wird, wo das Plugin die Ursache ist: beim Anlegen und beim Verschieben eines
 titellosen Beitrags. Steht ein Titel da, bietet die Karte es an — ein Automatismus auf

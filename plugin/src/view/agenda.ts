@@ -158,6 +158,23 @@ export class Agenda {
 			});
 		}
 
+		const doppelt = tag ? this.doppeltBelegte(tag, beitraege) : 0;
+		if (doppelt > 0) {
+			marken.createSpan({
+				cls: "sms-marke sms-marke-rot",
+				text: doppelt === 1 ? "1 Slot doppelt belegt" : `${doppelt} Slots doppelt belegt`,
+			});
+		}
+
+		const parallele = tag ? this.parallelStehende(tag, beitraege) : 0;
+		if (parallele > 0) {
+			marken.createSpan({
+				cls: "sms-marke sms-marke-rot",
+				text:
+					parallele === 1 ? "1 Speaker zeitgleich zweimal" : `${parallele} Speaker zeitgleich zweimal`,
+			});
+		}
+
 		const reiter = buehne.createDiv({ cls: "sms-tage" });
 		konferenz.tage.forEach((eigener, index) => {
 			const knopf = reiter.createEl("button", {
@@ -277,10 +294,18 @@ export class Agenda {
 
 			// Ein plenarer Block belegt alle Tracks — ein Slot über die ganze Zeile.
 			if (block.plenar) {
-				const beitrag = beitraege.find((b) => b.bloecke.includes(block.id));
+				const passende = beitraege.filter((b) => b.bloecke.includes(block.id));
+				const beitrag = passende[0];
 				if (beitrag && !istErsterBlock(beitrag, block.id, bloecke)) return;
 
-				const zelle = this.slotZeichnen(raster, konferenz, { tag, block }, beitrag, engagements);
+				const zelle = this.slotZeichnen(
+					raster,
+					konferenz,
+					{ tag, block },
+					beitrag,
+					engagements,
+					{ weitere: passende.length - 1, alle: beitraege },
+				);
 				zelle.style.gridRow = `${zeile} / span ${hoehe(beitrag, block, bloecke, zeileVon, zeile)}`;
 				zelle.style.gridColumn = `2 / span ${tracks.length}`;
 				zelle.addClass("sms-plenar");
@@ -297,9 +322,12 @@ export class Agenda {
 					return;
 				}
 
-				const beitrag = beitraege.find(
+				// Ein Slot kann von Hand doppelt belegt worden sein; gezeichnet wird
+				// der erste, gezählt werden alle.
+				const passende = beitraege.filter(
 					(b) => b.bloecke.includes(block.id) && b.track === track.id,
 				);
+				const beitrag = passende[0];
 				// Wer über mehrere Blöcke läuft, wird nur einmal gezeichnet.
 				if (beitrag && !istErsterBlock(beitrag, block.id, bloecke)) return;
 
@@ -309,6 +337,7 @@ export class Agenda {
 					{ tag, block, track },
 					beitrag,
 					engagements,
+					{ weitere: passende.length - 1, alle: beitraege },
 				);
 				zelle.style.gridRow = `${zeile} / span ${hoehe(beitrag, block, bloecke, zeileVon, zeile)}`;
 				zelle.style.gridColumn = String(spalte);
@@ -322,6 +351,7 @@ export class Agenda {
 		ziel: Ziel,
 		beitrag: Beitrag | undefined,
 		engagements: Map<string, Engagement>,
+		nachbarn: { weitere: number; alle: Beitrag[] } = { weitere: 0, alle: [] },
 	): HTMLElement {
 		const block = ziel.block;
 		const trackId = ziel.track?.id;
@@ -388,6 +418,28 @@ export class Agenda {
 			zelle.createDiv({
 				cls: "sms-slot-hinweis sms-hinweis-rot",
 				text: `⚠ für ${beitrag.maxTeilnehmer} angelegt, Raum fasst ${ort.kapazitaet}`,
+			});
+		}
+
+		// Doppelbelegung: Gezeichnet wird nur der erste — ohne diesen Hinweis
+		// wäre der zweite unsichtbar, und das ist schlimmer als bunt.
+		if (nachbarn.weitere > 0) {
+			zelle.createDiv({
+				cls: "sms-slot-hinweis sms-hinweis-rot",
+				text:
+					nachbarn.weitere === 1
+						? "⚠ Slot doppelt belegt — ein weiterer Beitrag steht hier"
+						: `⚠ Slot mehrfach belegt — ${nachbarn.weitere} weitere Beiträge stehen hier`,
+			});
+		}
+
+		// Niemand kann um elf an zwei Orten sein.
+		const zeitgleich = this.zeitgleich(beitrag, nachbarn.alle);
+		if (zeitgleich.length > 0) {
+			const orte = zeitgleich.map((anderer) => this.trackname(konferenz, anderer)).join(", ");
+			zelle.createDiv({
+				cls: "sms-slot-hinweis sms-hinweis-rot",
+				text: `⚠ ${speaker} steht zeitgleich in ${orte}`,
 			});
 		}
 
@@ -474,7 +526,9 @@ export class Agenda {
 		if (!this.archiv) {
 			pool.createDiv({
 				cls: "sms-poolnotiz",
-				text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
+				text:
+					"Kandidat in einen freien Slot: sein Beitrag entsteht. " +
+					"Auf ein Thema ohne Speaker: er wird eingetragen.",
 			});
 		}
 	}
@@ -849,7 +903,10 @@ export class Agenda {
 			const zug = this.gezogen;
 			if (!zug) return false;
 			if (zug.art === "beitrag") return zug.beitrag !== belegtVon;
-			return ziel !== undefined && belegtVon === undefined;
+			if (!ziel) return false;
+			// Ein Kandidat darf in einen freien Slot — dann entsteht sein Beitrag —
+			// und auf ein Thema, das noch keinen Speaker hat.
+			return belegtVon === undefined || belegtVon.speaker.length === 0;
 		};
 
 		element.addEventListener("dragover", (ereignis) => {
@@ -871,8 +928,41 @@ export class Agenda {
 			element.removeClass("is-ziel");
 
 			if (zug.art === "beitrag") void this.platzieren(ziel, belegtVon);
+			else if (belegtVon) void this.speakerZuweisen(zug.engagement, belegtVon);
 			else if (ziel) void this.kandidatEinplanen(zug.engagement, ziel);
 		});
+	}
+
+	/**
+	 * Andere Beiträge desselben Speakers, die sich mit diesem einen Block
+	 * teilen. Bei parallelen Tracks ist das ein Fehler im Programm, den man
+	 * beim Ziehen nicht sieht — man schaut auf die Spalte, nicht auf die Zeile.
+	 */
+	private zeitgleich(beitrag: Beitrag, alle: Beitrag[]): Beitrag[] {
+		const speaker = beitrag.speaker[0];
+		if (!speaker) return [];
+
+		return alle.filter(
+			(anderer) =>
+				anderer.datei !== beitrag.datei &&
+				anderer.speaker.includes(speaker) &&
+				anderer.bloecke.some((id) => beitrag.bloecke.includes(id)),
+		);
+	}
+
+	private trackname(konferenz: Konferenz, beitrag: Beitrag): string {
+		if (!beitrag.track) return "einem plenaren Block";
+		return konferenz.tracks.find((track) => track.id === beitrag.track)?.name ?? beitrag.track;
+	}
+
+	/** Das Thema stand schon, jetzt steht auch der Mensch. */
+	private async speakerZuweisen(engagement: Engagement, beitrag: Beitrag): Promise<void> {
+		this.gezogen = null;
+		try {
+			await this.schreiber.speakerZuweisen(beitrag.datei, engagement.speaker);
+		} catch (fehler) {
+			new Notice(`Der Speaker ließ sich nicht eintragen: ${String(fehler)}`);
+		}
 	}
 
 	/** Aus einem Kandidaten wird ein Beitrag — titellos, der Speaker steht ja. */
@@ -1006,6 +1096,44 @@ export class Agenda {
 	}
 
 	// ---------------------------------------------------------------- Zählen
+
+	/** Slots dieses Tages, in denen mehr als ein Beitrag steht. */
+	private doppeltBelegte(tag: Tag, beitraege: Beitrag[]): number {
+		let doppelt = 0;
+		for (const block of tag.bloecke) {
+			if (block.fix) continue;
+
+			const hier = beitraege.filter((beitrag) => beitrag.bloecke.includes(block.id));
+			if (block.plenar) {
+				if (hier.length > 1) doppelt++;
+				continue;
+			}
+
+			const jeTrack = new Map<string, number>();
+			for (const beitrag of hier) {
+				const schluessel = beitrag.track ?? "";
+				jeTrack.set(schluessel, (jeTrack.get(schluessel) ?? 0) + 1);
+			}
+			for (const anzahl of jeTrack.values()) if (anzahl > 1) doppelt++;
+		}
+		return doppelt;
+	}
+
+	/** Speaker, die an diesem Tag in zwei gleichzeitigen Beiträgen stehen. */
+	private parallelStehende(tag: Tag, beitraege: Beitrag[]): number {
+		const namen = new Set<string>();
+		for (const block of tag.bloecke) {
+			const hier = beitraege.filter((beitrag) => beitrag.bloecke.includes(block.id));
+			const gesehen = new Set<string>();
+			for (const beitrag of hier) {
+				for (const speaker of beitrag.speaker) {
+					if (gesehen.has(speaker)) namen.add(speaker);
+					gesehen.add(speaker);
+				}
+			}
+		}
+		return namen.size;
+	}
 
 	/** Löcher sind die Slots dieses Tages, in denen nichts steht. */
 	private loecher(konferenz: Konferenz, tag: Tag, beitraege: Beitrag[]): number {

@@ -605,6 +605,10 @@ Notizen im Zentrum.
 
 - **Automatisches Engagement** — Wird im Slot ein Speaker zugewiesen, der noch kein
   Kandidat ist, entsteht sein Engagement automatisch im Status `gemerkt`.
+- **Beide Richtungen füllen einen Slot** — Ein Kandidat, den man in einen freien Slot
+  zieht, bekommt seinen Beitrag; zieht man ihn auf ein Thema, das noch keinen Speaker
+  hat, wird er dort eingetragen. Auf einen Slot, der schon einen Speaker hat, geht es
+  nicht — das wäre ein Austausch und keine Ergänzung.
 - **Block verschieben** — Ändert nur das Zeit-Attribut des Blocks; alle Beiträge
   wandern mit, weil sie an der Block-ID hängen.
 - **Track oder Block löschen** — Die betroffenen Beiträge werden nicht gelöscht,
