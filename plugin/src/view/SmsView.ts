@@ -43,7 +43,7 @@ export class SmsView extends ItemView {
 		this.schreiber = new Datenschreiber(plugin.app, plugin);
 
 		const oeffnen = (datei: TFile) => void this.notizOeffnen(datei);
-		this.katalog = new Speakerkatalog(this.daten, oeffnen, (vorhandene) =>
+		this.katalog = new Speakerkatalog(this.daten, this.schreiber, oeffnen, (vorhandene) =>
 			this.speakerAnlegen(vorhandene),
 		);
 		this.statustafel = new Statustafel(this.daten, this.schreiber, oeffnen);
@@ -130,12 +130,12 @@ export class SmsView extends ItemView {
 
 		const buehne = root.createDiv({ cls: "sms-buehne" });
 
+		const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
+
 		if (this.sicht === "katalog") {
-			await this.katalog.zeichnen(buehne);
+			await this.katalog.zeichnen(buehne, konferenz);
 			return;
 		}
-
-		const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
 
 		if (this.sicht === "statustafel") {
 			await this.statustafel.zeichnen(buehne, konferenz);

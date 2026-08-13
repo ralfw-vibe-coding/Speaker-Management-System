@@ -2,8 +2,9 @@ import { App, normalizePath, TFile, TFolder } from "obsidian";
 import type SmsPlugin from "../main";
 import type { Block, Konferenz, Tag, Track } from "./modell";
 
-/** Der Unterordner je Konferenz. Steht so im Konzept und ist nicht konfigurierbar. */
+/** Die Unterordner je Konferenz. Stehen so im Konzept und sind nicht konfigurierbar. */
 const BEITRAGSORDNER = "beiträge";
+const ENGAGEMENTORDNER = "engagements";
 
 const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 
@@ -153,6 +154,50 @@ export class Datenschreiber {
 			"",
 			"",
 			"## Für den Speaker",
+			"",
+			"",
+		];
+
+		return this.app.vault.create(pfad, zeilen.join("\n"));
+	}
+
+	/**
+	 * Legt ein Engagement an: Der Speaker wird Kandidat für diese Konferenz.
+	 * Es entsteht im Status `gemerkt` und hängt sich hinten an die Spalte —
+	 * eine aufgebaute Ordnung soll nicht von oben zerdrückt werden.
+	 */
+	async engagementAnlegen(
+		konferenz: Konferenz,
+		speaker: string,
+		position: number,
+	): Promise<TFile> {
+		const ordner = `${konferenz.datei.parent?.path ?? ""}/${ENGAGEMENTORDNER}`;
+		await this.ordnerSicherstellen(ordner);
+
+		const name = await this.freierName(ordner, ohneVerbotene(`${konferenz.name} – ${speaker}`));
+		const pfad = normalizePath(`${ordner}/${name}.md`);
+
+		const zeilen = [
+			"---",
+			"type: engagement",
+			`konferenz: "[[${konferenz.name}]]"`,
+			`speaker: "[[${speaker}]]"`,
+			"status: gemerkt",
+			`position: ${position}`,
+			"honorar:",
+			"angefragt_am:",
+			"geantwortet_am:",
+			"rechnung_am:",
+			"bezahlt_am:",
+			"bewertung:",
+			"---",
+			"## Zu klären",
+			"- [ ] Bio erhalten",
+			"- [ ] Foto erhalten",
+			"- [ ] Vertrag zurück",
+			"- [ ] Reisekosten geklärt",
+			"",
+			"## Gesprächsnotizen",
 			"",
 			"",
 		];

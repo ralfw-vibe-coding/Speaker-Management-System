@@ -3,7 +3,7 @@ type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
 speaker:
   - "[[Yannick Sobotta]]"
-titel:
+titel: Karrierepfade jenseits der Assistenz
 format: vortrag
 block: b7
 track: t3

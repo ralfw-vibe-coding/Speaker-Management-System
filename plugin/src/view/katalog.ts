@@ -1,10 +1,13 @@
-import type { TFile } from "obsidian";
+import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
+import type { Datenschreiber } from "../daten/schreiben";
 import {
 	FORMATE,
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
 	type Auftritt,
+	type Engagement,
+	type Konferenz,
 	type Speaker,
 } from "../daten/modell";
 
@@ -25,13 +28,19 @@ export class Speakerkatalog {
 	private sprachen = new Set<string>();
 	private wahlstufen = new Set<number>();
 
+	/** Die Konferenz, für die gemerkt wird — dieselbe wie in den anderen Sichten. */
+	private konferenz: Konferenz | undefined;
+	private engagements: Engagement[] = [];
+
 	constructor(
 		private daten: Datenzugriff,
+		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
 		private speakerAnlegen: (vorhandene: Speaker[]) => void,
 	) {}
 
-	async zeichnen(buehne: HTMLElement): Promise<void> {
+	async zeichnen(buehne: HTMLElement, konferenz?: Konferenz): Promise<void> {
+		this.konferenz = konferenz;
 		const eintraege = await this.lesen();
 
 		buehne.empty();
@@ -66,6 +75,7 @@ export class Speakerkatalog {
 		const speaker = await this.daten.speaker();
 		const engagements = this.daten.engagements();
 		const konferenzen = new Map(this.daten.konferenzen().map((k) => [k.name, k]));
+		this.engagements = engagements;
 
 		const historien = new Map<string, Auftritt[]>();
 		for (const engagement of engagements) {
@@ -212,6 +222,41 @@ export class Speakerkatalog {
 		}
 	}
 
+	/**
+	 * „Als Kandidat für ⟨Konferenz⟩ merken" — nur, wenn es ihn dort noch nicht
+	 * gibt. Wer schon dabei ist, steht ohnehin in seiner Historie.
+	 */
+	private merkenAnbieten(karte: HTMLElement, speaker: Speaker, historie: Auftritt[]): void {
+		const konferenz = this.konferenz;
+		if (!konferenz) return;
+		if (historie.some((auftritt) => auftritt.konferenz === konferenz.name)) return;
+
+		const knopf = karte.createEl("button", {
+			cls: "sms-chip sms-merken",
+			text: "merken",
+			attr: { title: `Als Kandidat für ${konferenz.name} merken` },
+		});
+		knopf.addEventListener("click", (ereignis) => {
+			// Sonst öffnet der Klick zusätzlich die Speakernotiz.
+			ereignis.stopPropagation();
+			void this.merken(speaker, konferenz);
+		});
+	}
+
+	private async merken(speaker: Speaker, konferenz: Konferenz): Promise<void> {
+		// Hinten anhängen: Eine aufgebaute Ordnung soll nicht von oben zerdrückt werden.
+		const position = this.engagements
+			.filter((e) => e.konferenz === konferenz.name && e.status === "gemerkt")
+			.reduce((groesste, e) => Math.max(groesste, e.position + 1), 0);
+
+		try {
+			await this.schreiber.engagementAnlegen(konferenz, speaker.name, position);
+			new Notice(`${speaker.name} ist Kandidat für ${konferenz.name}.`);
+		} catch (fehler) {
+			new Notice(`Der Kandidat ließ sich nicht anlegen: ${String(fehler)}`);
+		}
+	}
+
 	private karteZeichnen(liste: HTMLElement, { speaker, historie }: Eintrag): void {
 		const karte = liste.createDiv({ cls: "sms-karte" });
 		karte.addEventListener("click", () => this.notizOeffnen(speaker.datei));
@@ -253,6 +298,8 @@ export class Speakerkatalog {
 		}
 
 		if (speaker.notiz) karte.createDiv({ cls: "sms-notiz", text: `„${speaker.notiz}"` });
+
+		this.merkenAnbieten(karte, speaker, historie);
 
 		if (historie.length > 0) {
 			const spur = karte.createDiv({ cls: "sms-historie" });
