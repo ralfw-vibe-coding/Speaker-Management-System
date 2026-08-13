@@ -1,5 +1,7 @@
-import { ItemView, WorkspaceLeaf } from "obsidian";
+import { debounce, ItemView, TFile, WorkspaceLeaf } from "obsidian";
 import type SmsPlugin from "../main";
+import { Datenzugriff } from "../daten/lesen";
+import { Speakerkatalog } from "./katalog";
 
 export const VIEW_TYPE_SMS = "sms-arbeitsplatz";
 
@@ -18,10 +20,16 @@ const SICHTEN: { id: Sicht; titel: string }[] = [
  * jeweilige Sicht.
  */
 export class SmsView extends ItemView {
-	private sicht: Sicht = "statustafel";
+	private sicht: Sicht = "katalog";
+	private daten: Datenzugriff;
+	private katalog: Speakerkatalog;
 
 	constructor(leaf: WorkspaceLeaf, private plugin: SmsPlugin) {
 		super(leaf);
+		// Bewusst plugin.app statt this.app: Das Plugin hat die App sicher,
+		// die Basisklasse setzt ihr Feld erst im Verlauf des Konstruktors.
+		this.daten = new Datenzugriff(plugin.app, plugin);
+		this.katalog = new Speakerkatalog(this.daten, (datei) => this.notizOeffnen(datei));
 	}
 
 	getViewType(): string {
@@ -37,10 +45,18 @@ export class SmsView extends ItemView {
 	}
 
 	async onOpen(): Promise<void> {
-		this.render();
+		// Die Sichten sind Projektionen: Ändert sich eine Notiz, wird neu
+		// gerechnet. Das gilt auch, wenn von Hand editiert wird.
+		const neuZeichnen = debounce(() => void this.render(), 150, true);
+		this.registerEvent(this.app.metadataCache.on("changed", neuZeichnen));
+		this.registerEvent(this.app.vault.on("create", neuZeichnen));
+		this.registerEvent(this.app.vault.on("delete", neuZeichnen));
+		this.registerEvent(this.app.vault.on("rename", neuZeichnen));
+
+		await this.render();
 	}
 
-	private render(): void {
+	private async render(): Promise<void> {
 		const root = this.contentEl;
 		root.empty();
 		root.addClass("sms-view");
@@ -65,18 +81,34 @@ export class SmsView extends ItemView {
 			});
 			knopf.addEventListener("click", () => {
 				this.sicht = id;
-				this.render();
+				void this.render();
 			});
 		}
 
 		const buehne = root.createDiv({ cls: "sms-buehne" });
+
+		if (this.sicht === "katalog") {
+			await this.katalog.zeichnen(buehne);
+			return;
+		}
+
 		buehne.createEl("p", {
-			text: `Hier entsteht die Sicht „${SICHTEN.find((s) => s.id === this.sicht)?.titel}".`,
+			text: `Hier entsteht die Sicht „${SICHTEN.find((s) => s.id === this.sicht)?.titel}“.`,
 			cls: "sms-platzhalter",
 		});
-		buehne.createEl("p", {
-			text: `Speakerordner: ${this.plugin.settings.speakerOrdner}`,
-			cls: "sms-platzhalter",
-		});
+	}
+
+	/**
+	 * Details stehen in der Notiz, nicht im Formular: Ein Klick öffnet sie im
+	 * Nachbar-Pane. Gibt es keinen, wird einer aufgeklappt.
+	 */
+	private async notizOeffnen(datei: TFile): Promise<void> {
+		const nachbarn = this.app.workspace
+			.getLeavesOfType("markdown")
+			.filter((blatt) => blatt !== this.leaf);
+
+		const ziel = nachbarn[0] ?? this.app.workspace.getLeaf("split");
+		await ziel.openFile(datei);
+		void this.app.workspace.revealLeaf(ziel);
 	}
 }

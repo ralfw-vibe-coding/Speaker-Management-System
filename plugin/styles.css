@@ -57,3 +57,207 @@
 .sms-platzhalter {
 	color: var(--text-muted);
 }
+
+/* ---------------------------------------------------------- Speakerkatalog */
+
+.sms-leiste {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+
+.sms-suche {
+	flex: 1;
+	max-width: 420px;
+}
+
+.sms-zaehler {
+	color: var(--text-muted);
+	font-size: 0.85em;
+}
+
+.sms-filter {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 18px;
+}
+
+.sms-filterzeile {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.sms-filtertitel {
+	width: 70px;
+	flex: none;
+	color: var(--text-muted);
+	font-size: 0.8em;
+}
+
+.sms-chip {
+	padding: 2px 10px;
+	font-size: 0.8em;
+	border-radius: 999px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+	color: var(--text-muted);
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.sms-chip.is-aktiv {
+	background: var(--interactive-accent);
+	border-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.sms-karten {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 12px;
+}
+
+.sms-karte {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 10px;
+	padding: 12px 14px;
+	cursor: pointer;
+	background: var(--background-primary);
+}
+
+.sms-karte:hover {
+	background: var(--background-modifier-hover);
+}
+
+.sms-karte-kopf {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.sms-name {
+	font-weight: 600;
+}
+
+.sms-ort,
+.sms-rolle {
+	color: var(--text-muted);
+	font-size: 0.85em;
+}
+
+.sms-themen {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 8px 0 6px;
+}
+
+.sms-thema {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 8px;
+	font-size: 0.78em;
+	border-radius: 999px;
+	background: var(--background-modifier-border);
+	color: var(--text-normal);
+}
+
+.sms-wahl {
+	font-weight: 700;
+	font-size: 0.9em;
+}
+
+/* Erste Wahl sticht hervor, dritte tritt zurück. */
+.sms-thema.sms-wahl-1 {
+	background: var(--color-green);
+	color: var(--text-on-accent);
+}
+
+.sms-thema.sms-wahl-2 {
+	background: var(--color-yellow);
+	color: var(--text-on-accent);
+}
+
+.sms-thema.sms-wahl-3 {
+	background: var(--background-modifier-border);
+	color: var(--text-faint);
+}
+
+.sms-thema.sms-warnung {
+	background: var(--background-modifier-error);
+	color: var(--text-error);
+}
+
+.sms-zeile {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	color: var(--text-muted);
+	font-size: 0.82em;
+}
+
+.sms-notiz {
+	margin-top: 8px;
+	color: var(--text-faint);
+	font-size: 0.82em;
+	font-style: italic;
+}
+
+.sms-historie {
+	margin-top: 10px;
+	padding-top: 8px;
+	border-top: 1px solid var(--background-modifier-border);
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.sms-auftritt {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	font-size: 0.8em;
+}
+
+.sms-auftritt-name {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text-muted);
+}
+
+.sms-status {
+	color: var(--text-muted);
+}
+
+.sms-status-zugesagt,
+.sms-status-rechnung,
+.sms-status-bezahlt {
+	color: var(--color-green);
+}
+
+.sms-status-verhandlung,
+.sms-status-angefragt,
+.sms-status-geantwortet {
+	color: var(--color-orange);
+}
+
+.sms-status-gestrichen {
+	color: var(--text-error);
+}
+
+.sms-sterne {
+	color: var(--color-yellow);
+	letter-spacing: -1px;
+}
+
+.sms-leer {
+	color: var(--text-muted);
+}

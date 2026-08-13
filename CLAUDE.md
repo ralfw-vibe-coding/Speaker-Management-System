@@ -115,22 +115,28 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
 
 ## Stand der Umsetzung
 
-Es steht bisher nur das Gerüst:
+Datenschicht und Speakerkatalog stehen, lesend:
 
 - `src/main.ts` — Plugin, Ribbon-Icon, Kommando, Öffnen des Views
 - `src/settings.ts` — die drei Datenordner konfigurierbar
-- `src/view/SmsView.ts` — der View mit drei Reitern, **Inhalte sind Platzhalter**
+- `src/daten/modell.ts` — die Typen, die Formatwerte, die Reihenfolge des Funnels
+- `src/daten/lesen.ts` — `Datenzugriff`: Notizen über den `metadataCache` finden und
+  tolerant lesen. Die Konferenz wird bisher nur so weit gelesen, wie der Katalog sie
+  braucht — Raster, Tracks und Slots kommen mit der Agenda dazu.
+- `src/view/katalog.ts` — der Speakerkatalog mit Suche, Filtern und Historie
+- `src/view/SmsView.ts` — der View mit drei Reitern; **Statustafel und Agenda sind
+  weiterhin Platzhalter**
 
-Es gibt noch kein Lesen und kein Schreiben von Notizen, keine Datenschicht, keine der
-drei Sichten. Alles Fachliche ist offen.
+**Geschrieben wird noch nichts.** Es gibt weder „+ Speaker" noch „als Kandidat merken",
+und keine Sicht verändert eine Notiz.
 
 ### Reihenfolge
 
 Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen:
 
-1. **Datenschicht und Speakerkatalog, lesend.** Liste aller Speaker mit Themen,
-   Formaten, Sprachen, Wahl und Historie, dazu Suche und Filter. Prüfbar gegen die
-   Kennzahlen für den Katalog in `Demodaten.md`.
+1. ~~**Datenschicht und Speakerkatalog, lesend.**~~ Steht seit v0.0.4. Liste aller
+   Speaker mit Themen, Formaten, Sprachen, Wahl und Historie, dazu Suche und Filter.
+   Prüfbar gegen die Kennzahlen für den Katalog in `Demodaten.md`.
 2. **Statustafel, lesend.** Kopf mit den Kennzahlen, die acht Spalten, Karten mit
    Themen, Beitragszahl, Honorar, Checklistenbalken und Hinweisen.
 3. **Statustafel, schreibend.** Karten zwischen den Spalten ziehen und umsortieren; das

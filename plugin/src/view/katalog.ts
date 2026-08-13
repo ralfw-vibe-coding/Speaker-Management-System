@@ -1,0 +1,271 @@
+import type { TFile } from "obsidian";
+import type { Datenzugriff } from "../daten/lesen";
+import {
+	FORMATE,
+	FORMAT_TITEL,
+	FUNNEL_TITEL,
+	type Auftritt,
+	type Speaker,
+} from "../daten/modell";
+
+/** Was der Katalog über einen Speaker zeigt — Notiz plus gerechnete Historie. */
+interface Eintrag {
+	speaker: Speaker;
+	historie: Auftritt[];
+}
+
+/**
+ * Der Speakerkatalog: konferenzübergreifend, lesend. Alles auf einer Karte ist
+ * entweder ein Feld aus der Notiz oder aus den Engagements gerechnet, die auf
+ * den Speaker zeigen. Gespeichert wird davon nichts.
+ */
+export class Speakerkatalog {
+	private suche = "";
+	private formate = new Set<string>();
+	private sprachen = new Set<string>();
+	private wahlstufen = new Set<number>();
+
+	constructor(
+		private daten: Datenzugriff,
+		private notizOeffnen: (datei: TFile) => void,
+	) {}
+
+	async zeichnen(buehne: HTMLElement): Promise<void> {
+		const eintraege = await this.lesen();
+
+		buehne.empty();
+		buehne.addClass("sms-katalog");
+
+		const gefiltert = eintraege.filter((e) => this.passt(e));
+
+		this.leisteZeichnen(buehne, eintraege, gefiltert.length);
+
+		if (eintraege.length === 0) {
+			buehne.createEl("p", {
+				cls: "sms-leer",
+				text:
+					"Keine Notizen mit „type: speaker“ gefunden. " +
+					"Stimmt der Speakerordner in den Einstellungen?",
+			});
+			return;
+		}
+
+		if (gefiltert.length === 0) {
+			buehne.createEl("p", { cls: "sms-leer", text: "Kein Speaker passt zu diesen Filtern." });
+			return;
+		}
+
+		const liste = buehne.createDiv({ cls: "sms-karten" });
+		for (const eintrag of gefiltert) this.karteZeichnen(liste, eintrag);
+	}
+
+	// ---------------------------------------------------------------- Daten
+
+	private async lesen(): Promise<Eintrag[]> {
+		const speaker = await this.daten.speaker();
+		const engagements = this.daten.engagements();
+		const konferenzen = new Map(this.daten.konferenzen().map((k) => [k.name, k]));
+
+		const historien = new Map<string, Auftritt[]>();
+		for (const engagement of engagements) {
+			if (!engagement.speaker) continue;
+			const konferenz = konferenzen.get(engagement.konferenz);
+			const auftritt: Auftritt = {
+				konferenz: engagement.konferenz,
+				konferenzDatei: konferenz?.datei,
+				datum: konferenz?.tage[0],
+				status: engagement.status,
+				bewertung: engagement.bewertung,
+			};
+			const bisher = historien.get(engagement.speaker);
+			if (bisher) bisher.push(auftritt);
+			else historien.set(engagement.speaker, [auftritt]);
+		}
+
+		// Die jüngste Konferenz zuerst; ohne Datum ans Ende, alphabetisch.
+		for (const historie of historien.values()) {
+			historie.sort((a, b) => {
+				if (a.datum && b.datum) return b.datum.localeCompare(a.datum);
+				if (a.datum) return -1;
+				if (b.datum) return 1;
+				return a.konferenz.localeCompare(b.konferenz, "de");
+			});
+		}
+
+		return speaker.map((s) => ({ speaker: s, historie: historien.get(s.name) ?? [] }));
+	}
+
+	private passt(eintrag: Eintrag): boolean {
+		const { speaker } = eintrag;
+
+		if (this.suche) {
+			const heuhaufen = [
+				speaker.name,
+				speaker.rolle ?? "",
+				speaker.ort ?? "",
+				speaker.notiz ?? "",
+				...speaker.themen,
+			]
+				.join(" ")
+				.toLowerCase();
+			if (!heuhaufen.includes(this.suche)) return false;
+		}
+
+		// Mehrere Häkchen in einer Zeile sind ein Oder, zwischen den Zeilen ein Und.
+		if (this.formate.size > 0 && !speaker.formate.some((f) => this.formate.has(f))) return false;
+		if (this.sprachen.size > 0 && !speaker.sprachen.some((s) => this.sprachen.has(s))) return false;
+		if (this.wahlstufen.size > 0) {
+			const stufen = [...speaker.wahl.values()];
+			if (!stufen.some((stufe) => this.wahlstufen.has(stufe))) return false;
+		}
+
+		return true;
+	}
+
+	// -------------------------------------------------------------- Zeichnen
+
+	private leisteZeichnen(buehne: HTMLElement, alle: Eintrag[], sichtbar: number): void {
+		const leiste = buehne.createDiv({ cls: "sms-leiste" });
+
+		const suchfeld = leiste.createEl("input", {
+			cls: "sms-suche",
+			attr: { type: "search", placeholder: "Name, Rolle, Thema, Ort …" },
+		});
+		suchfeld.value = this.suche;
+		suchfeld.addEventListener("input", () => {
+			this.suche = suchfeld.value.trim().toLowerCase();
+			void this.zeichnen(buehne).then(() => {
+				// Nach dem Neuzeichnen steht der Cursor sonst nicht mehr im Suchfeld.
+				const neu = buehne.querySelector<HTMLInputElement>(".sms-suche");
+				neu?.focus();
+				neu?.setSelectionRange(neu.value.length, neu.value.length);
+			});
+		});
+
+		leiste.createSpan({
+			cls: "sms-zaehler",
+			text: sichtbar === alle.length ? `${alle.length} Speaker` : `${sichtbar} von ${alle.length}`,
+		});
+
+		const filter = buehne.createDiv({ cls: "sms-filter" });
+
+		this.filterzeile(
+			filter,
+			"Format",
+			FORMATE.map((f) => ({ wert: f, titel: FORMAT_TITEL[f] })),
+			this.formate,
+			buehne,
+		);
+
+		const sprachen = [...new Set(alle.flatMap((e) => e.speaker.sprachen))].sort();
+		this.filterzeile(
+			filter,
+			"Sprache",
+			sprachen.map((s) => ({ wert: s, titel: s })),
+			this.sprachen,
+			buehne,
+		);
+
+		const wahlzeile = filter.createDiv({ cls: "sms-filterzeile" });
+		wahlzeile.createSpan({ cls: "sms-filtertitel", text: "Wahl" });
+		for (const stufe of [1, 2, 3]) {
+			const aktiv = this.wahlstufen.has(stufe);
+			const knopf = wahlzeile.createEl("button", {
+				cls: aktiv ? "sms-chip is-aktiv" : "sms-chip",
+				text: `${stufe}. Wahl`,
+			});
+			knopf.addEventListener("click", () => {
+				if (aktiv) this.wahlstufen.delete(stufe);
+				else this.wahlstufen.add(stufe);
+				void this.zeichnen(buehne);
+			});
+		}
+	}
+
+	private filterzeile(
+		eltern: HTMLElement,
+		titel: string,
+		werte: { wert: string; titel: string }[],
+		gewaehlt: Set<string>,
+		buehne: HTMLElement,
+	): void {
+		if (werte.length === 0) return;
+
+		const zeile = eltern.createDiv({ cls: "sms-filterzeile" });
+		zeile.createSpan({ cls: "sms-filtertitel", text: titel });
+
+		for (const { wert, titel: beschriftung } of werte) {
+			const aktiv = gewaehlt.has(wert);
+			const knopf = zeile.createEl("button", {
+				cls: aktiv ? "sms-chip is-aktiv" : "sms-chip",
+				text: beschriftung,
+			});
+			knopf.addEventListener("click", () => {
+				if (aktiv) gewaehlt.delete(wert);
+				else gewaehlt.add(wert);
+				void this.zeichnen(buehne);
+			});
+		}
+	}
+
+	private karteZeichnen(liste: HTMLElement, { speaker, historie }: Eintrag): void {
+		const karte = liste.createDiv({ cls: "sms-karte" });
+		karte.addEventListener("click", () => this.notizOeffnen(speaker.datei));
+
+		const kopf = karte.createDiv({ cls: "sms-karte-kopf" });
+		kopf.createSpan({ cls: "sms-name", text: speaker.name });
+		if (speaker.ort) kopf.createSpan({ cls: "sms-ort", text: speaker.ort });
+
+		if (speaker.rolle) karte.createDiv({ cls: "sms-rolle", text: speaker.rolle });
+
+		if (speaker.themen.length > 0 || speaker.wahl.size > 0) {
+			const themen = karte.createDiv({ cls: "sms-themen" });
+			for (const thema of speaker.themen) {
+				const wahl = speaker.wahl.get(thema);
+				const chip = themen.createSpan({
+					cls: wahl ? `sms-thema sms-wahl-${wahl}` : "sms-thema",
+				});
+				chip.createSpan({ text: thema });
+				if (wahl) chip.createSpan({ cls: "sms-wahl", text: `${wahl}.` });
+			}
+
+			// Eine Wahl zu einem Thema, das nicht in `themen` steht — im Konzept
+			// unter „Was das Plugin prüft, ohne dass man fragt".
+			for (const thema of speaker.wahl.keys()) {
+				if (speaker.themen.includes(thema)) continue;
+				themen.createSpan({ cls: "sms-thema sms-warnung", text: `⚠ ${thema} fehlt in themen` });
+			}
+		}
+
+		const zeile = karte.createDiv({ cls: "sms-zeile" });
+		if (speaker.formate.length > 0) {
+			zeile.createSpan({
+				text: speaker.formate.map((f) => FORMAT_TITEL[f] ?? f).join(" · "),
+			});
+		}
+		if (speaker.sprachen.length > 0) zeile.createSpan({ text: speaker.sprachen.join("/") });
+		if (speaker.honorarrahmen !== undefined) {
+			zeile.createSpan({ text: `ab ${speaker.honorarrahmen.toLocaleString("de-DE")} €` });
+		}
+
+		if (speaker.notiz) karte.createDiv({ cls: "sms-notiz", text: `„${speaker.notiz}"` });
+
+		if (historie.length > 0) {
+			const spur = karte.createDiv({ cls: "sms-historie" });
+			for (const auftritt of historie) {
+				const auftrittZeile = spur.createDiv({ cls: "sms-auftritt" });
+				auftrittZeile.createSpan({ cls: "sms-auftritt-name", text: auftritt.konferenz });
+				auftrittZeile.createSpan({
+					cls: `sms-status sms-status-${auftritt.status}`,
+					text: FUNNEL_TITEL[auftritt.status] ?? auftritt.status,
+				});
+				if (auftritt.bewertung !== undefined) {
+					auftrittZeile.createSpan({
+						cls: "sms-sterne",
+						text: "★".repeat(auftritt.bewertung) + "☆".repeat(Math.max(0, 5 - auftritt.bewertung)),
+					});
+				}
+			}
+		}
+	}
+}
