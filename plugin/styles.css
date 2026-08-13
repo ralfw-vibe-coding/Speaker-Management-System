@@ -168,6 +168,11 @@
 	border-radius: 999px;
 	background: var(--background-modifier-border);
 	color: var(--text-normal);
+	cursor: pointer;
+}
+
+.sms-thema:hover {
+	outline: 1px solid var(--interactive-accent);
 }
 
 .sms-wahl {

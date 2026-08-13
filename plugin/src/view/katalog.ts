@@ -11,6 +11,15 @@ import {
 	type Speaker,
 } from "../daten/modell";
 
+function naechsteStufe(bisher: number | undefined): number | undefined {
+	if (bisher === undefined) return 1;
+	return bisher >= 3 ? undefined : bisher + 1;
+}
+
+function beschriftung(stufe: number | undefined): string {
+	return stufe === undefined ? "nicht eingeschätzt" : `${stufe}. Wahl`;
+}
+
 /** Was der Katalog über einen Speaker zeigt — Notiz plus gerechnete Historie. */
 interface Eintrag {
 	speaker: Speaker;
@@ -243,6 +252,19 @@ export class Speakerkatalog {
 		});
 	}
 
+	/** 1 → 2 → 3 → nicht eingeschätzt → 1. */
+	private async wahlWeiterschalten(
+		speaker: Speaker,
+		thema: string,
+		bisher: number | undefined,
+	): Promise<void> {
+		try {
+			await this.schreiber.wahlSetzen(speaker.datei, thema, naechsteStufe(bisher));
+		} catch (fehler) {
+			new Notice(`Die Wahl ließ sich nicht setzen: ${String(fehler)}`);
+		}
+	}
+
 	private async merken(speaker: Speaker, konferenz: Konferenz): Promise<void> {
 		// Hinten anhängen: Eine aufgebaute Ordnung soll nicht von oben zerdrückt werden.
 		const position = this.engagements
@@ -273,9 +295,17 @@ export class Speakerkatalog {
 				const wahl = speaker.wahl.get(thema);
 				const chip = themen.createSpan({
 					cls: wahl ? `sms-thema sms-wahl-${wahl}` : "sms-thema",
+					attr: { title: `Klick: ${beschriftung(naechsteStufe(wahl))}` },
 				});
 				chip.createSpan({ text: thema });
 				if (wahl) chip.createSpan({ cls: "sms-wahl", text: `${wahl}.` });
+
+				// Die Wahl ist das Einzige am Speaker, das man laufend ändert —
+				// dafür soll niemand ins Frontmatter müssen.
+				chip.addEventListener("click", (ereignis) => {
+					ereignis.stopPropagation();
+					void this.wahlWeiterschalten(speaker, thema, wahl);
+				});
 			}
 
 			// Eine Wahl zu einem Thema, das nicht in `themen` steht — im Konzept

@@ -120,6 +120,24 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Setzt die Wahl eines Speakers zu einem Thema. `undefined` heißt „nicht
+	 * eingeschätzt" — dann verschwindet der Eintrag, statt als Null dazustehen;
+	 * und ist keiner mehr übrig, verschwindet auch das Feld.
+	 */
+	async wahlSetzen(datei: TFile, thema: string, stufe: number | undefined): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			const wahl: Record<string, unknown> =
+				fm.wahl && typeof fm.wahl === "object" && !Array.isArray(fm.wahl) ? { ...fm.wahl } : {};
+
+			if (stufe === undefined) delete wahl[thema];
+			else wahl[thema] = stufe;
+
+			if (Object.keys(wahl).length === 0) delete fm.wahl;
+			else fm.wahl = wahl;
+		});
+	}
+
+	/**
 	 * Setzt den Speaker eines Beitrags, der bisher keinen hatte — die zweite
 	 * Richtung beim Füllen eines Slots: erst das Thema, dann der Mensch.
 	 */

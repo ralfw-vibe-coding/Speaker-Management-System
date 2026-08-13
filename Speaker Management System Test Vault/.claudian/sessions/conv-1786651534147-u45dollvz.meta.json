@@ -4,7 +4,7 @@
   "title": "Konferenzen auflisten",
   "titleGenerationStatus": "success",
   "createdAt": 1786651534149,
-  "lastActivityAt": 1786652096163,
+  "lastActivityAt": 1786656184919,
   "sessionId": "d6338302-2988-458b-b382-1b218fa4cfb8",
   "selectedModel": "sonnet",
   "providerState": {
@@ -105,10 +105,10 @@
   "usage": {
     "model": "sonnet",
     "inputTokens": 2,
-    "cacheCreationInputTokens": 913,
-    "cacheReadInputTokens": 63325,
+    "cacheCreationInputTokens": 874,
+    "cacheReadInputTokens": 68944,
     "contextWindow": 1000000,
-    "contextTokens": 64240,
-    "percentage": 6
+    "contextTokens": 69820,
+    "percentage": 7
   }
 }

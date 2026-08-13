@@ -214,6 +214,10 @@ Bio, Eindrücke, „gut im Dialog, braucht langen Vorlauf".
 „Antwortet erst nach mehrfachem Nachfassen."
 ```
 
+Gesetzt wird sie im Katalog: Ein Klick auf den Themen-Chip schaltet zwischen erster,
+zweiter, dritter Wahl und „nicht eingeschätzt" weiter. Sie ist das Einzige am Speaker,
+das man laufend ändert — dafür soll niemand ins Frontmatter müssen.
+
 **Die Wahl gilt je Thema, nicht je Person.** Wer bei KI erste Wahl ist, kann bei
 Führung dritte sein — eine einzelne Zahl am Menschen träfe das nicht. Deshalb nennt
 `wahl` die Themen einzeln; ein Thema, das dort fehlt, ist noch nicht eingeschätzt und

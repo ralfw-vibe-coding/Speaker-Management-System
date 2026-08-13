@@ -150,7 +150,8 @@ titellosen Beitrags. Steht ein Titel da, bietet die Karte es an — ein Automati
 den Platzhalternamen trägt.
 
 Im Katalog macht „merken" aus einem Speaker einen Kandidaten der ausgewählten Konferenz:
-ein Engagement im Status `gemerkt`, hinten an die Spalte gehängt.
+ein Engagement im Status `gemerkt`, hinten an die Spalte gehängt. Ein Klick auf einen
+Themen-Chip schaltet die `wahl` zu diesem Thema weiter.
 
 Bei Konferenzen im Status `gelaufen` oder `abgesagt` ist die **Agenda gesperrt** — das
 Programm ist Archiv. Die **Statustafel bleibt bedienbar**, weil Rechnungen, Zahlungen

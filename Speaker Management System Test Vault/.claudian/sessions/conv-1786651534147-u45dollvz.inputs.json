@@ -57,6 +57,20 @@
       "contentDigest": "620fae30b43293cd048e881e401b43724800d4fabb6e8b45f35b40150e92454a",
       "providerUserMessageId": "397793ef-cc32-4bf8-8d4b-2e2c598e8f61",
       "providerAssistantMessageId": "1ee36aa0-9d7b-4ca6-8dc4-11af6273a285"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1786656157826-kby838p",
+      "userTurnOrdinal": 5,
+      "state": "accepted",
+      "localMessageId": "msg-1786656157807-qaudbvy",
+      "timestamp": 1786656157807,
+      "rawDisplayText": "kannst du mir die E-Mails alle Speaker, die  für den Assistenzsummit 2025 gebucht waren raussuchen?",
+      "canonicalText": "kannst du mir die E-Mails alle Speaker, die  für den Assistenzsummit 2025 gebucht waren raussuchen?",
+      "images": [],
+      "contentDigest": "36805f8b89595bf47b447c409964e3d23dfe3a428c4500d6a3202dea8756ca2f",
+      "providerUserMessageId": "48dbc934-5815-4a07-b9d8-21332b6aa390",
+      "providerAssistantMessageId": "4cd24c3b-164b-4cf2-8205-8f9737fc1ac0"
     }
   ]
 }
