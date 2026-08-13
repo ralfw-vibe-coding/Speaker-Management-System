@@ -625,7 +625,13 @@ Doppelbelegung eines Slots · derselbe Speaker in zwei parallelen Tracks · ein 
 dessen Format nicht in die Blockdauer passt · ein Beitrag, dessen `max_teilnehmer` über
 der `kapazitaet` seines Slots liegt · offene Slots · heimatlose Beiträge · Beiträge,
 deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht in
-`themen` steht · ein zweiter Speaker mit demselben Namen.
+`themen` steht · ein zweiter Speaker mit demselben Namen · **Lücken und
+Überschneidungen zwischen den Blöcken eines Tages**.
+
+Die letzte Prüfung steht als Zeile zwischen den Blockzeilen, weil sie genau dorthin
+gehört: Das Gitter zeichnet die Zeilen bündig untereinander, sodass eine halbe Stunde
+Niemandsland und ein überlappender Block gleich aussehen. Unverplante Zeit wird grau
+benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zählt sie mit.
 
 ---
 
@@ -633,10 +639,9 @@ deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht i
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
-- **Blöcke, die auseinanderdriften** — Verschoben wird als Block: Ändert man die Zeit
-  eines Blocks, rücken die folgenden um dieselbe Spanne mit. Lücken und Überschneidungen
-  im Raster prüft aber niemand — zwei Blöcke dürfen sich überlappen, und zwischen zweien
-  darf eine halbe Stunde Niemandsland liegen. Soll das eine Prüfung werden?
+- **Beiträge über mehrere Blöcke** — siehe oben; der Fall ist über lange Blöcke gelöst,
+  aber die Prüfung auf Lücken sieht einen langen Workshop im Parallel-Track nicht als
+  das, was er ist.
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?

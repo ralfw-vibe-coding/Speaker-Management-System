@@ -150,6 +150,14 @@ export class Agenda {
 			marken.createSpan({ cls: "sms-marke sms-marke-rot", text: `${heimatlose} heimatlos` });
 		}
 
+		const strittig = tag ? ueberschneidungen(tag) : 0;
+		if (strittig > 0) {
+			marken.createSpan({
+				cls: "sms-marke sms-marke-rot",
+				text: strittig === 1 ? "1 Überschneidung" : `${strittig} Überschneidungen`,
+			});
+		}
+
 		const reiter = buehne.createDiv({ cls: "sms-tage" });
 		konferenz.tage.forEach((eigener, index) => {
 			const knopf = reiter.createEl("button", {
@@ -217,7 +225,15 @@ export class Agenda {
 			if (ort) kopf.createSpan({ cls: "sms-trackraum", text: ort });
 		}
 
-		for (const block of tag.bloecke) {
+		// Nach Uhrzeit, nicht nach Reihenfolge im Frontmatter: Von Hand kann dort
+		// alles stehen, und die Prüfung auf Lücken braucht die zeitliche Folge.
+		const bloecke = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		let vorherBis: string | undefined;
+
+		for (const block of bloecke) {
+			this.zwischenraumZeichnen(raster, tracks.length, vorherBis, block.von);
+			vorherBis = block.bis ?? vorherBis;
+
 			// Ein Fixblock hat keine Slots: Pause, Registrierung, Abendprogramm.
 			if (block.fix) {
 				this.zeitZeichnen(raster, block);
@@ -402,6 +418,34 @@ export class Agenda {
 				text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
 			});
 		}
+	}
+
+	/**
+	 * Zwischen zwei Blöcken: eine Lücke ist unverplante Zeit, eine
+	 * Überschneidung ein Fehler im Raster. Beides fällt sonst niemandem auf,
+	 * weil das Gitter die Zeilen bündig untereinander zeichnet.
+	 */
+	private zwischenraumZeichnen(
+		raster: HTMLElement,
+		spalten: number,
+		vorherBis: string | undefined,
+		von: string | undefined,
+	): void {
+		if (!vorherBis || !von) return;
+
+		const spanne = minuten(von) - minuten(vorherBis);
+		if (spanne === 0) return;
+
+		raster.createDiv({ cls: "sms-zeit" });
+		const band = raster.createDiv({
+			cls: spanne > 0 ? "sms-zwischenraum" : "sms-zwischenraum sms-ueberschneidung",
+		});
+		band.style.gridColumn = `span ${spalten}`;
+		band.setText(
+			spanne > 0
+				? `${dauer(spanne)} unverplant`
+				: `⚠ ${dauer(-spanne)} Überschneidung mit dem Block davor`,
+		);
 	}
 
 	private zeitZeichnen(raster: HTMLElement, block: Block): void {
@@ -871,6 +915,27 @@ function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
 
 	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
 	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
+}
+
+/** Wie viele Blöcke eines Tages in den vorherigen hineinragen. */
+function ueberschneidungen(tag: Tag): number {
+	const bloecke = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+
+	let strittig = 0;
+	let vorherBis: string | undefined;
+	for (const block of bloecke) {
+		if (vorherBis && block.von && minuten(block.von) < minuten(vorherBis)) strittig++;
+		vorherBis = block.bis ?? vorherBis;
+	}
+	return strittig;
+}
+
+/** Aus 75 wird `1 Std 15 Min`. */
+function dauer(minuten: number): string {
+	const stunden = Math.floor(minuten / 60);
+	const rest = minuten % 60;
+	if (stunden === 0) return `${rest} Min`;
+	return rest === 0 ? `${stunden} Std` : `${stunden} Std ${rest} Min`;
 }
 
 /** `09:45` wird zu 585. Fehlt die Zeit, ist sie null wert. */
