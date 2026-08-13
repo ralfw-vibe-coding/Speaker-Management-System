@@ -271,6 +271,17 @@
 	font-size: 0.85em;
 }
 
+.sms-dialog-abschnitt {
+	margin-bottom: 0;
+	color: var(--text-muted);
+	font-size: 0.9em;
+}
+
+.sms-dialog-fussnote {
+	color: var(--text-faint);
+	font-size: 0.85em;
+}
+
 .sms-dialog-hinweis {
 	display: flex;
 	align-items: center;

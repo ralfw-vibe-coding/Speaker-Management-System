@@ -1,11 +1,12 @@
 ---
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
-speaker: ["[[Sonja Ehrlich]]"]
-titel: "Resilienz im Dauerfeuer"
+speaker:
+  - "[[Sonja Ehrlich]]"
+titel: Resilienz im Dauerfeuer
 format: vortrag
-block:
-track:
+block: b7
+track: t3
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

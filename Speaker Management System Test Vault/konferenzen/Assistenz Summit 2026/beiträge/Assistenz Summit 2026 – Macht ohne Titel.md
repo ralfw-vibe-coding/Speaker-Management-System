@@ -1,11 +1,12 @@
 ---
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
-speaker: ["[[Dr. Antje Rohleder]]"]
-titel: "Macht ohne Titel"
+speaker:
+  - "[[Dr. Antje Rohleder]]"
+titel: Macht ohne Titel
 format: vortrag
 block: b7
-track: t1
+track: t2
 ---
 ## Zu klären
 - [x] Abstract eingereicht

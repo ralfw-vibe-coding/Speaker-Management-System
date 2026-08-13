@@ -162,6 +162,40 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Streichen: Der Speaker fällt aus, seine Slots werden wieder Löcher.
+	 *
+	 * Ein Beitrag **mit** Titel behält sein Thema und landet ohne Speaker und
+	 * ohne Platz im Pool — daran hat jemand gearbeitet, und „Thema steht,
+	 * Speaker offen" ist ein vorgesehener Zustand. Ein Beitrag **ohne** Titel
+	 * trug nichts als den Namen des Speakers und wandert in den Papierkorb,
+	 * nicht in den Abgrund: Obsidian legt ihn im Vault ab, er ist zurückholbar.
+	 */
+	async beitraegeStreichen(beitraege: { datei: TFile; titel?: string }[]): Promise<void> {
+		for (const beitrag of beitraege) {
+			if (beitrag.titel) {
+				await this.app.fileManager.processFrontMatter(beitrag.datei, (fm) => {
+					fm.speaker = [];
+					delete fm.block;
+					delete fm.track;
+				});
+			} else {
+				await this.app.vault.trash(beitrag.datei, false);
+			}
+		}
+	}
+
+	/**
+	 * Hängt ans Ende des Engagements, was vorgesehen war. Der Body wird nur
+	 * ergänzt, nichts Vorhandenes angefasst — die Spur soll bleiben, wenn der
+	 * Beitrag weg ist.
+	 */
+	async spurAnhaengen(datei: TFile, absatz: string): Promise<void> {
+		const inhalt = await this.app.vault.read(datei);
+		const getrennt = inhalt.endsWith("\n") ? "" : "\n";
+		await this.app.vault.modify(datei, `${inhalt}${getrennt}\n${absatz}\n`);
+	}
+
+	/**
 	 * Legt ein Engagement an: Der Speaker wird Kandidat für diese Konferenz.
 	 * Es entsteht im Status `gemerkt` und hängt sich hinten an die Spalte —
 	 * eine aufgebaute Ordnung soll nicht von oben zerdrückt werden.

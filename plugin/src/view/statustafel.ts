@@ -1,6 +1,7 @@
-import { Notice, type TFile } from "obsidian";
+import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
+import { StreichenModal } from "./StreichenModal";
 import {
 	FUNNEL,
 	FUNNEL_TITEL,
@@ -49,12 +50,14 @@ const MONATE = [
 export class Statustafel {
 	/** Die Karten der gerade gezeichneten Tafel — Grundlage fürs Umsortieren. */
 	private aktuelle: Karte[] = [];
+	private konferenz: Konferenz | undefined;
 	private gezogen: Karte | null = null;
 	private gezogenEl: HTMLElement | null = null;
 	private marke: HTMLElement | null = null;
 	private zielIndex = 0;
 
 	constructor(
+		private app: App,
 		private daten: Datenzugriff,
 		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
@@ -63,6 +66,7 @@ export class Statustafel {
 	async zeichnen(buehne: HTMLElement, konferenz: Konferenz | undefined): Promise<void> {
 		buehne.empty();
 		buehne.addClass("sms-tafel");
+		this.konferenz = konferenz;
 
 		if (!konferenz) {
 			buehne.createEl("p", {
@@ -346,13 +350,67 @@ export class Statustafel {
 				.forEach((k, i) => merken(k, quellStatus, i));
 		}
 
-		if (aenderungen.length === 0) return;
+		// Streichen ist mehr als ein Spaltenwechsel — erst fragen, dann schreiben.
+		const streichen = zielStatus === "gestrichen" && quellStatus !== "gestrichen";
+		if (streichen && karte.beitraege.length > 0) {
+			const bestaetigt = await new StreichenModal(
+				this.app,
+				karte.engagement.speaker,
+				karte.beitraege.map((beitrag) => ({
+					titel: beitrag.titel,
+					ort: this.ortsangabe(beitrag),
+					behalten: !!beitrag.titel,
+				})),
+			).frage();
+			if (!bestaetigt) return;
+		}
 
 		try {
-			await this.schreiber.statusUndPosition(aenderungen);
+			if (aenderungen.length > 0) await this.schreiber.statusUndPosition(aenderungen);
+			if (streichen) await this.streichen(karte);
 		} catch (fehler) {
 			new Notice(`Die Karte ließ sich nicht verschieben: ${String(fehler)}`);
 		}
+	}
+
+	/**
+	 * Die Slots werden wieder Löcher, die Themen bleiben. Was vorgesehen war,
+	 * bleibt als Spur im Engagement — sonst wüsste in einem Jahr niemand mehr,
+	 * was mit dieser Absage verlorenging.
+	 */
+	private async streichen(karte: Karte): Promise<void> {
+		if (karte.beitraege.length === 0) return;
+
+		const zeilen = karte.beitraege.map(
+			(beitrag) => `- ${beitrag.titel ? `„${beitrag.titel}“` : "ohne Thema"} · ${this.ortsangabe(beitrag)}`,
+		);
+
+		await this.schreiber.beitraegeStreichen(karte.beitraege);
+		await this.schreiber.spurAnhaengen(
+			karte.engagement.datei,
+			[
+				"## Gestrichen",
+				`Am ${new Date().toLocaleDateString("de-DE")} gestrichen. Vorgesehen war:`,
+				...zeilen,
+			].join("\n"),
+		);
+	}
+
+	/** „Mi 12:00 · Werkzeuge & KI" — oder „im Pool", wenn es keinen Platz gab. */
+	private ortsangabe(beitrag: Beitrag): string {
+		const konferenz = this.konferenz;
+		if (!konferenz || !beitrag.block) return "im Pool";
+
+		for (const tag of konferenz.tage) {
+			const block = tag.bloecke.find((b) => b.id === beitrag.block);
+			if (!block) continue;
+
+			const track = konferenz.tracks.find((t) => t.id === beitrag.track);
+			const teile = [tag.datum ? kurzerTag(tag.datum) : undefined, block.von, track?.name]
+				.filter((teil): teil is string => !!teil);
+			return teile.join(" ") || beitrag.block;
+		}
+		return `Block ${beitrag.block} (entfallen)`;
 	}
 }
 
@@ -389,6 +447,14 @@ function anzahl(wert: number, einzahl: string, mehrzahl: string): string {
 
 function euro(wert: number): string {
 	return `${wert.toLocaleString("de-DE")} €`;
+}
+
+/** Aus `2026-11-04` wird `Mi`. */
+function kurzerTag(iso: string): string {
+	const zerlegt = zerlegen(iso);
+	if (!zerlegt) return iso;
+	const wochentage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+	return wochentage[new Date(zerlegt.jahr, zerlegt.monat - 1, zerlegt.tag).getDay()];
 }
 
 /** Aus `2026-09-30` wird `30.09.` */

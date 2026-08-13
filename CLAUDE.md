@@ -151,9 +151,13 @@ Bei Konferenzen im Status `gelaufen` oder `abgesagt` ist die **Agenda gesperrt**
 Programm ist Archiv. Die **Statustafel bleibt bedienbar**, weil Rechnungen, Zahlungen
 und die Bewertung erst nach der Konferenz kommen.
 
-**Noch nicht da:** das Anlegen von Konferenz und Veranstalter, das Bearbeiten des
-Rasters selbst — das setzt die offene Entscheidung voraus, **wer das Raster schreibt** —
-und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
+Eine Karte nach `gestrichen` zu ziehen löst die **Streichen-Regel** aus, hinter einer
+Rückfrage: Themen mit Titel landen ohne Speaker im Pool, titellose Beiträge im
+Papierkorb, und was vorgesehen war, wird ins Engagement geschrieben.
+
+**Noch nicht da:** das Anlegen von Konferenz und Veranstalter und das Bearbeiten des
+Rasters selbst — beides setzt die offene Entscheidung voraus, **wer das Raster
+schreibt**. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
 die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge

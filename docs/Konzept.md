@@ -584,9 +584,17 @@ Notizen im Zentrum.
   sondern **heimatlos** und landen sichtbar im Pool. Einträge in `slots`, die auf den
   gelöschten Track oder Block zeigen, verschwinden dagegen mit: Sie bezeichnen keinen
   Slot mehr, und im Gegensatz zu einem Beitrag steckt in ihnen keine Arbeit.
-- **Streichen** — Alle Beiträge dieses Speakers in dieser Konferenz werden geleert, die
-  Slots sind wieder Löcher, das Engagement wandert nach `gestrichen`. Welche Slots und
-  Themen vorgesehen waren, bleibt als Spur im Engagement.
+- **Streichen** — Das Engagement wandert nach `gestrichen`, seine Beiträge verlieren
+  ihren Platz, die Slots sind wieder Löcher. Dabei wird **nach Titel unterschieden**:
+  Ein Beitrag mit Thema behält es und liegt danach ohne Speaker im Pool — daran hat
+  jemand gearbeitet, und „Thema steht, Speaker offen" ist ein vorgesehener Zustand. Ein
+  Beitrag ohne Titel trug nichts als den Namen des Speakers und wandert in den
+  Papierkorb des Vaults, aus dem er zurückholbar bleibt. Welche Slots und Themen
+  vorgesehen waren, bleibt als Spur im Engagement.
+
+  Streichen ist die einzige Stelle, an der das Plugin fremde Notizen anfasst, und es
+  wird von einer Geste ausgelöst, die man auch aus Versehen macht. Deshalb steht davor
+  eine Rückfrage, die jeden betroffenen Beitrag einzeln zeigt.
 - **Umsortieren** — Eine Karte zu verschieben schreibt `position` in allen Engagements
   der betroffenen Spalten neu, in einem Durchgang.
 - **Honorar** — Summe der Engagement-Honorare je Konferenz, gegen das `honorarbudget`.
