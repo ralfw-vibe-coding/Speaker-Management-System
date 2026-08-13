@@ -1,6 +1,7 @@
-import { Notice, type TFile } from "obsidian";
+import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import { istPlatzhalterName, type Datenschreiber } from "../daten/schreiben";
+import { BestaetigenModal, BlockModal, TagModal, TrackModal } from "./rasterModale";
 import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
@@ -63,6 +64,7 @@ export class Agenda {
 	private archiv = false;
 
 	constructor(
+		private app: App,
 		private daten: Datenzugriff,
 		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
@@ -158,6 +160,22 @@ export class Agenda {
 				void this.zeichnen(buehne, konferenz);
 			});
 		});
+
+		if (this.archiv) return;
+
+		// Das Raster gehört dem Plugin — hier wird es gebaut.
+		const werkzeuge = reiter.createDiv({ cls: "sms-werkzeuge" });
+		this.werkzeug(werkzeuge, "＋ Tag", () => void this.tagHinzufuegen());
+		if (tag) {
+			this.werkzeug(werkzeuge, "＋ Track", () => void this.trackHinzufuegen());
+			this.werkzeug(werkzeuge, "＋ Block", () => void this.blockHinzufuegen());
+			this.werkzeug(werkzeuge, "Tag löschen", () => void this.tagLoeschen());
+		}
+	}
+
+	private werkzeug(eltern: HTMLElement, text: string, tun: () => void): void {
+		const knopf = eltern.createEl("button", { cls: "sms-werkzeug", text });
+		knopf.addEventListener("click", tun);
 	}
 
 	private rasterZeichnen(
@@ -184,7 +202,14 @@ export class Agenda {
 		raster.createDiv({ cls: "sms-raster-ecke", text: "ZEIT" });
 		for (const track of tracks) {
 			const kopf = raster.createDiv({ cls: "sms-trackkopf" });
-			kopf.createSpan({ cls: "sms-trackname", text: track.name });
+
+			const zeile = kopf.createDiv({ cls: "sms-trackzeile" });
+			zeile.createSpan({ cls: "sms-trackname", text: track.name });
+			if (!this.archiv) {
+				this.werkzeug(zeile, "✎", () => void this.trackAendern(track));
+				this.werkzeug(zeile, "✕", () => void this.trackLoeschen(track));
+			}
+
 			const ort = [track.raum, track.kapazitaet ? `${track.kapazitaet} Plätze` : undefined]
 				.filter((teil): teil is string => !!teil)
 				.join(" · ");
@@ -194,16 +219,14 @@ export class Agenda {
 		for (const block of tag.bloecke) {
 			// Ein Fixblock hat keine Slots: Pause, Registrierung, Abendprogramm.
 			if (block.fix) {
-				raster.createDiv({ cls: "sms-zeit" });
+				this.zeitZeichnen(raster, block);
 				const band = raster.createDiv({ cls: "sms-fixblock" });
 				band.style.gridColumn = `span ${tracks.length}`;
 				band.setText(`${block.fix} · ${zeitspanne(block)}`);
 				continue;
 			}
 
-			const zeit = raster.createDiv({ cls: "sms-zeit" });
-			zeit.createDiv({ text: block.von ?? "" });
-			zeit.createDiv({ cls: "sms-zeit-bis", text: block.bis ?? "" });
+			this.zeitZeichnen(raster, block);
 
 			// Ein plenarer Block belegt alle Tracks — ein Slot über die ganze Zeile.
 			if (block.plenar) {
@@ -378,6 +401,230 @@ export class Agenda {
 				text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
 			});
 		}
+	}
+
+	private zeitZeichnen(raster: HTMLElement, block: Block): void {
+		const zeit = raster.createDiv({ cls: "sms-zeit" });
+		zeit.createDiv({ text: block.von ?? "" });
+		zeit.createDiv({ cls: "sms-zeit-bis", text: block.bis ?? "" });
+
+		if (this.archiv) return;
+		const werkzeuge = zeit.createDiv({ cls: "sms-werkzeuge" });
+		this.werkzeug(werkzeuge, "✎", () => void this.blockAendern(block));
+		this.werkzeug(werkzeuge, "✕", () => void this.blockLoeschen(block));
+	}
+
+	// -------------------------------------------------------- Raster ändern
+
+	/** Der nächste freie Bezeichner der Form `b7` oder `t3`. */
+	private naechsteId(praefix: string, vergeben: string[]): string {
+		let zahl = 1;
+		while (vergeben.includes(`${praefix}${zahl}`)) zahl++;
+		return `${praefix}${zahl}`;
+	}
+
+	private async rasterSchreiben(tracks: Track[], tage: Tag[]): Promise<void> {
+		if (!this.konferenz) return;
+		try {
+			await this.schreiber.rasterSchreiben(this.konferenz, tracks, tage);
+		} catch (fehler) {
+			new Notice(`Das Raster ließ sich nicht schreiben: ${String(fehler)}`);
+		}
+	}
+
+	private async tagHinzufuegen(): Promise<void> {
+		const konferenz = this.konferenz;
+		if (!konferenz) return;
+
+		const datum = await new TagModal(this.app).frage();
+		if (!datum) return;
+
+		const vergeben = konferenz.tage.flatMap((tag) => tag.bloecke.map((block) => block.id));
+		const neu: Tag = {
+			datum,
+			tracks: konferenz.tracks.map((track) => track.id),
+			bloecke: [],
+		};
+		// Ein Tag ohne Blöcke wäre eine leere Seite — drei sind ein Anfang.
+		for (const zeiten of [
+			{ von: "09:00", bis: "09:45" },
+			{ von: "09:45", bis: "10:00", fix: "Pause" },
+			{ von: "10:00", bis: "10:45" },
+		]) {
+			const id = this.naechsteId("b", vergeben);
+			vergeben.push(id);
+			neu.bloecke.push({ id, ...zeiten, plenar: false, nur: [] });
+		}
+
+		const tage = [...konferenz.tage, neu].sort((a, b) => (a.datum ?? "").localeCompare(b.datum ?? ""));
+		this.tagIndex = tage.indexOf(neu);
+		await this.rasterSchreiben(konferenz.tracks, tage);
+	}
+
+	private async tagLoeschen(): Promise<void> {
+		const konferenz = this.konferenz;
+		const tag = konferenz?.tage[this.tagIndex];
+		if (!konferenz || !tag) return;
+
+		const betroffene = this.beitraegeIn(tag.bloecke.map((block) => block.id));
+		const ja = await new BestaetigenModal(
+			this.app,
+			"Tag löschen?",
+			betroffene.length === 0
+				? "Der Tag hat keine Beiträge. Seine Blöcke verschwinden mit ihm."
+				: `${anzahlBeitraege(betroffene.length)} an diesem Tag verlieren ihren Platz und landen im Pool.`,
+			"Löschen",
+		).frage();
+		if (!ja) return;
+
+		await this.inDenPool(betroffene);
+		const tage = konferenz.tage.filter((eigener) => eigener !== tag);
+		this.tagIndex = Math.max(0, this.tagIndex - 1);
+		await this.rasterSchreiben(konferenz.tracks, tage);
+	}
+
+	private async trackHinzufuegen(): Promise<void> {
+		const konferenz = this.konferenz;
+		const tag = konferenz?.tage[this.tagIndex];
+		if (!konferenz || !tag) return;
+
+		const angaben = await new TrackModal(this.app).frage();
+		if (!angaben) return;
+
+		const id = this.naechsteId(
+			"t",
+			konferenz.tracks.map((track) => track.id),
+		);
+		const tracks = [...konferenz.tracks, { id, ...angaben }];
+		// Ein neuer Track gehört zunächst dem Tag, an dem er entstand.
+		const tage = konferenz.tage.map((eigener) =>
+			eigener === tag ? { ...eigener, tracks: [...eigener.tracks, id] } : eigener,
+		);
+		await this.rasterSchreiben(tracks, tage);
+	}
+
+	private async trackAendern(track: Track): Promise<void> {
+		const konferenz = this.konferenz;
+		if (!konferenz) return;
+
+		const angaben = await new TrackModal(this.app, track).frage();
+		if (!angaben) return;
+
+		const tracks = konferenz.tracks.map((eigener) =>
+			eigener.id === track.id ? { id: track.id, ...angaben } : eigener,
+		);
+		await this.rasterSchreiben(tracks, konferenz.tage);
+	}
+
+	private async trackLoeschen(track: Track): Promise<void> {
+		const konferenz = this.konferenz;
+		if (!konferenz) return;
+
+		const betroffene = this.daten
+			.beitraege()
+			.filter((beitrag) => beitrag.konferenz === konferenz.name && beitrag.track === track.id);
+
+		const ja = await new BestaetigenModal(
+			this.app,
+			`Track „${track.name}“ löschen?`,
+			betroffene.length === 0
+				? "Der Track wird aus allen Tagen entfernt."
+				: `Er wird aus allen Tagen entfernt. ${anzahlBeitraege(betroffene.length)} verlieren ihren Platz und landen im Pool.`,
+			"Löschen",
+		).frage();
+		if (!ja) return;
+
+		await this.inDenPool(betroffene);
+		const tracks = konferenz.tracks.filter((eigener) => eigener.id !== track.id);
+		const tage = konferenz.tage.map((tag) => ({
+			...tag,
+			tracks: tag.tracks.filter((id) => id !== track.id),
+		}));
+		await this.rasterSchreiben(tracks, tage);
+	}
+
+	private async blockHinzufuegen(): Promise<void> {
+		const konferenz = this.konferenz;
+		const tag = konferenz?.tage[this.tagIndex];
+		if (!konferenz || !tag) return;
+
+		const angaben = await new BlockModal(this.app).frage();
+		if (!angaben) return;
+
+		const id = this.naechsteId(
+			"b",
+			konferenz.tage.flatMap((eigener) => eigener.bloecke.map((block) => block.id)),
+		);
+		const bloecke = [...tag.bloecke, { id, ...angaben }].sort((a, b) =>
+			(a.von ?? "").localeCompare(b.von ?? ""),
+		);
+		const tage = konferenz.tage.map((eigener) =>
+			eigener === tag ? { ...eigener, bloecke } : eigener,
+		);
+		await this.rasterSchreiben(konferenz.tracks, tage);
+	}
+
+	private async blockAendern(block: Block): Promise<void> {
+		const konferenz = this.konferenz;
+		const tag = konferenz?.tage[this.tagIndex];
+		if (!konferenz || !tag) return;
+
+		const angaben = await new BlockModal(this.app, block).frage();
+		if (!angaben) return;
+
+		// Die ID bleibt: An ihr hängen die Beiträge. Nur die Zeit ist ein Attribut.
+		const bloecke = tag.bloecke
+			.map((eigener) => (eigener.id === block.id ? { id: block.id, ...angaben } : eigener))
+			.sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const tage = konferenz.tage.map((eigener) =>
+			eigener === tag ? { ...eigener, bloecke } : eigener,
+		);
+		await this.rasterSchreiben(konferenz.tracks, tage);
+	}
+
+	private async blockLoeschen(block: Block): Promise<void> {
+		const konferenz = this.konferenz;
+		const tag = konferenz?.tage[this.tagIndex];
+		if (!konferenz || !tag) return;
+
+		const betroffene = this.beitraegeIn([block.id]);
+		const ja = await new BestaetigenModal(
+			this.app,
+			"Block löschen?",
+			betroffene.length === 0
+				? `Der Block ${zeitspanne(block)} wird aus diesem Tag entfernt.`
+				: `${anzahlBeitraege(betroffene.length)} in diesem Block verlieren ihren Platz und landen im Pool.`,
+			"Löschen",
+		).frage();
+		if (!ja) return;
+
+		await this.inDenPool(betroffene);
+		const bloecke = tag.bloecke.filter((eigener) => eigener.id !== block.id);
+		const tage = konferenz.tage.map((eigener) =>
+			eigener === tag ? { ...eigener, bloecke } : eigener,
+		);
+		await this.rasterSchreiben(konferenz.tracks, tage);
+	}
+
+	private beitraegeIn(blockIds: string[]): Beitrag[] {
+		const konferenz = this.konferenz;
+		if (!konferenz) return [];
+		return this.daten
+			.beitraege()
+			.filter(
+				(beitrag) =>
+					beitrag.konferenz === konferenz.name &&
+					beitrag.block !== undefined &&
+					blockIds.includes(beitrag.block),
+			);
+	}
+
+	/** Wer seinen Platz verliert, wird nicht heimatlos, sondern liegt im Pool. */
+	private async inDenPool(beitraege: Beitrag[]): Promise<void> {
+		if (beitraege.length === 0) return;
+		await this.schreiber.beitraegePlatzieren(
+			beitraege.map((beitrag) => ({ datei: beitrag.datei })),
+		);
 	}
 
 	// -------------------------------------------------------------- Ziehen
@@ -621,6 +868,10 @@ function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
 
 	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
 	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
+}
+
+function anzahlBeitraege(wert: number): string {
+	return wert === 1 ? "Ein Beitrag" : `${wert} Beiträge`;
 }
 
 function zeitspanne(block: Block): string {

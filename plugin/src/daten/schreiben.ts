@@ -256,6 +256,39 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Schreibt Tracks und Tage der Konferenz zurück. Das Raster gehört dem
+	 * Plugin: Von Hand zerlegt ein falsches Leerzeichen im verschachtelten YAML
+	 * nicht ein Feld, sondern das ganze Frontmatter.
+	 *
+	 * Obsidian schreibt dabei in seinem eigenen YAML-Stil — aus den knappen
+	 * `{ id: b1, … }`-Zeilen werden ausgeschriebene Einträge. Der Inhalt bleibt
+	 * derselbe, das Aussehen ändert sich einmalig.
+	 */
+	async rasterSchreiben(konferenz: Konferenz, tracks: Track[], tage: Tag[]): Promise<void> {
+		await this.app.fileManager.processFrontMatter(konferenz.datei, (fm) => {
+			fm.tracks = tracks.map((track) => ({
+				id: track.id,
+				name: track.name,
+				...(track.raum ? { raum: track.raum } : {}),
+				...(track.kapazitaet !== undefined ? { kapazitaet: track.kapazitaet } : {}),
+			}));
+
+			fm.tage = tage.map((tag) => ({
+				...(tag.datum ? { datum: tag.datum } : {}),
+				tracks: tag.tracks,
+				bloecke: tag.bloecke.map((block) => ({
+					id: block.id,
+					...(block.von ? { von: block.von } : {}),
+					...(block.bis ? { bis: block.bis } : {}),
+					...(block.plenar ? { plenar: true } : {}),
+					...(block.fix ? { fix: block.fix } : {}),
+					...(block.nur.length > 0 ? { nur: block.nur } : {}),
+				})),
+			}));
+		});
+	}
+
+	/**
 	 * Streichen: Der Speaker fällt aus, seine Slots werden wieder Löcher.
 	 *
 	 * Ein Beitrag **mit** Titel behält sein Thema und landet ohne Speaker und

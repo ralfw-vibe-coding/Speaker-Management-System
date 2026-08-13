@@ -14,7 +14,9 @@
 
 .sms-titelzeile {
 	display: flex;
-	align-items: baseline;
+	/* Nicht an der Schriftlinie: Auswahlfeld und Knopf haben eigene Rahmen und
+	   Innenabstände, an der Grundlinie stünden sie schief. */
+	align-items: center;
 	gap: 8px;
 	margin-bottom: 12px;
 }
@@ -465,6 +467,39 @@
 	display: flex;
 	gap: 6px;
 	margin-bottom: 16px;
+}
+
+.sms-werkzeuge {
+	display: inline-flex;
+	gap: 4px;
+	margin-left: 4px;
+}
+
+.sms-werkzeug {
+	padding: 1px 8px;
+	font-size: 0.75em;
+	line-height: 1.5;
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+	color: var(--text-muted);
+	cursor: pointer;
+	box-shadow: none;
+	height: auto;
+}
+
+.sms-werkzeug:hover {
+	color: var(--text-normal);
+}
+
+.sms-trackzeile {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.sms-trackzeile .sms-trackname {
+	flex: 1;
 }
 
 .sms-agenda-unten {

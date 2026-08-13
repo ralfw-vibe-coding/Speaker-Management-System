@@ -628,10 +628,9 @@ deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht i
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
-- **Das Raster bearbeiten** — Entschieden ist, dass das Plugin es schreibt; was fehlt,
-  ist die Bedienung dafür in der Agenda: Tage, Tracks und Blöcke anlegen, umbenennen,
-  verschieben, löschen. Eine neue Konferenz bekommt vorerst ein Anfangsraster mit einem
-  Tag, einem Track und drei Blöcken, das man nur im Frontmatter ändern kann.
+- **Blöcke stapeln sich nicht** — Zeiten werden einzeln gepflegt; einen Block zu
+  verschieben lässt die folgenden stehen. Bei einem vollen Tag heißt das Nacharbeit.
+  Soll es später eine Kette geben, die alles Folgende mitschiebt?
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?

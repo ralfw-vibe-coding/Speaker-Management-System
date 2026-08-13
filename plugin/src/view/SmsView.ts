@@ -48,7 +48,7 @@ export class SmsView extends ItemView {
 			this.speakerAnlegen(vorhandene),
 		);
 		this.statustafel = new Statustafel(plugin.app, this.daten, this.schreiber, oeffnen);
-		this.agenda = new Agenda(this.daten, this.schreiber, oeffnen);
+		this.agenda = new Agenda(plugin.app, this.daten, this.schreiber, oeffnen);
 	}
 
 	private konferenzAnlegen(vorhandene: string[]): void {

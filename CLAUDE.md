@@ -158,9 +158,13 @@ Papierkorb, und was vorgesehen war, wird ins Engagement geschrieben.
 Über den Knopf neben der Konferenzauswahl entstehen **Konferenz und Veranstalter**. Die
 neue Konferenz bekommt ein Anfangsraster: ein Tag, ein Track, drei Blöcke.
 
-**Noch nicht da:** das Bearbeiten des Rasters in der Agenda — Tage, Tracks und Blöcke
-anlegen, umbenennen, verschieben, löschen. Bis dahin ändert man das Raster im
-Frontmatter der Konferenznotiz. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
+Das **Raster** wird in der Agenda gebaut: Tage, Tracks und Blöcke anlegen, ändern,
+löschen. Beim Löschen verlieren die betroffenen Beiträge ihren Platz und landen im
+Pool — hinter einer Rückfrage, die sie zählt. Blockzeiten werden einzeln gepflegt; ein
+Block verschiebt die folgenden nicht.
+
+Die Block-ID bleibt beim Ändern erhalten, denn an ihr hängen die Beiträge. Verschoben
+wird nur die Zeit. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
 die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge
