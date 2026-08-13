@@ -139,10 +139,14 @@ und `track`. Ist das Ziel belegt, **tauschen** die beiden ihre Plätze, statt ei
 doppelt zu belegen. Zieht man einen **Kandidaten** in einen freien Slot, entsteht seine
 Beitragsnotiz — titellos und vorläufig nach ihrem Platz benannt.
 
+Umbenannt wird, wo das Plugin die Ursache ist: beim Anlegen und beim Verschieben eines
+titellosen Beitrags. Steht ein Titel da, bietet die Karte es an — ein Automatismus auf
+`titel` würde beim Tippen bei jedem Buchstaben umbenennen. Angefasst wird nur, was noch
+den Platzhalternamen trägt.
+
 **Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
 das Bearbeiten des Rasters selbst — das setzt die offene Entscheidung voraus, **wer das
-Raster schreibt** —, das Umbenennen eines Beitrags, sobald er einen Titel bekommt, und
-die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
+Raster schreibt** — und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
 die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge

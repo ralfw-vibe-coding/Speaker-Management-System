@@ -160,6 +160,32 @@ export class Datenschreiber {
 		return this.app.vault.create(pfad, zeilen.join("\n"));
 	}
 
+	/**
+	 * Benennt einen Beitrag nach seinem Titel. Obsidian zieht die Links dabei
+	 * mit; angefasst wird nur, wer noch seinen Platzhalternamen trägt.
+	 */
+	async beitragUmbenennen(datei: TFile, konferenz: Konferenz, titel: string): Promise<void> {
+		const ordner = datei.parent?.path ?? "";
+		const wunsch = ohneVerbotene(`${konferenz.name} – ${titel}`);
+		if (wunsch === datei.basename) return;
+
+		const name = await this.freierName(ordner, wunsch);
+		await this.app.fileManager.renameFile(datei, normalizePath(`${ordner}/${name}.md`));
+	}
+
+	/** Benennt einen titellosen Beitrag nach seinem neuen Platz. */
+	async platzhalterNachziehen(
+		datei: TFile,
+		ziel: { konferenz: Konferenz; tag: Tag; block: Block; track?: Track },
+	): Promise<void> {
+		const ordner = datei.parent?.path ?? "";
+		const wunsch = vorlaeufigerName(ziel);
+		if (wunsch === datei.basename) return;
+
+		const name = await this.freierName(ordner, wunsch);
+		await this.app.fileManager.renameFile(datei, normalizePath(`${ordner}/${name}.md`));
+	}
+
 	/** Hängt eine Zahl an, falls der Name schon vergeben ist. */
 	private async freierName(ordner: string, wunsch: string): Promise<string> {
 		let name = wunsch;
@@ -205,4 +231,13 @@ function vorlaeufigerName(ziel: {
 /** Beim Beitrag wird bereinigt statt abgelehnt: Der Titel steht im Feld `titel`. */
 function ohneVerbotene(name: string): string {
 	return name.replace(new RegExp(VERBOTENE_ZEICHEN.source, "g"), "").trim();
+}
+
+/**
+ * Trägt die Notiz noch den Namen, den das Plugin ihr beim Anlegen gegeben hat?
+ * Nur dann wird umbenannt — wer eine Beitragsnotiz einmal selbst benannt hat,
+ * soll nicht später überstimmt werden.
+ */
+export function istPlatzhalterName(dateiname: string, konferenzName: string): boolean {
+	return dateiname.startsWith(`${konferenzName} – Beitrag `);
 }

@@ -1,6 +1,6 @@
 import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
-import type { Datenschreiber } from "../daten/schreiben";
+import { istPlatzhalterName, type Datenschreiber } from "../daten/schreiben";
 import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
@@ -285,6 +285,8 @@ export class Agenda {
 			});
 		}
 
+		this.umbenennenAnbieten(zelle, beitrag);
+
 		return zelle;
 	}
 
@@ -332,6 +334,8 @@ export class Agenda {
 			} else {
 				fuss.createSpan({ cls: "sms-abzeichen", text: "noch nicht platziert" });
 			}
+
+			this.umbenennenAnbieten(karte, beitrag);
 		}
 
 		// Kandidaten, für die es noch gar keinen Beitrag gibt.
@@ -473,8 +477,82 @@ export class Agenda {
 
 		try {
 			await this.schreiber.beitraegePlatzieren(aenderungen);
+			// Ein Platzhaltername nennt den Slot; zieht der Beitrag um, zieht der
+			// Name mit. Das ist eine Aktion des Plugins, kein Tippen — deshalb
+			// darf es hier automatisch geschehen.
+			await this.platzhalterNachziehen(beitrag, ziel);
+			if (belegtVon) {
+				await this.platzhalterNachziehen(
+					belegtVon,
+					this.slotOrt(beitrag.block, beitrag.track),
+				);
+			}
 		} catch (fehler) {
 			new Notice(`Der Beitrag ließ sich nicht verschieben: ${String(fehler)}`);
+		}
+	}
+
+	private async platzhalterNachziehen(
+		beitrag: Beitrag,
+		ziel: Ziel | undefined,
+	): Promise<void> {
+		const konferenz = this.konferenz;
+		if (!konferenz || !ziel) return;
+		if (beitrag.titel) return;
+		if (!istPlatzhalterName(beitrag.datei.basename, konferenz.name)) return;
+
+		await this.schreiber.platzhalterNachziehen(beitrag.datei, {
+			konferenz,
+			tag: ziel.tag,
+			block: ziel.block,
+			track: ziel.track,
+		});
+	}
+
+	/** Sucht Tag, Block und Track zu einem Paar aus IDs. */
+	private slotOrt(blockId?: string, trackId?: string): Ziel | undefined {
+		if (!this.konferenz || !blockId) return undefined;
+
+		for (const tag of this.konferenz.tage) {
+			const block = tag.bloecke.find((b) => b.id === blockId);
+			if (!block) continue;
+			const track = this.konferenz.tracks.find((t) => t.id === trackId);
+			return { tag, block, track };
+		}
+		return undefined;
+	}
+
+	/**
+	 * Trägt die Notiz noch ihren Platzhalternamen, obwohl der Titel dasteht,
+	 * bietet die Karte das Umbenennen an — auf Klick, nicht von selbst. Beim
+	 * Tippen im Property-Editor würde ein Automatismus die Datei bei jedem
+	 * Buchstaben umbenennen.
+	 */
+	private umbenennenAnbieten(karte: HTMLElement, beitrag: Beitrag): void {
+		const konferenz = this.konferenz;
+		if (!konferenz || !beitrag.titel) return;
+		if (!istPlatzhalterName(beitrag.datei.basename, konferenz.name)) return;
+
+		const zeile = karte.createDiv({ cls: "sms-slot-hinweis" });
+		zeile.createSpan({ text: "Notiz heißt noch nach ihrem Platz · " });
+
+		const knopf = zeile.createSpan({ cls: "sms-umbenennen", text: "umbenennen" });
+		knopf.addEventListener("click", (ereignis) => {
+			// Sonst öffnet der Klick zusätzlich die Notiz.
+			ereignis.stopPropagation();
+			void this.umbenennen(beitrag);
+		});
+	}
+
+	/** Der Platzhalter hat ausgedient, sobald ein Titel dasteht. */
+	private async umbenennen(beitrag: Beitrag): Promise<void> {
+		const konferenz = this.konferenz;
+		if (!konferenz || !beitrag.titel) return;
+
+		try {
+			await this.schreiber.beitragUmbenennen(beitrag.datei, konferenz, beitrag.titel);
+		} catch (fehler) {
+			new Notice(`Die Notiz ließ sich nicht umbenennen: ${String(fehler)}`);
 		}
 	}
 

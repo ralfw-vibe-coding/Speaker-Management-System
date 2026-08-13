@@ -614,6 +614,12 @@
 	opacity: 0.4;
 }
 
+.sms-umbenennen {
+	color: var(--text-accent);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 .sms-poolnotiz {
 	margin-top: 4px;
 	color: var(--text-faint);

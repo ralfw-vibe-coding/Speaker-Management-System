@@ -127,6 +127,19 @@ Ein Beitrag darf titellos entstehen (Speaker steht, Thema offen). Er heißt dann
 vorläufig `.NET Day 2026 – Beitrag Mi 12 Uhr Track B.md` und wird umbenannt, sobald ein
 Titel da ist; Obsidian zieht die Links dabei mit.
 
+**Umbenannt wird nur, wo das Plugin die Ursache ist — sonst auf Klick.** Ein
+Automatismus, der auf das Feld `titel` hört, würde beim Tippen im Property-Editor bei
+jedem Buchstaben umbenennen; der `metadataCache` meldet jede Zwischenfassung. Also:
+
+- Beim **Anlegen** vergibt das Plugin den Platzhalternamen.
+- Beim **Verschieben** eines titellosen Beitrags zieht der Platzhalter mit, denn der
+  Zug ist eine Aktion des Plugins.
+- Steht ein **Titel** da, bietet die Karte „umbenennen" an. Ein Klick, kein Automatismus.
+
+Angefasst wird dabei nur, was noch den Platzhalternamen trägt — wer eine Beitragsnotiz
+einmal selbst benannt hat, wird nicht überstimmt. Im Pool bleibt der Name stehen, wie er
+ist: Ein Beitrag ohne Ort hat nichts, wonach er heißen könnte.
+
 ### Wer die Dateien anlegt
 
 Notizen entstehen **durch den View**, nicht von Hand. Das Plugin besitzt die Dateien:
