@@ -2,6 +2,7 @@
 node_modules/
 plugin/main.js
 plugin/*.js.map
+plugin/tests/build/
 
 # Obsidian-Zustand des Test-Vaults (Layout, Cache, Plugin-Daten)
 # community-plugins.json gehört dazu: Obsidian schreibt die Datei beim Start leer,

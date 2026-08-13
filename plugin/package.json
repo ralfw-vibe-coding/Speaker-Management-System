@@ -1,13 +1,14 @@
 {
   "name": "speaker-management-system",
-  "version": "0.7.1",
-  "description": "Obsidian-Plugin für das Content Management von Konferenzen.",
+  "version": "0.8.0",
+  "description": "Obsidian-Plugin f\u00fcr das Content Management von Konferenzen.",
   "main": "main.js",
   "private": true,
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "test": "node esbuild.tests.mjs && node --test \"tests/build/*.test.mjs\""
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

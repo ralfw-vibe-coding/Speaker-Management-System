@@ -42,7 +42,9 @@ cd plugin && npm install && npm run dev
 ```
 
 `npm run dev` baut bei jeder Änderung neu, `npm run build` erzeugt den
-Produktionsbuild und prüft vorher die Typen. `plugin/main.js` ist Build-Ergebnis und
+Produktionsbuild und prüft vorher die Typen. `npm test` prüft die Fachlogik —
+esbuild bündelt die Tests nach `tests/build/`, `node --test` führt sie aus; kein
+Test-Framework als Abhängigkeit. `plugin/main.js` ist Build-Ergebnis und
 nicht im Git — nach einem frischen Clone zeigt der Symlink also auf einen Ordner ohne
 `main.js`, und Obsidian meldet einen Ladefehler, bis einmal gebaut wurde.
 
@@ -64,6 +66,19 @@ was Obsidian in seiner Plugin-Liste zeigt.
 
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
 auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
+
+## Tests
+
+Geprüft wird die **Fachlogik**, nicht die Oberfläche: `felder.ts`, `namen.ts`,
+`projektion.ts` und die Rasterfunktionen aus `modell.ts`. Die kommen ohne Obsidian aus,
+deshalb braucht es keinen Vault und keine Attrappen — genau dafür sind sie aus den
+Sichten herausgelöst.
+
+Die Zahlen in den Tests sind die aus `Demodaten.md`. Wer dort etwas ändert, ändert sie
+hier mit; wer eine Regel ändert, sieht hier, was daran hing.
+
+Neue Fachlogik gehört in diese Module und nicht in eine Sicht — sonst ist sie nicht
+prüfbar.
 
 ## Verbindliche Entscheidungen
 
@@ -122,6 +137,10 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 - `src/main.ts` — Plugin, Ribbon-Icon, Kommando, Öffnen des Views
 - `src/settings.ts` — die drei Datenordner konfigurierbar
 - `src/daten/modell.ts` — die Typen, die Formatwerte, die Reihenfolge des Funnels
+- `src/daten/felder.ts` — das tolerante Lesen einzelner Frontmatter-Felder
+- `src/daten/namen.ts` — Dateinamen und Terminspannen
+- `src/daten/projektion.ts` — die Fachlogik der Sichten: Reifegrad, heimatlos, Dauer,
+  Überschneidungen, Doppelbelegung, Zielblöcke
 - `src/daten/lesen.ts` — `Datenzugriff`: Notizen über den `metadataCache` finden und
   tolerant lesen, samt Checklisten. Die `slots`-Ausnahmen der Konferenz werden noch
   nicht gelesen; sie kommen mit der Agenda.

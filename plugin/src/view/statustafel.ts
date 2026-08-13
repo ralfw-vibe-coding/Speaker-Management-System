@@ -1,6 +1,7 @@
 import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
+import { heimatlos } from "../daten/projektion";
 import { StreichenModal } from "./StreichenModal";
 import {
 	FUNNEL,
@@ -413,24 +414,6 @@ export class Statustafel {
 		}
 		return `Block ${beitrag.bloecke.join(", ")} (entfallen)`;
 	}
-}
-
-/**
- * Heimatlos ist ein Beitrag, dessen Slot es nicht mehr gibt: Der Block fehlt
- * im Raster, oder sein Track ist an diesem Tag nicht dabei. Ein Beitrag ganz
- * ohne Block liegt dagegen im Pool und ist nicht heimatlos.
- */
-function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
-	if (beitrag.bloecke.length === 0) return false;
-
-	const tag = konferenz.tage.find((t) =>
-		t.bloecke.some((block) => beitrag.bloecke.includes(block.id)),
-	);
-	if (!tag) return true;
-	if (!beitrag.track) return false;
-
-	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
-	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
 }
 
 function wochenOhneAntwort(engagement: Engagement): number | undefined {

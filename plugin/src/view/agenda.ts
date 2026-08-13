@@ -1,7 +1,22 @@
 import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
-import { istPlatzhalterName, type Datenschreiber } from "../daten/schreiben";
+import { istPlatzhalterName } from "../daten/namen";
+import type { Datenschreiber } from "../daten/schreiben";
 import { BestaetigenModal, BlockModal, TagModal, TrackModal } from "./rasterModale";
+import {
+	dauerImRaster,
+	doppeltBelegte,
+	heimatlos,
+	minuten,
+	nachZeit,
+	parallelStehende,
+	slotZustand,
+	ueberschneidungen,
+	verschoben,
+	zeitgleich,
+	zielBloecke,
+	type Zustand,
+} from "../daten/projektion";
 import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
@@ -16,9 +31,6 @@ import {
 	type Tag,
 	type Track,
 } from "../daten/modell";
-
-/** Der Reifegrad eines Slots — das Minimum aus eigener Füllung und Engagement. */
-type Zustand = "leer" | "halb" | "verdacht" | "gruen";
 
 const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 const MONATE_KURZ = [
@@ -158,7 +170,7 @@ export class Agenda {
 			});
 		}
 
-		const doppelt = tag ? this.doppeltBelegte(tag, beitraege) : 0;
+		const doppelt = tag ? doppeltBelegte(tag, beitraege) : 0;
 		if (doppelt > 0) {
 			marken.createSpan({
 				cls: "sms-marke sms-marke-rot",
@@ -166,7 +178,7 @@ export class Agenda {
 			});
 		}
 
-		const parallele = tag ? this.parallelStehende(tag, beitraege) : 0;
+		const parallele = tag ? parallelStehende(tag, beitraege) : 0;
 		if (parallele > 0) {
 			marken.createSpan({
 				cls: "sms-marke sms-marke-rot",
@@ -252,7 +264,7 @@ export class Agenda {
 
 		// Nach Uhrzeit, nicht nach Reihenfolge im Frontmatter: Von Hand kann dort
 		// alles stehen, und die Prüfung auf Lücken braucht die zeitliche Folge.
-		const bloecke = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const bloecke = nachZeit(tag.bloecke);
 
 		// Erst die Zeilen festlegen, dann zeichnen: Ein Beitrag über mehrere
 		// Blöcke muss wissen, über wie viele Zeilen er reicht — und dazwischen
@@ -423,7 +435,7 @@ export class Agenda {
 
 		// Gewünschte Dauer gegen das, was die Blöcke hergeben. Eine Regel je
 		// Format gäbe es nicht: Ein Workshop dauert 90 Minuten oder vier Stunden.
-		const vorhanden = this.dauerImRaster(beitrag, ziel.tag);
+		const vorhanden = dauerImRaster(beitrag, ziel.tag);
 		if (beitrag.dauer !== undefined && vorhanden > 0 && beitrag.dauer > vorhanden) {
 			zelle.createDiv({
 				cls: "sms-slot-hinweis sms-hinweis-rot",
@@ -444,9 +456,9 @@ export class Agenda {
 		}
 
 		// Niemand kann um elf an zwei Orten sein.
-		const zeitgleich = this.zeitgleich(beitrag, nachbarn.alle);
-		if (zeitgleich.length > 0) {
-			const orte = zeitgleich.map((anderer) => this.trackname(konferenz, anderer)).join(", ");
+		const gleichzeitige = zeitgleich(beitrag, nachbarn.alle);
+		if (gleichzeitige.length > 0) {
+			const orte = gleichzeitige.map((anderer) => this.trackname(konferenz, anderer)).join(", ");
 			zelle.createDiv({
 				cls: "sms-slot-hinweis sms-hinweis-rot",
 				text: `⚠ ${speaker} steht zeitgleich in ${orte}`,
@@ -746,7 +758,7 @@ export class Agenda {
 		// Verschoben wird als Block: Was danach kommt, rückt um dieselbe Spanne
 		// mit. Gerechnet wird gegen das Ende, damit auch das Verlängern eines
 		// Blocks die folgenden schiebt statt sie zu überdecken.
-		const sortiert = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const sortiert = nachZeit(tag.bloecke);
 		const stelle = sortiert.findIndex((eigener) => eigener.id === block.id);
 		const verschiebung = minuten(angaben.bis) - minuten(block.bis);
 
@@ -799,7 +811,7 @@ export class Agenda {
 		const tag = this.tagVon(beitrag);
 		if (!tag) return;
 
-		const sortiert = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const sortiert = nachZeit(tag.bloecke);
 		const letzter = [...sortiert].reverse().find((block) => beitrag.bloecke.includes(block.id));
 		if (!letzter) return;
 
@@ -839,7 +851,7 @@ export class Agenda {
 
 		const tag = this.tagVon(beitrag);
 		const sortiert = tag
-			? [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""))
+			? nachZeit(tag.bloecke)
 			: [];
 		const letzter = [...sortiert].reverse().find((block) => beitrag.bloecke.includes(block.id));
 
@@ -943,33 +955,7 @@ export class Agenda {
 		});
 	}
 
-	/**
-	 * Wie viel Zeit die belegten Blöcke zusammen hergeben. Fixblöcke, über die
-	 * ein Workshop hinwegläuft, zählen nicht mit — in der Kaffeepause arbeitet
-	 * niemand.
-	 */
-	private dauerImRaster(beitrag: Beitrag, tag: Tag): number {
-		return tag.bloecke
-			.filter((block) => beitrag.bloecke.includes(block.id))
-			.reduce((summe, block) => summe + Math.max(0, minuten(block.bis) - minuten(block.von)), 0);
-	}
 
-	/**
-	 * Andere Beiträge desselben Speakers, die sich mit diesem einen Block
-	 * teilen. Bei parallelen Tracks ist das ein Fehler im Programm, den man
-	 * beim Ziehen nicht sieht — man schaut auf die Spalte, nicht auf die Zeile.
-	 */
-	private zeitgleich(beitrag: Beitrag, alle: Beitrag[]): Beitrag[] {
-		const speaker = beitrag.speaker[0];
-		if (!speaker) return [];
-
-		return alle.filter(
-			(anderer) =>
-				anderer.datei !== beitrag.datei &&
-				anderer.speaker.includes(speaker) &&
-				anderer.bloecke.some((id) => beitrag.bloecke.includes(id)),
-		);
-	}
 
 	private trackname(konferenz: Konferenz, beitrag: Beitrag): string {
 		if (!beitrag.track) return "einem plenaren Block";
@@ -1020,7 +1006,7 @@ export class Agenda {
 		if (zug?.art !== "beitrag") return;
 
 		const beitrag = zug.beitrag;
-		const bloecke = ziel ? zielBloecke(beitrag, ziel) : [];
+		const bloecke = ziel ? zielBloecke(beitrag, ziel.tag, ziel.block.id) : [];
 		const track = ziel?.track?.id;
 		if (gleich(beitrag.bloecke, bloecke) && beitrag.track === track) return;
 
@@ -1118,43 +1104,7 @@ export class Agenda {
 
 	// ---------------------------------------------------------------- Zählen
 
-	/** Slots dieses Tages, in denen mehr als ein Beitrag steht. */
-	private doppeltBelegte(tag: Tag, beitraege: Beitrag[]): number {
-		let doppelt = 0;
-		for (const block of tag.bloecke) {
-			if (block.fix) continue;
 
-			const hier = beitraege.filter((beitrag) => beitrag.bloecke.includes(block.id));
-			if (block.plenar) {
-				if (hier.length > 1) doppelt++;
-				continue;
-			}
-
-			const jeTrack = new Map<string, number>();
-			for (const beitrag of hier) {
-				const schluessel = beitrag.track ?? "";
-				jeTrack.set(schluessel, (jeTrack.get(schluessel) ?? 0) + 1);
-			}
-			for (const anzahl of jeTrack.values()) if (anzahl > 1) doppelt++;
-		}
-		return doppelt;
-	}
-
-	/** Speaker, die an diesem Tag in zwei gleichzeitigen Beiträgen stehen. */
-	private parallelStehende(tag: Tag, beitraege: Beitrag[]): number {
-		const namen = new Set<string>();
-		for (const block of tag.bloecke) {
-			const hier = beitraege.filter((beitrag) => beitrag.bloecke.includes(block.id));
-			const gesehen = new Set<string>();
-			for (const beitrag of hier) {
-				for (const speaker of beitrag.speaker) {
-					if (gesehen.has(speaker)) namen.add(speaker);
-					gesehen.add(speaker);
-				}
-			}
-		}
-		return namen.size;
-	}
 
 	/** Löcher sind die Slots dieses Tages, in denen nichts steht. */
 	private loecher(konferenz: Konferenz, tag: Tag, beitraege: Beitrag[]): number {
@@ -1169,51 +1119,7 @@ export class Agenda {
 	}
 }
 
-/**
- * Der Fortschritt eines Slots ist das Minimum aus eigener Füllung und dem
- * Status des zugehörigen Engagements.
- */
-function slotZustand(beitrag: Beitrag, engagement: Engagement | undefined): Zustand {
-	const hatThema = !!beitrag.titel;
-	const hatSpeaker = beitrag.speaker.length > 0;
 
-	if (!hatThema || !hatSpeaker) return "halb";
-	if (engagement && ZUGESAGT_UND_WEITER.includes(engagement.status)) return "gruen";
-	return "verdacht";
-}
-
-/** Wie in der Statustafel: kein Block heißt Pool, ein verschwundener heißt heimatlos. */
-function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
-	if (beitrag.bloecke.length === 0) return false;
-
-	const tag = konferenz.tage.find((t) =>
-		t.bloecke.some((block) => beitrag.bloecke.includes(block.id)),
-	);
-	if (!tag) return true;
-	if (!beitrag.track) return false;
-
-	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
-	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
-}
-
-/**
- * Wohin ein gezogener Beitrag kommt. Seine Länge bleibt erhalten: Ein Workshop
- * über zwei Blöcke bleibt beim Umziehen zwei Blöcke lang, gerechnet ab dem
- * Zielblock. Fixblöcke zählen nicht mit.
- */
-function zielBloecke(beitrag: Beitrag, ziel: Ziel): string[] {
-	const gewuenscht = Math.max(1, beitrag.bloecke.length);
-	const sortiert = [...ziel.tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
-	const start = sortiert.findIndex((block) => block.id === ziel.block.id);
-	if (start < 0) return [ziel.block.id];
-
-	const ids: string[] = [];
-	for (let i = start; i < sortiert.length && ids.length < gewuenscht; i++) {
-		if (sortiert[i].fix) continue;
-		ids.push(sortiert[i].id);
-	}
-	return ids;
-}
 
 function gleich(einer: string[], anderer: string[]): boolean {
 	return einer.length === anderer.length && einer.every((wert, i) => wert === anderer[i]);
@@ -1245,18 +1151,6 @@ function hoehe(
 	return Math.max(1, zeileVon(letzter.id) - eigeneZeile + 1);
 }
 
-/** Wie viele Blöcke eines Tages in den vorherigen hineinragen. */
-function ueberschneidungen(tag: Tag): number {
-	const bloecke = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
-
-	let strittig = 0;
-	let vorherBis: string | undefined;
-	for (const block of bloecke) {
-		if (vorherBis && block.von && minuten(block.von) < minuten(vorherBis)) strittig++;
-		vorherBis = block.bis ?? vorherBis;
-	}
-	return strittig;
-}
 
 /** Aus 75 wird `1 Std 15 Min`. */
 function dauerText(minuten: number): string {
@@ -1266,21 +1160,6 @@ function dauerText(minuten: number): string {
 	return rest === 0 ? `${stunden} Std` : `${stunden} Std ${rest} Min`;
 }
 
-/** `09:45` wird zu 585. Fehlt die Zeit, ist sie null wert. */
-function minuten(zeit?: string): number {
-	const treffer = /^(\d{1,2}):(\d{2})/.exec(zeit ?? "");
-	if (!treffer) return 0;
-	return Number(treffer[1]) * 60 + Number(treffer[2]);
-}
-
-/** Schiebt eine Uhrzeit um Minuten, innerhalb desselben Tages. */
-function verschoben(zeit: string | undefined, um: number): string | undefined {
-	if (!zeit) return zeit;
-	const gesamt = Math.max(0, Math.min(24 * 60 - 1, minuten(zeit) + um));
-	const stunde = String(Math.floor(gesamt / 60)).padStart(2, "0");
-	const rest = String(gesamt % 60).padStart(2, "0");
-	return `${stunde}:${rest}`;
-}
 
 function anzahlBeitraege(wert: number): string {
 	return wert === 1 ? "Ein Beitrag" : `${wert} Beiträge`;
