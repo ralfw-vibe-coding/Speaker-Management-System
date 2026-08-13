@@ -2,6 +2,7 @@ import { debounce, ItemView, TFile, WorkspaceLeaf } from "obsidian";
 import type SmsPlugin from "../main";
 import { Datenzugriff } from "../daten/lesen";
 import { Speakerkatalog } from "./katalog";
+import { Statustafel } from "./statustafel";
 
 export const VIEW_TYPE_SMS = "sms-arbeitsplatz";
 
@@ -16,20 +17,27 @@ const SICHTEN: { id: Sicht; titel: string }[] = [
 
 /**
  * Der eine Arbeitsplatz des Plugins. Er hält den gesamten Zustand der
- * Bedienung (welche Konferenz, welche Sicht) und rendert darin die
+ * Bedienung — welche Sicht, welche Konferenz — und rendert darin die
  * jeweilige Sicht.
  */
 export class SmsView extends ItemView {
 	private sicht: Sicht = "katalog";
+	/** Die Konferenz, die gerade dran ist. Alle Sichten teilen sie sich. */
+	private konferenzName: string | null = null;
+
 	private daten: Datenzugriff;
 	private katalog: Speakerkatalog;
+	private statustafel: Statustafel;
 
 	constructor(leaf: WorkspaceLeaf, private plugin: SmsPlugin) {
 		super(leaf);
 		// Bewusst plugin.app statt this.app: Das Plugin hat die App sicher,
 		// die Basisklasse setzt ihr Feld erst im Verlauf des Konstruktors.
 		this.daten = new Datenzugriff(plugin.app, plugin);
-		this.katalog = new Speakerkatalog(this.daten, (datei) => this.notizOeffnen(datei));
+
+		const oeffnen = (datei: TFile) => void this.notizOeffnen(datei);
+		this.katalog = new Speakerkatalog(this.daten, oeffnen);
+		this.statustafel = new Statustafel(this.daten, oeffnen);
 	}
 
 	getViewType(): string {
@@ -61,6 +69,12 @@ export class SmsView extends ItemView {
 		root.empty();
 		root.addClass("sms-view");
 
+		const konferenzen = this.daten.konferenzen();
+		if (!konferenzen.some((k) => k.name === this.konferenzName)) {
+			// Beim ersten Zeichnen und nach einem Umbenennen: die jüngste nehmen.
+			this.konferenzName = konferenzen[0]?.name ?? null;
+		}
+
 		const kopf = root.createDiv({ cls: "sms-kopf" });
 
 		// Die Version steht sichtbar im Kopf, damit man nach einem Pull erkennt,
@@ -68,10 +82,22 @@ export class SmsView extends ItemView {
 		// eingesetzt — siehe globals.d.ts.
 		const titelzeile = kopf.createDiv({ cls: "sms-titelzeile" });
 		titelzeile.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
-		titelzeile.createEl("span", {
-			text: `v${__SMS_VERSION__}`,
-			cls: "sms-version",
-		});
+		titelzeile.createEl("span", { text: `v${__SMS_VERSION__}`, cls: "sms-version" });
+
+		if (konferenzen.length > 0) {
+			const auswahl = titelzeile.createEl("select", { cls: "sms-konferenzwahl dropdown" });
+			for (const konferenz of konferenzen) {
+				const eintrag = auswahl.createEl("option", {
+					text: konferenz.name,
+					value: konferenz.name,
+				});
+				if (konferenz.name === this.konferenzName) eintrag.selected = true;
+			}
+			auswahl.addEventListener("change", () => {
+				this.konferenzName = auswahl.value;
+				void this.render();
+			});
+		}
 
 		const reiter = kopf.createDiv({ cls: "sms-reiter" });
 		for (const { id, titel } of SICHTEN) {
@@ -89,6 +115,12 @@ export class SmsView extends ItemView {
 
 		if (this.sicht === "katalog") {
 			await this.katalog.zeichnen(buehne);
+			return;
+		}
+
+		if (this.sicht === "statustafel") {
+			const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
+			await this.statustafel.zeichnen(buehne, konferenz);
 			return;
 		}
 

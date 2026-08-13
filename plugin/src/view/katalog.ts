@@ -73,7 +73,7 @@ export class Speakerkatalog {
 			const auftritt: Auftritt = {
 				konferenz: engagement.konferenz,
 				konferenzDatei: konferenz?.datei,
-				datum: konferenz?.tage[0],
+				datum: konferenz?.tage[0]?.datum,
 				status: engagement.status,
 				bewertung: engagement.bewertung,
 			};

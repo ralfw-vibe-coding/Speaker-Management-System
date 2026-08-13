@@ -1,11 +1,14 @@
 import { App, TFile } from "obsidian";
 import type SmsPlugin from "../main";
-import type { Engagement, Konferenz, Speaker } from "./modell";
+import type { Aufgaben, Beitrag, Block, Engagement, Konferenz, Speaker, Tag, Track } from "./modell";
+
+/** Die Überschrift, unter der in jeder Notiz die Checkliste steht. */
+const CHECKLISTE = "Zu klären";
 
 /**
- * Der Zugang zu den Notizen. Frontmatter kommt aus Obsidians `metadataCache`,
- * der es fertig geparst liefert und Änderungen meldet; nur für die
- * Notizvorschau wird der Body gelesen.
+ * Der Zugang zu den Notizen. Frontmatter, Überschriften und Aufgaben kommen
+ * aus Obsidians `metadataCache`, der sie fertig geparst liefert und Änderungen
+ * meldet; nur für die Notizvorschau wird der Body gelesen.
  *
  * Gelesen wird durchweg **tolerant**: Ein fehlendes Feld ist kein Fehler,
  * sondern der Normalfall am Anfang einer Planung. Ein falscher Typ macht das
@@ -54,6 +57,26 @@ export class Datenzugriff {
 				bewertung: zahl(fm.bewertung),
 				angefragtAm: text(fm.angefragt_am),
 				geantwortetAm: text(fm.geantwortet_am),
+				aufgaben: this.aufgaben(datei),
+			};
+		});
+	}
+
+	beitraege(): Beitrag[] {
+		return this.notizen(this.plugin.settings.konferenzenOrdner, "beitrag").map((datei) => {
+			const fm = this.frontmatter(datei) ?? {};
+			return {
+				datei,
+				konferenz: linkName(fm.konferenz) ?? "",
+				speaker: liste(fm.speaker)
+					.map((eintrag) => linkName(eintrag))
+					.filter((name): name is string => name !== undefined),
+				titel: text(fm.titel),
+				format: text(fm.format),
+				maxTeilnehmer: zahl(fm.max_teilnehmer),
+				block: text(fm.block),
+				track: text(fm.track),
+				aufgaben: this.aufgaben(datei),
 			};
 		});
 	}
@@ -68,10 +91,42 @@ export class Datenzugriff {
 					untertitel: text(fm.untertitel),
 					veranstalter: linkName(fm.veranstalter),
 					status: text(fm.status),
+					honorarbudget: zahl(fm.honorarbudget),
+					deadlineProgramm: text(fm.deadline_programm),
+					tracks: tracksLesen(fm.tracks),
 					tage: tageLesen(fm.tage),
 				};
 			})
+			// Die jüngste Konferenz zuerst — an ihr wird gerade gearbeitet.
 			.sort((a, b) => b.name.localeCompare(a.name, "de"));
+	}
+
+	/**
+	 * Zählt die Markdown-Tasks unter `## Zu klären`. Der `metadataCache` kennt
+	 * Überschriften und Aufgaben samt Zeile, sodass der Body ungelesen bleibt.
+	 */
+	private aufgaben(datei: TFile): Aufgaben {
+		const cache = this.app.metadataCache.getFileCache(datei);
+		const ueberschriften = cache?.headings ?? [];
+
+		const start = ueberschriften.find((h) => h.heading === CHECKLISTE);
+		if (!start) return { erledigt: 0, gesamt: 0 };
+
+		const ersteZeile = start.position.start.line;
+		const naechste = ueberschriften
+			.filter((h) => h.position.start.line > ersteZeile && h.level <= start.level)
+			.reduce((frueheste, h) => Math.min(frueheste, h.position.start.line), Infinity);
+
+		let erledigt = 0;
+		let gesamt = 0;
+		for (const eintrag of cache?.listItems ?? []) {
+			if (eintrag.task === undefined) continue;
+			const zeile = eintrag.position.start.line;
+			if (zeile <= ersteZeile || zeile >= naechste) continue;
+			gesamt++;
+			if (eintrag.task.toLowerCase() === "x") erledigt++;
+		}
+		return { erledigt, gesamt };
 	}
 
 	/** Alle Markdown-Notizen unterhalb eines Ordners mit passendem `type`. */
@@ -123,6 +178,10 @@ function zahl(wert: unknown): number | undefined {
 	return undefined;
 }
 
+function jaNein(wert: unknown): boolean {
+	return wert === true || wert === "true";
+}
+
 /** Verträgt eine Liste, einen einzelnen Wert und nichts. */
 function liste(wert: unknown): string[] {
 	if (Array.isArray(wert)) {
@@ -153,13 +212,42 @@ function linkName(wert: unknown): string | undefined {
 	return teile[teile.length - 1].trim() || undefined;
 }
 
-/** Aus der Liste `tage` nur die Daten — das Raster kommt mit der Agenda. */
-function tageLesen(wert: unknown): string[] {
+function eintraege(wert: unknown): Record<string, unknown>[] {
 	if (!Array.isArray(wert)) return [];
-	return wert
-		.map((tag) => {
-			if (!tag || typeof tag !== "object") return undefined;
-			return text((tag as Record<string, unknown>).datum);
-		})
-		.filter((d): d is string => d !== undefined);
+	return wert.filter(
+		(e): e is Record<string, unknown> => !!e && typeof e === "object" && !Array.isArray(e),
+	);
+}
+
+function tracksLesen(wert: unknown): Track[] {
+	return eintraege(wert)
+		.map((roh) => ({
+			id: text(roh.id) ?? "",
+			name: text(roh.name) ?? "",
+			raum: text(roh.raum),
+			kapazitaet: zahl(roh.kapazitaet),
+		}))
+		.filter((track) => track.id.length > 0);
+}
+
+function bloeckeLesen(wert: unknown): Block[] {
+	return eintraege(wert)
+		.map((roh) => ({
+			id: text(roh.id) ?? "",
+			von: text(roh.von),
+			bis: text(roh.bis),
+			plenar: jaNein(roh.plenar),
+			fix: text(roh.fix),
+			nur: liste(roh.nur),
+		}))
+		.filter((block) => block.id.length > 0);
+}
+
+/** Ein Tag ohne `bloecke` ist erlaubt — eine gelaufene Konferenz hat kein Raster mehr. */
+function tageLesen(wert: unknown): Tag[] {
+	return eintraege(wert).map((roh) => ({
+		datum: text(roh.datum),
+		tracks: liste(roh.tracks),
+		bloecke: bloeckeLesen(roh.bloecke),
+	}));
 }

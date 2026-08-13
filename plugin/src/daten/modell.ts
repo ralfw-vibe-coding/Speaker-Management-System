@@ -38,6 +38,15 @@ export const FUNNEL_TITEL: Record<string, string> = {
 	gestrichen: "gestrichen",
 };
 
+/** „zugesagt und weiter" — die Karten, bei denen die Person an Bord ist. */
+export const ZUGESAGT_UND_WEITER = ["zugesagt", "rechnung", "bezahlt"];
+
+/** Der Fortschritt einer Checkliste. Gezählt, nie gespeichert. */
+export interface Aufgaben {
+	erledigt: number;
+	gesamt: number;
+}
+
 export interface Speaker {
 	datei: TFile;
 	/** Der Dateiname ohne Endung — er ist die Identität, Wikilinks zeigen darauf. */
@@ -66,24 +75,63 @@ export interface Engagement {
 	speaker: string;
 	status: string;
 	position: number;
+	/** Das vereinbarte oder angebotene Honorar für das ganze Paket. */
 	honorar?: number;
 	bewertung?: number;
 	angefragtAm?: string;
 	geantwortetAm?: string;
+	aufgaben: Aufgaben;
 }
 
-/**
- * Von der Konferenz wird vorerst nur gelesen, was der Katalog braucht.
- * Raster, Tracks und Slots kommen mit der Agenda dazu.
- */
+export interface Beitrag {
+	datei: TFile;
+	konferenz: string;
+	/** Das Feld ist eine Liste; das Plugin schreibt nur einen Namen hinein. */
+	speaker: string[];
+	titel?: string;
+	format?: string;
+	maxTeilnehmer?: number;
+	/** Leer heißt: im Pool. */
+	block?: string;
+	/** Entfällt bei plenaren Blöcken. */
+	track?: string;
+	aufgaben: Aufgaben;
+}
+
+export interface Track {
+	id: string;
+	name: string;
+	raum?: string;
+	kapazitaet?: number;
+}
+
+export interface Block {
+	id: string;
+	von?: string;
+	bis?: string;
+	plenar?: boolean;
+	/** Programmpunkt ohne Speaker: Pause, Registrierung, Abendprogramm. */
+	fix?: string;
+	/** Schränkt den Block auf bestimmte Tracks ein. */
+	nur: string[];
+}
+
+export interface Tag {
+	datum?: string;
+	tracks: string[];
+	bloecke: Block[];
+}
+
 export interface Konferenz {
 	datei: TFile;
 	name: string;
 	untertitel?: string;
 	veranstalter?: string;
 	status?: string;
-	/** Die Tage in der Reihenfolge, in der sie in der Notiz stehen. */
-	tage: string[];
+	honorarbudget?: number;
+	deadlineProgramm?: string;
+	tracks: Track[];
+	tage: Tag[];
 }
 
 /** Ein Auftritt in der Historie eines Speakers — gerechnet, nirgends gespeichert. */
