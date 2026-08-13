@@ -262,6 +262,21 @@
 	color: var(--text-muted);
 }
 
+.sms-anlegen {
+	margin-left: auto;
+	font-size: 0.85em;
+}
+
+.sms-dialog-hinweis {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 24px;
+	margin: 4px 0 12px;
+	color: var(--text-error);
+	font-size: 0.85em;
+}
+
 .sms-konferenzwahl {
 	margin-left: auto;
 	max-width: 260px;

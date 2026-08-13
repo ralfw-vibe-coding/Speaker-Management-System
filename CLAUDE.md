@@ -123,13 +123,16 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 - `src/daten/lesen.ts` — `Datenzugriff`: Notizen über den `metadataCache` finden und
   tolerant lesen, samt Checklisten. Die `slots`-Ausnahmen der Konferenz werden noch
   nicht gelesen; sie kommen mit der Agenda.
+- `src/daten/schreiben.ts` — `Datenschreiber`: legt Notizen an, prüft Namen
 - `src/view/katalog.ts` — der Speakerkatalog mit Suche, Filtern und Historie
+- `src/view/SpeakerAnlegenModal.ts` — fragt nur nach dem Namen
 - `src/view/statustafel.ts` — die acht Spalten des Funnels mit ihren Karten
 - `src/view/SmsView.ts` — der View mit drei Reitern und der Konferenzauswahl;
   **die Agenda ist weiterhin Platzhalter**
 
-**Geschrieben wird noch nichts.** Es gibt weder „+ Speaker" noch „als Kandidat merken"
-noch Drag & Drop, und keine Sicht verändert eine Notiz.
+**Geschrieben wird bisher nur eins:** „+ Speaker" im Katalog legt eine Notiz mit leeren
+Feldern an und öffnet sie. Es gibt weder „als Kandidat merken" noch Drag & Drop, und
+keine Sicht **ändert** eine bestehende Notiz.
 
 ### Reihenfolge
 

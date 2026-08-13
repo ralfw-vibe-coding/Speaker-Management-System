@@ -28,6 +28,7 @@ export class Speakerkatalog {
 	constructor(
 		private daten: Datenzugriff,
 		private notizOeffnen: (datei: TFile) => void,
+		private speakerAnlegen: (vorhandene: Speaker[]) => void,
 	) {}
 
 	async zeichnen(buehne: HTMLElement): Promise<void> {
@@ -146,6 +147,9 @@ export class Speakerkatalog {
 			cls: "sms-zaehler",
 			text: sichtbar === alle.length ? `${alle.length} Speaker` : `${sichtbar} von ${alle.length}`,
 		});
+
+		const anlegen = leiste.createEl("button", { cls: "sms-anlegen mod-cta", text: "+ Speaker" });
+		anlegen.addEventListener("click", () => this.speakerAnlegen(alle.map((e) => e.speaker)));
 
 		const filter = buehne.createDiv({ cls: "sms-filter" });
 

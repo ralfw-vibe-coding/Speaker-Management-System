@@ -1,7 +1,10 @@
 import { debounce, ItemView, TFile, WorkspaceLeaf } from "obsidian";
 import type SmsPlugin from "../main";
 import { Datenzugriff } from "../daten/lesen";
+import { Datenschreiber } from "../daten/schreiben";
+import type { Speaker } from "../daten/modell";
 import { Speakerkatalog } from "./katalog";
+import { SpeakerAnlegenModal } from "./SpeakerAnlegenModal";
 import { Statustafel } from "./statustafel";
 
 export const VIEW_TYPE_SMS = "sms-arbeitsplatz";
@@ -26,6 +29,7 @@ export class SmsView extends ItemView {
 	private konferenzName: string | null = null;
 
 	private daten: Datenzugriff;
+	private schreiber: Datenschreiber;
 	private katalog: Speakerkatalog;
 	private statustafel: Statustafel;
 
@@ -34,10 +38,20 @@ export class SmsView extends ItemView {
 		// Bewusst plugin.app statt this.app: Das Plugin hat die App sicher,
 		// die Basisklasse setzt ihr Feld erst im Verlauf des Konstruktors.
 		this.daten = new Datenzugriff(plugin.app, plugin);
+		this.schreiber = new Datenschreiber(plugin.app, plugin);
 
 		const oeffnen = (datei: TFile) => void this.notizOeffnen(datei);
-		this.katalog = new Speakerkatalog(this.daten, oeffnen);
+		this.katalog = new Speakerkatalog(this.daten, oeffnen, (vorhandene) =>
+			this.speakerAnlegen(vorhandene),
+		);
 		this.statustafel = new Statustafel(this.daten, oeffnen);
+	}
+
+	/** Der Dialog fragt nur nach dem Namen; gefüllt wird danach in der Notiz. */
+	private speakerAnlegen(vorhandene: Speaker[]): void {
+		new SpeakerAnlegenModal(this.app, this.schreiber, vorhandene, (datei) =>
+			void this.notizOeffnen(datei),
+		).open();
 	}
 
 	getViewType(): string {
