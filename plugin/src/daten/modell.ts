@@ -100,8 +100,12 @@ export interface Beitrag {
 	titel?: string;
 	format?: string;
 	maxTeilnehmer?: number;
-	/** Leer heißt: im Pool. */
-	block?: string;
+	/**
+	 * Die Blöcke, über die der Beitrag läuft. Leer heißt: im Pool. Ein langer
+	 * Workshop belegt mehrere; das Feld heißt im Frontmatter `block` und
+	 * verträgt einen einzelnen Wert wie eine Liste.
+	 */
+	bloecke: string[];
 	/** Entfällt bei plenaren Blöcken. */
 	track?: string;
 	aufgaben: Aufgaben;

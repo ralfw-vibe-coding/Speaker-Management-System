@@ -90,6 +90,8 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   Präfix.
 - **Slot-Identität ist `(Block-ID, Track-ID)`.** Die Uhrzeit ist ein Attribut des
   Blocks. Ein Block lässt sich verschieben, ohne dass Beiträge ausfallen.
+- **Ein Beitrag darf über mehrere Blöcke laufen.** `block` verträgt eine Liste, wie
+  `speaker`: Der Normalfall bleibt ein einzelner Wert, gelesen wird beides.
 - **Raum und Kapazität kaskadieren** vom Track über die Blockzeile zum einzelnen Slot;
   die Liste `slots` in der Konferenznotiz trägt nur die Ausnahmen.
 - **Das Honorar hängt am Engagement, nicht am Beitrag.** Verhandelt wird mit dem

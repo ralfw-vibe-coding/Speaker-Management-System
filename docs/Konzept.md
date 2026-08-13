@@ -391,7 +391,7 @@ speaker: ["[[Ralf Westphal]]"]   # darf leer sein
 titel: Wieder mehr Substanz      # darf leer sein
 format: keynote                  # dieselben Werte wie beim Speaker
 max_teilnehmer: 20               # optional, meist nur bei Workshops
-block: b1                        # leer = im Pool
+block: b1                        # leer = im Pool, Liste = über mehrere Blöcke
 track:                           # entfällt bei plenaren Blöcken
 ---
 ## Zu klären
@@ -406,7 +406,16 @@ track:                           # entfällt bei plenaren Blöcken
 Technik-Wünsche, Vorstellungstext.
 ```
 
-Die Dauer ergibt sich aus dem Block und wird nicht doppelt gepflegt.
+Die Dauer ergibt sich aus den Blöcken und wird nicht doppelt gepflegt.
+
+**Ein Beitrag darf über mehrere Blöcke laufen.** `block` verträgt deshalb eine Liste —
+dasselbe Muster wie beim `speaker`: Der Normalfall bleibt ein einzelner Wert, und
+gelesen wird beides. Ein dreistündiger Workshop belegt `[b3, b4, b5]` seines Tracks; im
+Raster steht er als eine Karte über drei Zeilen. Fixblöcke dazwischen bleiben
+unberührt — ein Workshop kann durch die Kaffeepause laufen, belegen kann er sie nicht.
+
+Alle Blöcke eines Beitrags gehören demselben Tag und demselben Track. Beim Verschieben
+bleibt seine Länge erhalten: Der Zielblock wird der erste, die folgenden füllen auf.
 
 Auf die Checkliste kommt nur, **wofür es kein Feld gibt.** Ob ein Titel da ist, steht in
 `titel`, ob der Beitrag einen Platz hat, in `block` und `track` — dafür braucht es kein
@@ -637,8 +646,9 @@ benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zäh
 
 ## 7. Offene Punkte
 
-- **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
-  Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
+- **Feldname `block` für eine Liste** — der Name ist singular geblieben, damit die
+  vorhandenen Notizen gültig bleiben und der Normalfall knapp bleibt. Soll er
+  irgendwann `bloecke` heißen? Dann müssten alle Beiträge einmal umgeschrieben werden.
 - **Beiträge über mehrere Blöcke** — siehe oben; der Fall ist über lange Blöcke gelöst,
   aber die Prüfung auf Lücken sieht einen langen Workshop im Parallel-Track nicht als
   das, was er ist.

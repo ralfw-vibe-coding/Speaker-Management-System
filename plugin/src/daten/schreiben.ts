@@ -102,11 +102,15 @@ export class Datenschreiber {
 	 * statt mit einem leeren Wert dazustehen. Gelesen wird ohnehin tolerant.
 	 */
 	async beitraegePlatzieren(
-		aenderungen: { datei: TFile; block?: string; track?: string }[],
+		aenderungen: { datei: TFile; bloecke?: string[]; track?: string }[],
 	): Promise<void> {
 		for (const aenderung of aenderungen) {
 			await this.app.fileManager.processFrontMatter(aenderung.datei, (fm) => {
-				if (aenderung.block) fm.block = aenderung.block;
+				const bloecke = aenderung.bloecke ?? [];
+				// Ein einzelner Block bleibt ein einzelner Wert — die Liste ist
+				// für den langen Workshop da, nicht für den Normalfall.
+				if (bloecke.length === 1) fm.block = bloecke[0];
+				else if (bloecke.length > 1) fm.block = bloecke;
 				else delete fm.block;
 
 				if (aenderung.track) fm.track = aenderung.track;

@@ -123,7 +123,7 @@ export class Statustafel {
 				beitraege: eigene,
 				erledigt,
 				gesamt,
-				imPool: eigene.filter((beitrag) => !beitrag.block).length,
+				imPool: eigene.filter((beitrag) => beitrag.bloecke.length === 0).length,
 				heimatlos: eigene.filter((beitrag) => heimatlos(beitrag, konferenz)).length,
 				ohneThema: eigene.filter((beitrag) => !beitrag.titel).length,
 				wochenOhneAntwort: wochenOhneAntwort(engagement),
@@ -399,18 +399,19 @@ export class Statustafel {
 	/** „Mi 12:00 · Werkzeuge & KI" — oder „im Pool", wenn es keinen Platz gab. */
 	private ortsangabe(beitrag: Beitrag): string {
 		const konferenz = this.konferenz;
-		if (!konferenz || !beitrag.block) return "im Pool";
+		if (!konferenz || beitrag.bloecke.length === 0) return "im Pool";
 
 		for (const tag of konferenz.tage) {
-			const block = tag.bloecke.find((b) => b.id === beitrag.block);
+			const block = tag.bloecke.find((b) => beitrag.bloecke.includes(b.id));
 			if (!block) continue;
 
 			const track = konferenz.tracks.find((t) => t.id === beitrag.track);
 			const teile = [tag.datum ? kurzerTag(tag.datum) : undefined, block.von, track?.name]
 				.filter((teil): teil is string => !!teil);
-			return teile.join(" ") || beitrag.block;
+			const ort = teile.join(" ") || block.id;
+			return beitrag.bloecke.length > 1 ? `${ort} (${beitrag.bloecke.length} Blöcke)` : ort;
 		}
-		return `Block ${beitrag.block} (entfallen)`;
+		return `Block ${beitrag.bloecke.join(", ")} (entfallen)`;
 	}
 }
 
@@ -420,9 +421,11 @@ export class Statustafel {
  * ohne Block liegt dagegen im Pool und ist nicht heimatlos.
  */
 function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
-	if (!beitrag.block) return false;
+	if (beitrag.bloecke.length === 0) return false;
 
-	const tag = konferenz.tage.find((t) => t.bloecke.some((block) => block.id === beitrag.block));
+	const tag = konferenz.tage.find((t) =>
+		t.bloecke.some((block) => beitrag.bloecke.includes(block.id)),
+	);
 	if (!tag) return true;
 	if (!beitrag.track) return false;
 

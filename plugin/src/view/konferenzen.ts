@@ -109,7 +109,7 @@ export class Konferenzuebersicht {
 				const gezaehlt = slotsEinesTages(konferenz, tag, (blockId, trackId) =>
 					eigeneBeitraege.some(
 						(beitrag) =>
-							beitrag.block === blockId &&
+							beitrag.bloecke.includes(blockId) &&
 							(trackId === undefined || beitrag.track === trackId),
 					),
 				);
@@ -125,7 +125,7 @@ export class Konferenzuebersicht {
 				honorar: aktiv.reduce((summe, e) => summe + (e.honorar ?? 0), 0),
 				slots,
 				belegt,
-				imPool: eigeneBeitraege.filter((beitrag) => !beitrag.block).length,
+				imPool: eigeneBeitraege.filter((beitrag) => beitrag.bloecke.length === 0).length,
 			};
 		});
 	}

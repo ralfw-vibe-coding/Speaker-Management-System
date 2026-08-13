@@ -134,7 +134,7 @@ export class Agenda {
 		}
 
 		const loecher = tag ? this.loecher(konferenz, tag, beitraege) : 0;
-		const imPool = beitraege.filter((beitrag) => !beitrag.block).length;
+		const imPool = beitraege.filter((beitrag) => beitrag.bloecke.length === 0).length;
 		const heimatlose = beitraege.filter((beitrag) => heimatlos(beitrag, konferenz)).length;
 
 		const marken = kopf.createDiv({ cls: "sms-marken" });
@@ -182,9 +182,17 @@ export class Agenda {
 		}
 	}
 
-	private werkzeug(eltern: HTMLElement, text: string, tun: () => void): void {
-		const knopf = eltern.createEl("button", { cls: "sms-werkzeug", text });
-		knopf.addEventListener("click", tun);
+	private werkzeug(eltern: HTMLElement, text: string, tun: () => void, titel?: string): void {
+		const knopf = eltern.createEl("button", {
+			cls: "sms-werkzeug",
+			text,
+			attr: titel ? { title: titel } : {},
+		});
+		knopf.addEventListener("click", (ereignis) => {
+			// In einer Karte darf der Knopf nicht auch noch die Notiz öffnen.
+			ereignis.stopPropagation();
+			tun();
+		});
 	}
 
 	private rasterZeichnen(
@@ -228,47 +236,84 @@ export class Agenda {
 		// Nach Uhrzeit, nicht nach Reihenfolge im Frontmatter: Von Hand kann dort
 		// alles stehen, und die Prüfung auf Lücken braucht die zeitliche Folge.
 		const bloecke = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
-		let vorherBis: string | undefined;
 
+		// Erst die Zeilen festlegen, dann zeichnen: Ein Beitrag über mehrere
+		// Blöcke muss wissen, über wie viele Zeilen er reicht — und dazwischen
+		// können Lücken- und Überschneidungszeilen liegen.
+		const zeilen: ({ art: "block"; block: Block } | { art: "zwischenraum"; spanne: number })[] = [];
+		let vorherBis: string | undefined;
 		for (const block of bloecke) {
-			this.zwischenraumZeichnen(raster, tracks.length, vorherBis, block.von);
+			if (vorherBis && block.von) {
+				const spanne = minuten(block.von) - minuten(vorherBis);
+				if (spanne !== 0) zeilen.push({ art: "zwischenraum", spanne });
+			}
+			zeilen.push({ art: "block", block });
 			vorherBis = block.bis ?? vorherBis;
+		}
+
+		/** Die Gitterzeile eines Blocks — Zeile 1 ist der Kopf. */
+		const zeileVon = (blockId: string): number =>
+			zeilen.findIndex((z) => z.art === "block" && z.block.id === blockId) + 2;
+
+		zeilen.forEach((eintrag, index) => {
+			const zeile = index + 2;
+
+			if (eintrag.art === "zwischenraum") {
+				this.zwischenraumZeichnen(raster, tracks.length, zeile, eintrag.spanne);
+				return;
+			}
+
+			const block = eintrag.block;
+			this.zeitZeichnen(raster, block, zeile);
 
 			// Ein Fixblock hat keine Slots: Pause, Registrierung, Abendprogramm.
 			if (block.fix) {
-				this.zeitZeichnen(raster, block);
 				const band = raster.createDiv({ cls: "sms-fixblock" });
-				band.style.gridColumn = `span ${tracks.length}`;
+				band.style.gridRow = String(zeile);
+				band.style.gridColumn = `2 / span ${tracks.length}`;
 				band.setText(`${block.fix} · ${zeitspanne(block)}`);
-				continue;
+				return;
 			}
-
-			this.zeitZeichnen(raster, block);
 
 			// Ein plenarer Block belegt alle Tracks — ein Slot über die ganze Zeile.
 			if (block.plenar) {
-				const beitrag = beitraege.find((b) => b.block === block.id);
+				const beitrag = beitraege.find((b) => b.bloecke.includes(block.id));
+				if (beitrag && !istErsterBlock(beitrag, block.id, bloecke)) return;
+
+				const zelle = this.slotZeichnen(raster, konferenz, { tag, block }, beitrag, engagements);
+				zelle.style.gridRow = `${zeile} / span ${hoehe(beitrag, block, bloecke, zeileVon, zeile)}`;
+				zelle.style.gridColumn = `2 / span ${tracks.length}`;
+				zelle.addClass("sms-plenar");
+				return;
+			}
+
+			tracks.forEach((track, spaltenIndex) => {
+				const spalte = spaltenIndex + 2;
+
+				if (block.nur.length > 0 && !block.nur.includes(track.id)) {
+					const leer = raster.createDiv({ cls: "sms-slot-entfaellt" });
+					leer.style.gridRow = String(zeile);
+					leer.style.gridColumn = String(spalte);
+					return;
+				}
+
+				const beitrag = beitraege.find(
+					(b) => b.bloecke.includes(block.id) && b.track === track.id,
+				);
+				// Wer über mehrere Blöcke läuft, wird nur einmal gezeichnet.
+				if (beitrag && !istErsterBlock(beitrag, block.id, bloecke)) return;
+
 				const zelle = this.slotZeichnen(
 					raster,
 					konferenz,
-					{ tag, block },
+					{ tag, block, track },
 					beitrag,
 					engagements,
 				);
-				zelle.style.gridColumn = `span ${tracks.length}`;
-				zelle.addClass("sms-plenar");
-				continue;
-			}
-
-			for (const track of tracks) {
-				if (block.nur.length > 0 && !block.nur.includes(track.id)) {
-					raster.createDiv({ cls: "sms-slot-entfaellt" });
-					continue;
-				}
-				const beitrag = beitraege.find((b) => b.block === block.id && b.track === track.id);
-				this.slotZeichnen(raster, konferenz, { tag, block, track }, beitrag, engagements);
-			}
-		}
+				zelle.style.gridRow = `${zeile} / span ${hoehe(beitrag, block, bloecke, zeileVon, zeile)}`;
+				zelle.style.gridColumn = String(spalte);
+			});
+		});
 	}
 
 	private slotZeichnen(
@@ -318,6 +363,17 @@ export class Agenda {
 			});
 		}
 		if (!beitrag.titel && speaker) fuss.createSpan({ cls: "sms-abzeichen", text: "Thema offen" });
+		if (beitrag.bloecke.length > 1) {
+			fuss.createSpan({ cls: "sms-abzeichen", text: `${beitrag.bloecke.length} Blöcke` });
+		}
+
+		// Ein Beitrag darf über mehrere Blöcke laufen — hier wächst er.
+		if (!this.archiv) {
+			this.werkzeug(fuss, "⤓", () => void this.laenger(beitrag), "Einen Block länger");
+			if (beitrag.bloecke.length > 1) {
+				this.werkzeug(fuss, "⤒", () => void this.kuerzer(beitrag), "Einen Block kürzer");
+			}
+		}
 
 		// Raum und Kapazität kaskadieren; genannt wird nur die Abweichung.
 		const ort = raumFuer(konferenz, block.id, trackId);
@@ -350,7 +406,7 @@ export class Agenda {
 		this.alsZiel(pool, undefined, undefined);
 
 		const ohneOrt = beitraege.filter(
-			(beitrag) => !beitrag.block || heimatlos(beitrag, konferenz),
+			(beitrag) => beitrag.bloecke.length === 0 || heimatlos(beitrag, konferenz),
 		);
 
 		const kopf = pool.createDiv({ cls: "sms-spalte-kopf" });
@@ -380,7 +436,10 @@ export class Agenda {
 			const fuss = karte.createDiv({ cls: "sms-slot-fuss" });
 			if (verwaist) {
 				fuss.createSpan({ cls: "sms-abzeichen sms-abzeichen-gestrichen", text: "⚠ heimatlos" });
-				fuss.createSpan({ cls: "sms-slot-hinweis", text: `Block ${beitrag.block} entfallen` });
+				fuss.createSpan({
+					cls: "sms-slot-hinweis",
+					text: `Block ${beitrag.bloecke.join(", ")} entfallen`,
+				});
 			} else {
 				fuss.createSpan({ cls: "sms-abzeichen", text: "noch nicht platziert" });
 			}
@@ -428,19 +487,18 @@ export class Agenda {
 	private zwischenraumZeichnen(
 		raster: HTMLElement,
 		spalten: number,
-		vorherBis: string | undefined,
-		von: string | undefined,
+		zeile: number,
+		spanne: number,
 	): void {
-		if (!vorherBis || !von) return;
+		const leer = raster.createDiv({ cls: "sms-zeit" });
+		leer.style.gridRow = String(zeile);
+		leer.style.gridColumn = "1";
 
-		const spanne = minuten(von) - minuten(vorherBis);
-		if (spanne === 0) return;
-
-		raster.createDiv({ cls: "sms-zeit" });
 		const band = raster.createDiv({
 			cls: spanne > 0 ? "sms-zwischenraum" : "sms-zwischenraum sms-ueberschneidung",
 		});
-		band.style.gridColumn = `span ${spalten}`;
+		band.style.gridRow = String(zeile);
+		band.style.gridColumn = `2 / span ${spalten}`;
 		band.setText(
 			spanne > 0
 				? `${dauer(spanne)} unverplant`
@@ -448,8 +506,10 @@ export class Agenda {
 		);
 	}
 
-	private zeitZeichnen(raster: HTMLElement, block: Block): void {
+	private zeitZeichnen(raster: HTMLElement, block: Block, zeile: number): void {
 		const zeit = raster.createDiv({ cls: "sms-zeit" });
+		zeit.style.gridRow = String(zeile);
+		zeit.style.gridColumn = "1";
 		zeit.createDiv({ text: block.von ?? "" });
 		zeit.createDiv({ cls: "sms-zeit-bis", text: block.bis ?? "" });
 
@@ -666,6 +726,74 @@ export class Agenda {
 		await this.rasterSchreiben(konferenz.tracks, tage);
 	}
 
+	/**
+	 * Verlängert einen Beitrag um den nächsten freien Block desselben Tages.
+	 * Fixblöcke werden übersprungen: Ein Workshop kann durch die Kaffeepause
+	 * laufen, belegen kann er sie nicht.
+	 */
+	private async laenger(beitrag: Beitrag): Promise<void> {
+		const tag = this.tagVon(beitrag);
+		if (!tag) return;
+
+		const sortiert = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const letzter = [...sortiert].reverse().find((block) => beitrag.bloecke.includes(block.id));
+		if (!letzter) return;
+
+		const naechster = sortiert
+			.slice(sortiert.indexOf(letzter) + 1)
+			.find((block) => !block.fix && !block.plenar);
+		if (!naechster) {
+			new Notice("Danach kommt an diesem Tag kein Block mehr.");
+			return;
+		}
+
+		const besetzt = this.daten
+			.beitraege()
+			.some(
+				(anderer) =>
+					anderer.konferenz === beitrag.konferenz &&
+					anderer.datei !== beitrag.datei &&
+					anderer.bloecke.includes(naechster.id) &&
+					anderer.track === beitrag.track,
+			);
+		if (besetzt) {
+			new Notice("Der nächste Block ist in diesem Track schon belegt.");
+			return;
+		}
+
+		await this.schreiber.beitraegePlatzieren([
+			{
+				datei: beitrag.datei,
+				bloecke: [...beitrag.bloecke, naechster.id],
+				track: beitrag.track,
+			},
+		]);
+	}
+
+	private async kuerzer(beitrag: Beitrag): Promise<void> {
+		if (beitrag.bloecke.length < 2) return;
+
+		const tag = this.tagVon(beitrag);
+		const sortiert = tag
+			? [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""))
+			: [];
+		const letzter = [...sortiert].reverse().find((block) => beitrag.bloecke.includes(block.id));
+
+		await this.schreiber.beitraegePlatzieren([
+			{
+				datei: beitrag.datei,
+				bloecke: beitrag.bloecke.filter((id) => id !== (letzter?.id ?? beitrag.bloecke.at(-1))),
+				track: beitrag.track,
+			},
+		]);
+	}
+
+	private tagVon(beitrag: Beitrag): Tag | undefined {
+		return this.konferenz?.tage.find((tag) =>
+			tag.bloecke.some((block) => beitrag.bloecke.includes(block.id)),
+		);
+	}
+
 	private beitraegeIn(blockIds: string[]): Beitrag[] {
 		const konferenz = this.konferenz;
 		if (!konferenz) return [];
@@ -674,8 +802,7 @@ export class Agenda {
 			.filter(
 				(beitrag) =>
 					beitrag.konferenz === konferenz.name &&
-					beitrag.block !== undefined &&
-					blockIds.includes(beitrag.block),
+					beitrag.bloecke.some((eigener) => blockIds.includes(eigener)),
 			);
 	}
 
@@ -782,17 +909,17 @@ export class Agenda {
 		if (zug?.art !== "beitrag") return;
 
 		const beitrag = zug.beitrag;
-		const block = ziel?.block.id;
+		const bloecke = ziel ? zielBloecke(beitrag, ziel) : [];
 		const track = ziel?.track?.id;
-		if (beitrag.block === block && beitrag.track === track) return;
+		if (gleich(beitrag.bloecke, bloecke) && beitrag.track === track) return;
 
-		const aenderungen: { datei: TFile; block?: string; track?: string }[] = [
-			{ datei: beitrag.datei, block, track },
+		const aenderungen: { datei: TFile; bloecke?: string[]; track?: string }[] = [
+			{ datei: beitrag.datei, bloecke, track },
 		];
 		if (belegtVon) {
 			aenderungen.push({
 				datei: belegtVon.datei,
-				block: beitrag.block,
+				bloecke: beitrag.bloecke,
 				track: beitrag.track,
 			});
 		}
@@ -806,7 +933,7 @@ export class Agenda {
 			if (belegtVon) {
 				await this.platzhalterNachziehen(
 					belegtVon,
-					this.slotOrt(beitrag.block, beitrag.track),
+					this.slotOrt(beitrag.bloecke[0], beitrag.track),
 				);
 			}
 		} catch (fehler) {
@@ -885,7 +1012,8 @@ export class Agenda {
 		const gezaehlt = slotsEinesTages(konferenz, tag, (blockId, trackId) =>
 			beitraege.some(
 				(beitrag) =>
-					beitrag.block === blockId && (trackId === undefined || beitrag.track === trackId),
+					beitrag.bloecke.includes(blockId) &&
+					(trackId === undefined || beitrag.track === trackId),
 			),
 		);
 		return gezaehlt.gesamt - gezaehlt.belegt;
@@ -907,14 +1035,65 @@ function slotZustand(beitrag: Beitrag, engagement: Engagement | undefined): Zust
 
 /** Wie in der Statustafel: kein Block heißt Pool, ein verschwundener heißt heimatlos. */
 function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
-	if (!beitrag.block) return false;
+	if (beitrag.bloecke.length === 0) return false;
 
-	const tag = konferenz.tage.find((t) => t.bloecke.some((block) => block.id === beitrag.block));
+	const tag = konferenz.tage.find((t) =>
+		t.bloecke.some((block) => beitrag.bloecke.includes(block.id)),
+	);
 	if (!tag) return true;
 	if (!beitrag.track) return false;
 
 	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
 	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
+}
+
+/**
+ * Wohin ein gezogener Beitrag kommt. Seine Länge bleibt erhalten: Ein Workshop
+ * über zwei Blöcke bleibt beim Umziehen zwei Blöcke lang, gerechnet ab dem
+ * Zielblock. Fixblöcke zählen nicht mit.
+ */
+function zielBloecke(beitrag: Beitrag, ziel: Ziel): string[] {
+	const gewuenscht = Math.max(1, beitrag.bloecke.length);
+	const sortiert = [...ziel.tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+	const start = sortiert.findIndex((block) => block.id === ziel.block.id);
+	if (start < 0) return [ziel.block.id];
+
+	const ids: string[] = [];
+	for (let i = start; i < sortiert.length && ids.length < gewuenscht; i++) {
+		if (sortiert[i].fix) continue;
+		ids.push(sortiert[i].id);
+	}
+	return ids;
+}
+
+function gleich(einer: string[], anderer: string[]): boolean {
+	return einer.length === anderer.length && einer.every((wert, i) => wert === anderer[i]);
+}
+
+/** Wird der Beitrag in diesem Block gezeichnet, oder lief er schon vorher? */
+function istErsterBlock(beitrag: Beitrag, blockId: string, bloecke: Block[]): boolean {
+	const erster = bloecke.find((block) => beitrag.bloecke.includes(block.id));
+	return erster?.id === blockId;
+}
+
+/**
+ * Über wie viele Gitterzeilen die Zelle reicht. Zwischen dem ersten und dem
+ * letzten Block können Lücken- und Überschneidungszeilen liegen; die zählen mit,
+ * sonst rutscht die Zelle aus dem Raster.
+ */
+function hoehe(
+	beitrag: Beitrag | undefined,
+	block: Block,
+	bloecke: Block[],
+	zeileVon: (blockId: string) => number,
+	eigeneZeile: number,
+): number {
+	if (!beitrag || beitrag.bloecke.length < 2) return 1;
+
+	const letzter = [...bloecke].reverse().find((eigener) => beitrag.bloecke.includes(eigener.id));
+	if (!letzter || letzter.id === block.id) return 1;
+
+	return Math.max(1, zeileVon(letzter.id) - eigeneZeile + 1);
 }
 
 /** Wie viele Blöcke eines Tages in den vorherigen hineinragen. */
