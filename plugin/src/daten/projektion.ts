@@ -134,6 +134,46 @@ export function zeitgleich(beitrag: Beitrag, alle: Beitrag[]): Beitrag[] {
 	);
 }
 
+/** Ein Beitrag aus einem früheren Jahr, als Vorschlag beim Füllen eines Slots. */
+export interface FruehererBeitrag {
+	titel: string;
+	konferenz: string;
+	datum?: string;
+	beitrag: Beitrag;
+}
+
+/**
+ * Was dieser Speaker früher gehalten hat — alles außer der laufenden Konferenz,
+ * die jüngste zuerst. Titellose Beiträge sind kein Vorschlag; sie sagen nichts.
+ *
+ * Das ist der Grund, warum der Katalog konferenzübergreifend ist: Wer jemanden
+ * bucht, will wissen, womit er schon einmal da war.
+ */
+export function frueherGehalten(
+	speaker: string,
+	laufende: string,
+	beitraege: Beitrag[],
+	konferenzen: Konferenz[],
+	hoechstens = 3,
+): FruehererBeitrag[] {
+	const datumVon = new Map(konferenzen.map((k) => [k.name, k.tage[0]?.datum]));
+
+	return beitraege
+		.filter(
+			(beitrag) =>
+				beitrag.konferenz !== laufende && beitrag.titel && beitrag.speaker.includes(speaker),
+		)
+		.map((beitrag) => ({
+			titel: beitrag.titel as string,
+			konferenz: beitrag.konferenz,
+			datum: datumVon.get(beitrag.konferenz),
+			beitrag,
+		}))
+		// Die jüngste zuerst; wer kein Datum hat, steht hinten.
+		.sort((a, b) => (b.datum ?? "").localeCompare(a.datum ?? "") || a.titel.localeCompare(b.titel, "de"))
+		.slice(0, hoechstens);
+}
+
 /**
  * Wohin ein gezogener Beitrag kommt. Seine Länge bleibt erhalten: Ein Workshop
  * über zwei Blöcke bleibt beim Umziehen zwei Blöcke lang, gerechnet ab dem

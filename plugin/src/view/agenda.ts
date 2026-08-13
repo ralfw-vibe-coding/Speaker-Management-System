@@ -6,6 +6,7 @@ import { BestaetigenModal, BlockModal, TagModal, TrackModal } from "./rasterModa
 import {
 	dauerImRaster,
 	doppeltBelegte,
+	frueherGehalten,
 	heimatlos,
 	minuten,
 	nachZeit,
@@ -75,6 +76,8 @@ export class Agenda {
 	private konferenz: Konferenz | undefined;
 	/** Bei gelaufenen und abgesagten Konferenzen ist das Programm nur noch Archiv. */
 	private archiv = false;
+	private alleBeitraege: Beitrag[] = [];
+	private alleKonferenzen: Konferenz[] = [];
 
 	constructor(
 		private app: App,
@@ -97,9 +100,12 @@ export class Agenda {
 			return;
 		}
 
-		const beitraege = this.daten
-			.beitraege()
-			.filter((beitrag) => beitrag.konferenz === konferenz.name);
+		// Alle Beiträge, nicht nur die dieser Konferenz: Beim Füllen eines Slots
+		// soll dastehen, was der Speaker früher gehalten hat.
+		const alleBeitraege = this.daten.beitraege();
+		this.alleBeitraege = alleBeitraege;
+		this.alleKonferenzen = this.daten.konferenzen();
+		const beitraege = alleBeitraege.filter((beitrag) => beitrag.konferenz === konferenz.name);
 		const engagements = new Map(
 			this.daten
 				.engagements()
@@ -465,6 +471,7 @@ export class Agenda {
 			});
 		}
 
+		this.frueheresAnbieten(zelle, beitrag);
 		this.umbenennenAnbieten(zelle, beitrag);
 
 		return zelle;
@@ -1069,6 +1076,37 @@ export class Agenda {
 	}
 
 	/**
+	 * Steht der Speaker fest und das Thema noch nicht, zeigt die Karte, womit er
+	 * früher schon einmal da war. Ein Klick öffnet die alte Notiz — dort steht
+	 * das Abstract, an dem man sich entlanghangeln kann.
+	 */
+	private frueheresAnbieten(karte: HTMLElement, beitrag: Beitrag): void {
+		const speaker = beitrag.speaker[0];
+		if (!speaker || beitrag.titel) return;
+
+		const frueher = frueherGehalten(
+			speaker,
+			beitrag.konferenz,
+			this.alleBeitraege,
+			this.alleKonferenzen,
+		);
+		if (frueher.length === 0) return;
+
+		const kasten = karte.createDiv({ cls: "sms-frueher" });
+		kasten.createDiv({ cls: "sms-frueher-kopf", text: "Früher gehalten:" });
+
+		for (const eintrag of frueher) {
+			const zeile = kasten.createDiv({ cls: "sms-frueher-zeile" });
+			zeile.createSpan({ cls: "sms-umbenennen", text: `„${eintrag.titel}“` });
+			zeile.createSpan({ text: ` · ${jahrAus(eintrag) ?? eintrag.konferenz}` });
+			zeile.addEventListener("click", (ereignis) => {
+				ereignis.stopPropagation();
+				this.notizOeffnen(eintrag.beitrag.datei);
+			});
+		}
+	}
+
+	/**
 	 * Trägt die Notiz noch ihren Platzhalternamen, obwohl der Titel dasteht,
 	 * bietet die Karte das Umbenennen an — auf Klick, nicht von selbst. Beim
 	 * Tippen im Property-Editor würde ein Automatismus die Datei bei jedem
@@ -1160,6 +1198,11 @@ function dauerText(minuten: number): string {
 	return rest === 0 ? `${stunden} Std` : `${stunden} Std ${rest} Min`;
 }
 
+
+/** „2025" — knapper als der ganze Konferenzname, und die Frage ist ja das Jahr. */
+function jahrAus(eintrag: { datum?: string }): string | undefined {
+	return eintrag.datum?.slice(0, 4);
+}
 
 function anzahlBeitraege(wert: number): string {
 	return wert === 1 ? "Ein Beitrag" : `${wert} Beiträge`;

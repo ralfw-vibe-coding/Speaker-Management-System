@@ -542,6 +542,11 @@ seine Auftritte über die Jahre mit Ausgang und Sternen. Aktion: „als Kandidat
 **Statustafel** — je Konferenz. Kandidaten als Karten im Funnel, per Drag & Drop
 zwischen den Spalten. Zeigt je Karte die Beiträge und den Checklisten-Fortschritt.
 
+Steht in einem Slot der Speaker, aber noch kein Thema, zeigt die Karte, **womit er
+früher schon einmal da war** — die jüngsten drei, mit Jahr, ein Klick öffnet die alte
+Notiz. Genau dafür ist der Katalog konferenzübergreifend: Wer jemanden bucht, will
+wissen, was er schon gehalten hat, und das steht sonst nur in seinen Backlinks.
+
 **Agenda** — je Konferenztag. Das Raster als Gitter, Tracks als Spalten, Blöcke als
 Zeilen, jeder Slot mit Ampel. Daneben ein **Pool**: Beiträge ohne Ort — sowohl Themen,
 die noch nirgends platziert sind, als auch heimatlose, die ihren Slot verloren haben
@@ -672,8 +677,9 @@ benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zäh
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?
 - **Reisekosten** — eigenes Feld am Engagement oder Teil des Honorars?
-- **Wiederverwendung** — soll beim Füllen eines Slots vorgeschlagen werden, welche
-  Beiträge ein Speaker in früheren Jahren gehalten hat?
+- **Wiederverwendung, weitergedacht** — Der Vorschlag zeigt, was jemand früher gehalten
+  hat. Soll man einen alten Beitrag auch **übernehmen** können, also Titel und Abstract
+  in den neuen kopieren? Das wäre der erste Fall, in dem das Plugin Prosa schreibt.
 - **Bedarfsplanung** — lohnt ein Soll je Format („2 Keynotes, 12 Vorträge"), oder
   ergibt sich der Bedarf ohnehin schon vollständig aus dem Raster?
 - **Feldnamen** — bleiben deutsch wie hier, oder englisch im Frontmatter?

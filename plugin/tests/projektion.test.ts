@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	dauerImRaster,
 	doppeltBelegte,
+	frueherGehalten,
 	heimatlos,
 	parallelStehende,
 	slotZustand,
@@ -185,6 +186,53 @@ describe("zielBloecke", () => {
 	it("am Ende des Tages bleibt er kürzer, statt zu erfinden", () => {
 		const lang = beitrag({ bloecke: ["b3", "b4"] });
 		assert.deepEqual(zielBloecke(lang, eigenerTag, "b4"), ["b4"]);
+	});
+});
+
+describe("frueherGehalten", () => {
+	const konferenzen = [
+		konferenz({ name: "Summit 2026", tage: [tag("2026-11-04", [], [])] }),
+		konferenz({ name: "Summit 2025", tage: [tag("2025-11-05", [], [])] }),
+		konferenz({ name: "Summit 2024", tage: [tag("2024-11-06", [], [])] }),
+	];
+
+	const beitraege = [
+		beitrag({ konferenz: "Summit 2026", titel: "Von diesem Jahr", speaker: ["Marek"] }),
+		beitrag({ konferenz: "Summit 2025", titel: "Von letztem Jahr", speaker: ["Marek"] }),
+		beitrag({ konferenz: "Summit 2024", titel: "Von vorletztem Jahr", speaker: ["Marek"] }),
+		beitrag({ konferenz: "Summit 2025", titel: "Von jemand anderem", speaker: ["Petra"] }),
+		beitrag({ konferenz: "Summit 2025", speaker: ["Marek"] }),
+	];
+
+	it("nimmt nur andere Konferenzen — was hier läuft, weiß man selbst", () => {
+		const frueher = frueherGehalten("Marek", "Summit 2026", beitraege, konferenzen);
+		assert.equal(frueher.some((e) => e.konferenz === "Summit 2026"), false);
+	});
+
+	it("die jüngste zuerst", () => {
+		const frueher = frueherGehalten("Marek", "Summit 2026", beitraege, konferenzen);
+		assert.deepEqual(
+			frueher.map((e) => e.titel),
+			["Von letztem Jahr", "Von vorletztem Jahr"],
+		);
+	});
+
+	it("nimmt nur diesen Speaker", () => {
+		const frueher = frueherGehalten("Marek", "Summit 2026", beitraege, konferenzen);
+		assert.equal(frueher.some((e) => e.titel === "Von jemand anderem"), false);
+	});
+
+	it("titellose Beiträge sind kein Vorschlag", () => {
+		const frueher = frueherGehalten("Marek", "Summit 2026", beitraege, konferenzen);
+		assert.equal(frueher.length, 2);
+	});
+
+	it("hört nach der vereinbarten Zahl auf", () => {
+		assert.equal(frueherGehalten("Marek", "Summit 2026", beitraege, konferenzen, 1).length, 1);
+	});
+
+	it("wer noch nie da war, bekommt keinen Vorschlag", () => {
+		assert.deepEqual(frueherGehalten("Neu Hier", "Summit 2026", beitraege, konferenzen), []);
 	});
 });
 
