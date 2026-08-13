@@ -1,6 +1,7 @@
 import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
+import { verwaisteVerweise } from "../daten/projektion";
 import {
 	KONFERENZSTATUS,
 	KONFERENZSTATUS_TITEL,
@@ -70,6 +71,8 @@ export class Konferenzuebersicht {
 			this.konferenzAnlegen(karten.map((karte) => karte.konferenz.name)),
 		);
 
+		this.beanstandungenZeichnen(buehne);
+
 		if (karten.length === 0) {
 			buehne.createEl("p", {
 				cls: "sms-leer",
@@ -124,6 +127,40 @@ export class Konferenzuebersicht {
 				imPool: eigeneBeitraege.filter((beitrag) => beitrag.bloecke.length === 0).length,
 			};
 		});
+	}
+
+	/**
+	 * Was das Plugin nicht lesen kann, steht hier — sonst verschwände es
+	 * lautlos. Ganz oben, weil eine fehlende Notiz jede Zahl darunter fragwürdig
+	 * macht.
+	 */
+	private beanstandungenZeichnen(buehne: HTMLElement): void {
+		const beanstandungen = [
+			...this.daten.unbekannteNotizen(),
+			...verwaisteVerweise(
+				this.daten.beitraege(),
+				this.daten.engagements(),
+				this.daten.konferenzen(),
+				this.daten.speakerNamen(),
+			),
+		];
+		if (beanstandungen.length === 0) return;
+
+		const kasten = buehne.createDiv({ cls: "sms-beanstandungen" });
+		kasten.createDiv({
+			cls: "sms-beanstandungen-kopf",
+			text:
+				beanstandungen.length === 1
+					? "⚠ Eine Notiz wird in keiner Sicht gezeigt"
+					: `⚠ ${beanstandungen.length} Notizen werden in keiner Sicht gezeigt`,
+		});
+
+		for (const beanstandung of beanstandungen) {
+			const zeile = kasten.createDiv({ cls: "sms-beanstandung" });
+			zeile.createSpan({ cls: "sms-umbenennen", text: beanstandung.datei.basename });
+			zeile.createSpan({ text: ` — ${beanstandung.text}` });
+			zeile.addEventListener("click", () => this.notizOeffnen(beanstandung.datei));
+		}
 	}
 
 	private async statusSetzen(konferenz: Konferenz, status: string): Promise<void> {

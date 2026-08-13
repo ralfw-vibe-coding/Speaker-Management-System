@@ -664,7 +664,13 @@ deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht i
 `themen` steht · ein zweiter Speaker mit demselben Namen · **Lücken und
 Überschneidungen zwischen den Blöcken eines Tages**.
 
-Die letzte Prüfung steht als Zeile zwischen den Blockzeilen, weil sie genau dorthin
+Dazu, ganz oben in der Konferenzübersicht: **Notizen, die in keiner Sicht auftauchen.**
+Eine Notiz ohne lesbares Frontmatter, eine mit unbekanntem `type`, ein Beitrag, dessen
+`konferenz` ins Leere zeigt, ein Engagement ohne Speaker. Das ist die gefährlichste
+Fehlerart dieses Entwurfs: Wo die Sichten nur zeigen, was sie verstehen, verschwindet
+das Unverstandene lautlos — und die Summe darunter wirkt trotzdem plausibel.
+
+Die Prüfung auf Lücken und Überschneidungen steht als Zeile zwischen den Blockzeilen, weil sie genau dorthin
 gehört: Das Gitter zeichnet die Zeilen bündig untereinander, sodass eine halbe Stunde
 Niemandsland und ein überlappender Block gleich aussehen. Unverplante Zeit wird grau
 benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zählt sie mit.

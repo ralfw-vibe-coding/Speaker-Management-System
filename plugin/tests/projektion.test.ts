@@ -9,6 +9,7 @@ import {
 	slotZustand,
 	ueberschneidungen,
 	verschoben,
+	verwaisteVerweise,
 	zeitgleich,
 	zielBloecke,
 } from "../src/daten/projektion";
@@ -186,6 +187,44 @@ describe("zielBloecke", () => {
 	it("am Ende des Tages bleibt er kürzer, statt zu erfinden", () => {
 		const lang = beitrag({ bloecke: ["b3", "b4"] });
 		assert.deepEqual(zielBloecke(lang, eigenerTag, "b4"), ["b4"]);
+	});
+});
+
+describe("verwaisteVerweise", () => {
+	const konferenzen = [konferenz({ name: "Summit 2026" })];
+	const namen = ["Marek Lindqvist"];
+
+	it("schweigt, wenn alles aufgeht", () => {
+		const beitraege = [
+			beitrag({ konferenz: "Summit 2026", speaker: ["Marek Lindqvist"] }),
+		];
+		const engagements = [engagement({ konferenz: "Summit 2026", speaker: "Marek Lindqvist" })];
+		assert.deepEqual(verwaisteVerweise(beitraege, engagements, konferenzen, namen), []);
+	});
+
+	it("findet einen Beitrag, dessen Konferenz es nicht gibt", () => {
+		const beitraege = [beitrag({ konferenz: "Summit 2019", speaker: ["Marek Lindqvist"] })];
+		const gefunden = verwaisteVerweise(beitraege, [], konferenzen, namen);
+		assert.equal(gefunden.length, 1);
+		assert.match(gefunden[0].text, /Summit 2019/);
+	});
+
+	it("findet einen Speaker, den es im Katalog nicht gibt", () => {
+		const beitraege = [beitrag({ konferenz: "Summit 2026", speaker: ["Wer Auchimmer"] })];
+		const gefunden = verwaisteVerweise(beitraege, [], konferenzen, namen);
+		assert.equal(gefunden.length, 1);
+		assert.match(gefunden[0].text, /Wer Auchimmer/);
+	});
+
+	it("findet ein Engagement ohne Konferenz", () => {
+		const engagements = [engagement({ konferenz: "", speaker: "Marek Lindqvist" })];
+		const gefunden = verwaisteVerweise([], engagements, konferenzen, namen);
+		assert.deepEqual(gefunden.map((e) => e.text), ["ohne Konferenz"]);
+	});
+
+	it("ein Beitrag ohne Speaker ist kein Fehler — das Thema steht, der Mensch fehlt", () => {
+		const beitraege = [beitrag({ konferenz: "Summit 2026", titel: "Thema" })];
+		assert.deepEqual(verwaisteVerweise(beitraege, [], konferenzen, namen), []);
 	});
 });
 

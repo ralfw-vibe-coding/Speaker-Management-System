@@ -123,11 +123,53 @@ export class Datenzugriff {
 			});
 	}
 
+	/** Nur die Namen — für Prüfungen, die keine ganzen Speaker brauchen. */
+	speakerNamen(): string[] {
+		return this.notizen(this.plugin.settings.speakerOrdner, "speaker").map(
+			(datei) => datei.basename,
+		);
+	}
+
 	/** Nur Datei und Name — mehr braucht bisher niemand vom Veranstalter. */
 	veranstalter(): { datei: TFile; name: string }[] {
 		return this.notizen(this.plugin.settings.veranstalterOrdner, "veranstalter")
 			.map((datei) => ({ datei, name: datei.basename }))
 			.sort((a, b) => a.name.localeCompare(b.name, "de"));
+	}
+
+	/**
+	 * Notizen in den eigenen Ordnern, die das Plugin nicht einordnen kann: ohne
+	 * `type`, weil das Frontmatter kaputt ist oder fehlt, oder mit einem `type`,
+	 * den es nicht kennt.
+	 *
+	 * Ohne diese Liste verschwinden sie lautlos aus allen Sichten — das ist der
+	 * Preis dafür, dass die Sichten Projektionen sind und nur zeigen, was sie
+	 * verstehen.
+	 */
+	unbekannteNotizen(): { datei: TFile; text: string }[] {
+		const bekannt = new Set(["speaker", "veranstalter", "konferenz", "engagement", "beitrag"]);
+		const ordner = [
+			this.plugin.settings.speakerOrdner,
+			this.plugin.settings.veranstalterOrdner,
+			this.plugin.settings.konferenzenOrdner,
+		]
+			.filter((eigener) => eigener.length > 0)
+			.map((eigener) => eigener.replace(/\/+$/, "") + "/");
+
+		return this.app.vault
+			.getMarkdownFiles()
+			.filter((datei) => ordner.some((praefix) => datei.path.startsWith(praefix)))
+			.map((datei) => {
+				const typ = this.frontmatter(datei)?.type;
+				if (typ === undefined) {
+					return { datei, text: "ohne `type` — steht das Frontmatter richtig da?" };
+				}
+				if (typeof typ !== "string" || !bekannt.has(typ)) {
+					return { datei, text: `unbekannter type: ${String(typ)}` };
+				}
+				return undefined;
+			})
+			.filter((eintrag): eintrag is { datei: TFile; text: string } => eintrag !== undefined);
 	}
 
 	/**

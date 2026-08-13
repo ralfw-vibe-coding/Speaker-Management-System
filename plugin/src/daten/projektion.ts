@@ -134,6 +134,59 @@ export function zeitgleich(beitrag: Beitrag, alle: Beitrag[]): Beitrag[] {
 	);
 }
 
+/** Eine Notiz, die das Plugin nicht einordnen kann, samt Grund. */
+export interface Beanstandung {
+	datei: Beitrag["datei"];
+	text: string;
+}
+
+/**
+ * Verweise, die ins Leere zeigen. Der gefährlichste Fehler in diesem Entwurf
+ * ist nicht der falsche Wert, sondern die Notiz, die stillschweigend
+ * verschwindet: Zeigt ein Beitrag auf eine Konferenz, die es nicht gibt, taucht
+ * er in keiner Sicht auf — und die Summe darunter wirkt trotzdem plausibel.
+ */
+export function verwaisteVerweise(
+	beitraege: Beitrag[],
+	engagements: Engagement[],
+	konferenzen: Konferenz[],
+	speakerNamen: string[],
+): Beanstandung[] {
+	const konferenzNamen = new Set(konferenzen.map((k) => k.name));
+	const speaker = new Set(speakerNamen);
+	const gefunden: Beanstandung[] = [];
+
+	const konferenzPruefen = (datei: Beitrag["datei"], name: string) => {
+		if (!name) gefunden.push({ datei, text: "ohne Konferenz" });
+		else if (!konferenzNamen.has(name)) {
+			gefunden.push({ datei, text: `zeigt auf die Konferenz „${name}“, die es nicht gibt` });
+		}
+	};
+
+	for (const beitrag of beitraege) {
+		konferenzPruefen(beitrag.datei, beitrag.konferenz);
+		for (const name of beitrag.speaker) {
+			if (!speaker.has(name)) {
+				gefunden.push({ datei: beitrag.datei, text: `nennt „${name}“, den es im Katalog nicht gibt` });
+			}
+		}
+	}
+
+	for (const engagement of engagements) {
+		konferenzPruefen(engagement.datei, engagement.konferenz);
+		if (!engagement.speaker) {
+			gefunden.push({ datei: engagement.datei, text: "ohne Speaker" });
+		} else if (!speaker.has(engagement.speaker)) {
+			gefunden.push({
+				datei: engagement.datei,
+				text: `zeigt auf „${engagement.speaker}“, den es im Katalog nicht gibt`,
+			});
+		}
+	}
+
+	return gefunden;
+}
+
 /** Ein Beitrag aus einem früheren Jahr, als Vorschlag beim Füllen eines Slots. */
 export interface FruehererBeitrag {
 	titel: string;

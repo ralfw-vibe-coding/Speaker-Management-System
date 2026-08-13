@@ -240,6 +240,26 @@
 	margin-top: 8px;
 }
 
+.sms-beanstandungen {
+	margin-bottom: 16px;
+	padding: 10px 14px;
+	border: 1px solid var(--color-red);
+	border-radius: 8px;
+	background: var(--background-modifier-error);
+	font-size: 0.85em;
+}
+
+.sms-beanstandungen-kopf {
+	font-weight: 600;
+	color: var(--text-error);
+	margin-bottom: 4px;
+}
+
+.sms-beanstandung {
+	cursor: pointer;
+	color: var(--text-muted);
+}
+
 .sms-statuszeile {
 	display: flex;
 	align-items: center;
