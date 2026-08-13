@@ -1,5 +1,11 @@
 import { App, normalizePath, TFile, TFolder } from "obsidian";
 import type SmsPlugin from "../main";
+import type { Block, Konferenz, Tag, Track } from "./modell";
+
+/** Der Unterordner je Konferenz. Steht so im Konzept und ist nicht konfigurierbar. */
+const BEITRAGSORDNER = "beiträge";
+
+const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 
 /**
  * Zeichen, die Obsidian in Notiznamen verbietet. Beim Speaker ist der Name die
@@ -108,6 +114,62 @@ export class Datenschreiber {
 		}
 	}
 
+	/**
+	 * Legt einen Beitrag an, weil ein Kandidat in einen Slot gezogen wurde.
+	 * Er entsteht titellos — der Speaker steht, das Thema kommt später — und
+	 * heißt deshalb vorläufig nach seinem Platz. Sobald ein Titel da ist, wird
+	 * die Notiz umbenannt; Obsidian zieht die Links dabei mit.
+	 */
+	async beitragAnlegen(ziel: {
+		konferenz: Konferenz;
+		speaker: string;
+		tag: Tag;
+		block: Block;
+		track?: Track;
+	}): Promise<TFile> {
+		const ordner = `${ziel.konferenz.datei.parent?.path ?? ""}/${BEITRAGSORDNER}`;
+		await this.ordnerSicherstellen(ordner);
+
+		const name = await this.freierName(ordner, vorlaeufigerName(ziel));
+		const pfad = normalizePath(`${ordner}/${name}.md`);
+
+		const zeilen = [
+			"---",
+			"type: beitrag",
+			`konferenz: "[[${ziel.konferenz.name}]]"`,
+			`speaker: ["[[${ziel.speaker}]]"]`,
+			"titel:",
+			"format:",
+			"max_teilnehmer:",
+			`block: ${ziel.block.id}`,
+			ziel.track ? `track: ${ziel.track.id}` : "track:",
+			"---",
+			"## Zu klären",
+			"- [ ] Abstract eingereicht",
+			"- [ ] Folien eingereicht",
+			"- [ ] Technikbedarf geklärt",
+			"",
+			"## Abstract",
+			"",
+			"",
+			"## Für den Speaker",
+			"",
+			"",
+		];
+
+		return this.app.vault.create(pfad, zeilen.join("\n"));
+	}
+
+	/** Hängt eine Zahl an, falls der Name schon vergeben ist. */
+	private async freierName(ordner: string, wunsch: string): Promise<string> {
+		let name = wunsch;
+		let zaehler = 2;
+		while (this.app.vault.getAbstractFileByPath(normalizePath(`${ordner}/${name}.md`))) {
+			name = `${wunsch} ${zaehler++}`;
+		}
+		return name;
+	}
+
 	private async ordnerSicherstellen(ordner: string): Promise<void> {
 		if (!ordner) return;
 		const pfad = normalizePath(ordner);
@@ -116,4 +178,31 @@ export class Datenschreiber {
 		if (vorhanden) return; // Eine Datei mit dem Namen — dann scheitert das Anlegen sprechend.
 		await this.app.vault.createFolder(pfad);
 	}
+}
+
+/**
+ * `Assistenz Summit 2026 – Beitrag Mi 12 Uhr Werkzeuge & KI` — der Konferenzname
+ * als Präfix, damit die Notiz vault-weit eindeutig heißt und die Backlink-Liste
+ * am Speaker seine Historie ergibt.
+ */
+function vorlaeufigerName(ziel: {
+	konferenz: Konferenz;
+	tag: Tag;
+	block: Block;
+	track?: Track;
+}): string {
+	const teile = ["Beitrag"];
+
+	const wochentag = ziel.tag.datum ? WOCHENTAGE[new Date(ziel.tag.datum).getDay()] : undefined;
+	if (wochentag) teile.push(wochentag);
+
+	if (ziel.block.von) teile.push(`${ziel.block.von.split(":")[0]} Uhr`);
+	teile.push(ziel.track ? ziel.track.name : "plenar");
+
+	return ohneVerbotene(`${ziel.konferenz.name} – ${teile.join(" ")}`);
+}
+
+/** Beim Beitrag wird bereinigt statt abgelehnt: Der Titel steht im Feld `titel`. */
+function ohneVerbotene(name: string): string {
+	return name.replace(new RegExp(VERBOTENE_ZEICHEN.source, "g"), "").trim();
 }

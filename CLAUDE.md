@@ -136,13 +136,14 @@ einer Karte auf der Statustafel schreibt `status` und `position` — über
 
 In der Agenda lassen sich Beiträge zwischen Pool und Raster ziehen; das schreibt `block`
 und `track`. Ist das Ziel belegt, **tauschen** die beiden ihre Plätze, statt einen Slot
-doppelt zu belegen.
+doppelt zu belegen. Zieht man einen **Kandidaten** in einen freien Slot, entsteht seine
+Beitragsnotiz — titellos und vorläufig nach ihrem Platz benannt.
 
 **Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
-das Anlegen eines Beitrags durch Ziehen eines Kandidaten in einen Slot, das Bearbeiten
-des Rasters selbst — das setzt die offene Entscheidung voraus, **wer das Raster
-schreibt** —, und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt
-bisher nur die Karte; die Beiträge des Speakers werden **nicht** geleert.
+das Bearbeiten des Rasters selbst — das setzt die offene Entscheidung voraus, **wer das
+Raster schreibt** —, das Umbenennen eines Beitrags, sobald er einen Titel bekommt, und
+die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
+die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge
 

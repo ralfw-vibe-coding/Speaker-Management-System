@@ -1,11 +1,12 @@
 ---
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
-speaker: ["[[Yannick Sobotta]]"]
+speaker:
+  - "[[Yannick Sobotta]]"
 titel:
 format: vortrag
 block: b7
-track: t2
+track: t3
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

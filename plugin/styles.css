@@ -614,6 +614,12 @@
 	opacity: 0.4;
 }
 
+.sms-poolnotiz {
+	margin-top: 4px;
+	color: var(--text-faint);
+	font-size: 0.75em;
+}
+
 .sms-slot.is-ziel,
 .sms-pool.is-ziel {
 	outline: 2px dashed var(--interactive-accent);

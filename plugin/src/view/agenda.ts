@@ -11,6 +11,7 @@ import {
 	type Engagement,
 	type Konferenz,
 	type Tag,
+	type Track,
 } from "../daten/modell";
 
 /** Der Reifegrad eines Slots — das Minimum aus eigener Füllung und Engagement. */
@@ -41,9 +42,22 @@ const MONATE_KURZ = [
  * Datenobjekt, sondern ein Loch: Kreuzprodukt aus Blöcken und Tracks, minus
  * Fixblöcke, minus Belegtes.
  */
+/** Was gerade am Mauszeiger hängt — ein Beitrag zieht um, ein Kandidat entsteht. */
+type Zug =
+	| { art: "beitrag"; beitrag: Beitrag }
+	| { art: "kandidat"; engagement: Engagement };
+
+/** Der Platz, auf den gezogen werden kann. Ohne Angabe ist es der Pool. */
+interface Ziel {
+	tag: Tag;
+	block: Block;
+	track?: Track;
+}
+
 export class Agenda {
 	private tagIndex = 0;
-	private gezogen: Beitrag | null = null;
+	private gezogen: Zug | null = null;
+	private konferenz: Konferenz | undefined;
 
 	constructor(
 		private daten: Datenzugriff,
@@ -54,6 +68,7 @@ export class Agenda {
 	async zeichnen(buehne: HTMLElement, konferenz: Konferenz | undefined): Promise<void> {
 		buehne.empty();
 		buehne.addClass("sms-agenda");
+		this.konferenz = konferenz;
 
 		if (!konferenz) {
 			buehne.createEl("p", {
@@ -183,7 +198,13 @@ export class Agenda {
 			// Ein plenarer Block belegt alle Tracks — ein Slot über die ganze Zeile.
 			if (block.plenar) {
 				const beitrag = beitraege.find((b) => b.block === block.id);
-				const zelle = this.slotZeichnen(raster, konferenz, block, undefined, beitrag, engagements);
+				const zelle = this.slotZeichnen(
+					raster,
+					konferenz,
+					{ tag, block },
+					beitrag,
+					engagements,
+				);
 				zelle.style.gridColumn = `span ${tracks.length}`;
 				zelle.addClass("sms-plenar");
 				continue;
@@ -195,7 +216,7 @@ export class Agenda {
 					continue;
 				}
 				const beitrag = beitraege.find((b) => b.block === block.id && b.track === track.id);
-				this.slotZeichnen(raster, konferenz, block, track.id, beitrag, engagements);
+				this.slotZeichnen(raster, konferenz, { tag, block, track }, beitrag, engagements);
 			}
 		}
 	}
@@ -203,15 +224,17 @@ export class Agenda {
 	private slotZeichnen(
 		raster: HTMLElement,
 		konferenz: Konferenz,
-		block: Block,
-		trackId: string | undefined,
+		ziel: Ziel,
 		beitrag: Beitrag | undefined,
 		engagements: Map<string, Engagement>,
 	): HTMLElement {
+		const block = ziel.block;
+		const trackId = ziel.track?.id;
+
 		if (!beitrag) {
 			const leer = raster.createDiv({ cls: "sms-slot sms-slot-leer" });
 			leer.createSpan({ text: "frei" });
-			this.alsZiel(leer, block.id, trackId, undefined);
+			this.alsZiel(leer, ziel, undefined);
 			return leer;
 		}
 
@@ -221,8 +244,8 @@ export class Agenda {
 
 		const zelle = raster.createDiv({ cls: `sms-slot sms-slot-${zustand}` });
 		zelle.addEventListener("click", () => this.notizOeffnen(beitrag.datei));
-		this.alsZiehbar(zelle, beitrag);
-		this.alsZiel(zelle, block.id, trackId, beitrag);
+		this.alsZiehbar(zelle, { art: "beitrag", beitrag });
+		this.alsZiel(zelle, ziel, beitrag);
 
 		zelle.createDiv({
 			cls: beitrag.titel ? "sms-slot-titel" : "sms-slot-titel is-offen",
@@ -272,7 +295,7 @@ export class Agenda {
 		engagements: Map<string, Engagement>,
 	): void {
 		const pool = eltern.createDiv({ cls: "sms-pool" });
-		this.alsZiel(pool, undefined, undefined, undefined);
+		this.alsZiel(pool, undefined, undefined);
 
 		const ohneOrt = beitraege.filter(
 			(beitrag) => !beitrag.block || heimatlos(beitrag, konferenz),
@@ -291,7 +314,7 @@ export class Agenda {
 				cls: verwaist ? "sms-karte sms-poolkarte is-heimatlos" : "sms-karte sms-poolkarte",
 			});
 			karte.addEventListener("click", () => this.notizOeffnen(beitrag.datei));
-			this.alsZiehbar(karte, beitrag);
+			this.alsZiehbar(karte, { art: "beitrag", beitrag });
 
 			karte.createDiv({
 				cls: beitrag.titel ? "sms-slot-titel" : "sms-slot-titel is-offen",
@@ -327,25 +350,33 @@ export class Agenda {
 		for (const engagement of ohneBeitrag) {
 			const zeile = pool.createDiv({ cls: "sms-kandidat" });
 			zeile.addEventListener("click", () => this.notizOeffnen(engagement.datei));
+			this.alsZiehbar(zeile, { art: "kandidat", engagement });
 			zeile.createSpan({ text: engagement.speaker });
 			zeile.createSpan({
 				cls: `sms-abzeichen sms-abzeichen-${engagement.status}`,
 				text: FUNNEL_TITEL[engagement.status] ?? engagement.status,
 			});
 		}
+
+		pool.createDiv({
+			cls: "sms-poolnotiz",
+			text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
+		});
 	}
 
 	// -------------------------------------------------------------- Ziehen
 
-	private alsZiehbar(element: HTMLElement, beitrag: Beitrag): void {
+	private alsZiehbar(element: HTMLElement, zug: Zug): void {
 		element.draggable = true;
 		element.addClass("is-ziehbar");
 
+		const datei = zug.art === "beitrag" ? zug.beitrag.datei : zug.engagement.datei;
+
 		element.addEventListener("dragstart", (ereignis) => {
-			this.gezogen = beitrag;
+			this.gezogen = zug;
 			element.addClass("is-zieht");
 			// Ohne Nutzlast startet in Electron kein Zug.
-			ereignis.dataTransfer?.setData("text/plain", beitrag.datei.path);
+			ereignis.dataTransfer?.setData("text/plain", datei.path);
 			if (ereignis.dataTransfer) ereignis.dataTransfer.effectAllowed = "move";
 		});
 
@@ -356,17 +387,20 @@ export class Agenda {
 	}
 
 	/**
-	 * Macht eine Zelle zum Ziel. Ohne Block ist das Ziel der Pool — dort landet
-	 * ein Beitrag, dessen Ort wieder offen sein soll.
+	 * Macht eine Zelle zum Ziel. Ohne `ziel` ist es der Pool — dort landet ein
+	 * Beitrag, dessen Ort wieder offen sein soll. Ein Kandidat darf nur in
+	 * einen freien Slot: Aus ihm entsteht ein Beitrag, und der braucht Platz.
 	 */
-	private alsZiel(
-		element: HTMLElement,
-		block: string | undefined,
-		track: string | undefined,
-		belegtVon: Beitrag | undefined,
-	): void {
+	private alsZiel(element: HTMLElement, ziel: Ziel | undefined, belegtVon: Beitrag | undefined): void {
+		const erlaubt = (): boolean => {
+			const zug = this.gezogen;
+			if (!zug) return false;
+			if (zug.art === "beitrag") return zug.beitrag !== belegtVon;
+			return ziel !== undefined && belegtVon === undefined;
+		};
+
 		element.addEventListener("dragover", (ereignis) => {
-			if (!this.gezogen || this.gezogen === belegtVon) return;
+			if (!erlaubt()) return;
 			ereignis.preventDefault();
 			element.addClass("is-ziel");
 		});
@@ -377,12 +411,36 @@ export class Agenda {
 		});
 
 		element.addEventListener("drop", (ereignis) => {
-			if (!this.gezogen || this.gezogen === belegtVon) return;
+			const zug = this.gezogen;
+			if (!erlaubt() || !zug) return;
 			ereignis.preventDefault();
 			ereignis.stopPropagation();
 			element.removeClass("is-ziel");
-			void this.platzieren(block, track, belegtVon);
+
+			if (zug.art === "beitrag") void this.platzieren(ziel, belegtVon);
+			else if (ziel) void this.kandidatEinplanen(zug.engagement, ziel);
 		});
+	}
+
+	/** Aus einem Kandidaten wird ein Beitrag — titellos, der Speaker steht ja. */
+	private async kandidatEinplanen(engagement: Engagement, ziel: Ziel): Promise<void> {
+		const konferenz = this.konferenz;
+		this.gezogen = null;
+		if (!konferenz) return;
+
+		try {
+			const datei = await this.schreiber.beitragAnlegen({
+				konferenz,
+				speaker: engagement.speaker,
+				tag: ziel.tag,
+				block: ziel.block,
+				track: ziel.track,
+			});
+			// Der Titel fehlt noch — die Notiz ist der Ort, an dem er entsteht.
+			this.notizOeffnen(datei);
+		} catch (fehler) {
+			new Notice(`Der Beitrag ließ sich nicht anlegen: ${String(fehler)}`);
+		}
 	}
 
 	/**
@@ -392,14 +450,14 @@ export class Agenda {
 	 * nichts verloren, und ein Zug lässt sich rückgängig machen, indem man ihn
 	 * wiederholt.
 	 */
-	private async platzieren(
-		block: string | undefined,
-		track: string | undefined,
-		belegtVon: Beitrag | undefined,
-	): Promise<void> {
-		const beitrag = this.gezogen;
+	private async platzieren(ziel: Ziel | undefined, belegtVon: Beitrag | undefined): Promise<void> {
+		const zug = this.gezogen;
 		this.gezogen = null;
-		if (!beitrag) return;
+		if (zug?.art !== "beitrag") return;
+
+		const beitrag = zug.beitrag;
+		const block = ziel?.block.id;
+		const track = ziel?.track?.id;
 		if (beitrag.block === block && beitrag.track === track) return;
 
 		const aenderungen: { datei: TFile; block?: string; track?: string }[] = [

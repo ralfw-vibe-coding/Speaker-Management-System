@@ -2,10 +2,10 @@
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
 speaker: []
-titel: "Die Assistenz im KI-Zeitalter"
+titel: Die Assistenz im KI-Zeitalter
 format: vortrag
-block:
-track:
+block: b11
+track: t2
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
