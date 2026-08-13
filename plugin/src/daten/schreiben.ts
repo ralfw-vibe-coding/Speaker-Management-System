@@ -162,6 +162,96 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Legt Konferenz und, falls nötig, ihren Veranstalter an. Gefragt wird nur
+	 * nach dem Nötigsten; Ausrichtung, Konditionen und Gesprächsnotizen stehen
+	 * danach in den Notizen, nicht in einem Formular.
+	 *
+	 * Das Raster bekommt einen Anfang — ein Tag, ein Track, drei Blöcke —,
+	 * damit die Agenda etwas zu zeigen hat. Weitergebaut wird dort.
+	 */
+	async konferenzAnlegen(angaben: {
+		name: string;
+		untertitel?: string;
+		veranstalter: string;
+		veranstalterIstNeu: boolean;
+		datum?: string;
+		honorarbudget?: number;
+	}): Promise<TFile> {
+		if (angaben.veranstalterIstNeu) await this.veranstalterAnlegen(angaben.veranstalter);
+
+		const ordner = `${this.plugin.settings.konferenzenOrdner}/${angaben.name}`;
+		await this.ordnerSicherstellen(ordner);
+
+		const zeilen = [
+			"---",
+			"type: konferenz",
+			`untertitel: ${angaben.untertitel ?? ""}`,
+			`veranstalter: "[[${angaben.veranstalter}]]"`,
+			// Ohne Termin ist es noch keine Planung, sondern eine Idee.
+			`status: ${angaben.datum ? "planung" : "idee"}`,
+			"deadline_programm:",
+			`honorarbudget: ${angaben.honorarbudget ?? ""}`,
+		];
+
+		if (angaben.datum) {
+			zeilen.push(
+				"tracks:",
+				"  - { id: t1, name: Hauptbühne }",
+				"tage:",
+				`  - datum: ${angaben.datum}`,
+				"    tracks: [t1]",
+				"    bloecke:",
+				'      - { id: b1, von: "09:00", bis: "09:45" }',
+				'      - { id: b2, von: "09:45", bis: "10:00", fix: Pause }',
+				'      - { id: b3, von: "10:00", bis: "10:45" }',
+			);
+		}
+
+		zeilen.push(
+			"---",
+			"## Ausrichtung",
+			"",
+			"",
+			"## Mit dem Veranstalter zu klären",
+			"- [ ] Honorarbudget bestätigt",
+			"- [ ] Anzahl Tracks und Slots final",
+			"- [ ] Reisekosten-Regelung",
+			"- [ ] Wer schließt die Verträge?",
+			"",
+			"## Notizen",
+			"",
+			"",
+		);
+
+		return this.app.vault.create(
+			normalizePath(`${ordner}/${angaben.name}.md`),
+			zeilen.join("\n"),
+		);
+	}
+
+	private async veranstalterAnlegen(name: string): Promise<TFile> {
+		const ordner = this.plugin.settings.veranstalterOrdner;
+		await this.ordnerSicherstellen(ordner);
+
+		const zeilen = [
+			"---",
+			"type: veranstalter",
+			"ansprechpartner:",
+			"email:",
+			"telefon:",
+			"---",
+			"## Konditionen",
+			"",
+			"",
+			"## Notizen",
+			"",
+			"",
+		];
+
+		return this.app.vault.create(normalizePath(`${ordner}/${name}.md`), zeilen.join("\n"));
+	}
+
+	/**
 	 * Streichen: Der Speaker fällt aus, seine Slots werden wieder Löcher.
 	 *
 	 * Ein Beitrag **mit** Titel behält sein Thema und landet ohne Speaker und

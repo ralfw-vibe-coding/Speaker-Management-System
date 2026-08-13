@@ -4,6 +4,7 @@ import { Datenzugriff } from "../daten/lesen";
 import { Datenschreiber } from "../daten/schreiben";
 import type { Speaker } from "../daten/modell";
 import { Agenda } from "./agenda";
+import { KonferenzAnlegenModal } from "./KonferenzAnlegenModal";
 import { Speakerkatalog } from "./katalog";
 import { SpeakerAnlegenModal } from "./SpeakerAnlegenModal";
 import { Statustafel } from "./statustafel";
@@ -48,6 +49,21 @@ export class SmsView extends ItemView {
 		);
 		this.statustafel = new Statustafel(plugin.app, this.daten, this.schreiber, oeffnen);
 		this.agenda = new Agenda(this.daten, this.schreiber, oeffnen);
+	}
+
+	private konferenzAnlegen(vorhandene: string[]): void {
+		new KonferenzAnlegenModal(
+			this.app,
+			this.schreiber,
+			vorhandene,
+			this.daten.veranstalter().map((v) => v.name),
+			(datei) => {
+				// Die neue Konferenz ist ab sofort die, an der gearbeitet wird.
+				this.konferenzName = datei.basename;
+				void this.notizOeffnen(datei);
+				void this.render();
+			},
+		).open();
 	}
 
 	/** Der Dialog fragt nur nach dem Namen; gefüllt wird danach in der Notiz. */
@@ -101,20 +117,30 @@ export class SmsView extends ItemView {
 		titelzeile.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
 		titelzeile.createEl("span", { text: `v${__SMS_VERSION__}`, cls: "sms-version" });
 
-		if (konferenzen.length > 0) {
-			const auswahl = titelzeile.createEl("select", { cls: "sms-konferenzwahl dropdown" });
-			for (const konferenz of konferenzen) {
-				const eintrag = auswahl.createEl("option", {
-					text: konferenz.name,
-					value: konferenz.name,
-				});
-				if (konferenz.name === this.konferenzName) eintrag.selected = true;
-			}
-			auswahl.addEventListener("change", () => {
-				this.konferenzName = auswahl.value;
-				void this.render();
+		const auswahl = titelzeile.createEl("select", { cls: "sms-konferenzwahl dropdown" });
+		for (const konferenz of konferenzen) {
+			const eintrag = auswahl.createEl("option", {
+				text: konferenz.name,
+				value: konferenz.name,
 			});
+			if (konferenz.name === this.konferenzName) eintrag.selected = true;
 		}
+		if (konferenzen.length === 0) {
+			auswahl.createEl("option", { text: "keine Konferenz", value: "" });
+		}
+		auswahl.addEventListener("change", () => {
+			this.konferenzName = auswahl.value;
+			void this.render();
+		});
+
+		// Zwei- bis sechsmal im Jahr braucht man das — dafür lohnt kein eigener
+		// Reiter, wohl aber ein Knopf da, wo man ohnehin hinschaut.
+		const neu = titelzeile.createEl("button", {
+			cls: "sms-neue-konferenz",
+			text: "＋",
+			attr: { title: "Neue Konferenz anlegen" },
+		});
+		neu.addEventListener("click", () => this.konferenzAnlegen(konferenzen.map((k) => k.name)));
 
 		const reiter = kopf.createDiv({ cls: "sms-reiter" });
 		for (const { id, titel } of SICHTEN) {

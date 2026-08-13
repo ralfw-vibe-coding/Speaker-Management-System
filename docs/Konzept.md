@@ -165,6 +165,19 @@ Engagement gleich mit. Einen Import gibt es nicht: Es läuft kein Call for Paper
 kommen keine Agenturlisten, die Leute werden einzeln zusammengesucht. Ein Importer wäre
 gebaute Vorratshaltung; ein einmaliger Altbestand wäre ein Skript, kein Feature.
 
+**Konferenz und Veranstalter entstehen über den Umschalter im Kopf des Views.** Für den
+Speakerkatalog gibt es eine eigene Sicht, für die Stammdaten nicht: Bei zwei bis drei
+Veranstaltern insgesamt und ein bis zwei Konferenzen je Veranstalter und Jahr lohnt kein
+eigener Reiter, er stünde die übrige Zeit im Weg. Den gemeinsamen Zustand „welche
+Konferenz ist dran" braucht es ohnehin — dort hängt auch das Anlegen. Der Veranstalter
+entsteht dabei nebenbei mit seinem Namen; Ansprechpartner und Konditionen schreibt man
+in seine Notiz.
+
+**Das Raster schreibt das Plugin.** Von Hand wäre verschachteltes YAML heikel: Ein
+falsches Leerzeichen zerlegt nicht ein Feld, sondern das ganze Frontmatter, und die
+Konferenznotiz verlöre auf einen Schlag auch Veranstalter, Budget und Deadline. Was nur
+Code schreibt, ist nie verrutscht — genau dafür steht „das Plugin besitzt die Dateien".
+
 Beim Anlegen wird gegen die vorhandenen Namen geprüft. Weil der Dateiname die Identität
 ist, spaltet eine zweite Notiz „Petra Vahlbruch" die Historie in zwei Hälften, von denen
 jede vollständig aussieht. Das ist später kaum zu reparieren und jetzt fast umsonst zu
@@ -615,22 +628,10 @@ deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht i
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
-- **Wo Konferenz und Veranstalter entstehen** — Für den Speakerkatalog gibt es eine
-  Sicht, für die Stammdaten nicht. Bei zwei bis drei Veranstaltern insgesamt und ein
-  bis zwei Konferenzen je Veranstalter und Jahr lohnt kein eigener Reiter; er stünde
-  die übrige Zeit im Weg. Vorschlag: ein Konferenz-Umschalter im Kopf des Views — den
-  gemeinsamen Zustand „welche Konferenz ist dran" braucht es ohnehin — und darin
-  „+ Neue Konferenz". Der Veranstalter entsteht dabei nebenbei mit seinem Namen, alles
-  Weitere steht in seiner Notiz. Noch nicht entschieden.
-- **Wer das Raster schreibt** — Von Hand ist verschachteltes YAML heikel: Ein falsches
-  Leerzeichen zerlegt nicht ein Feld, sondern das ganze Frontmatter, und die
-  Konferenznotiz verliert auf einen Schlag auch Veranstalter, Budget und Deadline.
-  Drei Wege: (a) das Plugin schreibt das Raster und der Mensch fasst es nicht an — dann
-  kann nichts verrutschen; (b) eine Markdown-Tabelle im Body, robuster und mit
-  Tabelleneditor, aber ein zweites Format und Struktur außerhalb des Frontmatters;
-  (c) Handarbeit im YAML, nur mit sehr flacher Syntax vertretbar. Empfehlung ist (a).
-  Eilig ist es nicht: Die Statustafel liest vom Raster allein die Blöcke, um heimatlose
-  Beiträge zu erkennen.
+- **Das Raster bearbeiten** — Entschieden ist, dass das Plugin es schreibt; was fehlt,
+  ist die Bedienung dafür in der Agenda: Tage, Tracks und Blöcke anlegen, umbenennen,
+  verschieben, löschen. Eine neue Konferenz bekommt vorerst ein Anfangsraster mit einem
+  Tag, einem Track und drei Blöcken, das man nur im Frontmatter ändern kann.
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?

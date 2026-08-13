@@ -155,9 +155,12 @@ Eine Karte nach `gestrichen` zu ziehen löst die **Streichen-Regel** aus, hinter
 Rückfrage: Themen mit Titel landen ohne Speaker im Pool, titellose Beiträge im
 Papierkorb, und was vorgesehen war, wird ins Engagement geschrieben.
 
-**Noch nicht da:** das Anlegen von Konferenz und Veranstalter und das Bearbeiten des
-Rasters selbst — beides setzt die offene Entscheidung voraus, **wer das Raster
-schreibt**. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
+Über den Knopf neben der Konferenzauswahl entstehen **Konferenz und Veranstalter**. Die
+neue Konferenz bekommt ein Anfangsraster: ein Tag, ein Track, drei Blöcke.
+
+**Noch nicht da:** das Bearbeiten des Rasters in der Agenda — Tage, Tracks und Blöcke
+anlegen, umbenennen, verschieben, löschen. Bis dahin ändert man das Raster im
+Frontmatter der Konferenznotiz. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
 die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge

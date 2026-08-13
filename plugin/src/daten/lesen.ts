@@ -121,6 +121,13 @@ export class Datenzugriff {
 			});
 	}
 
+	/** Nur Datei und Name — mehr braucht bisher niemand vom Veranstalter. */
+	veranstalter(): { datei: TFile; name: string }[] {
+		return this.notizen(this.plugin.settings.veranstalterOrdner, "veranstalter")
+			.map((datei) => ({ datei, name: datei.basename }))
+			.sort((a, b) => a.name.localeCompare(b.name, "de"));
+	}
+
 	/**
 	 * Zählt die Markdown-Tasks unter `## Zu klären`. Der `metadataCache` kennt
 	 * Überschriften und Aufgaben samt Zeile, sodass der Body ungelesen bleibt.
