@@ -41,6 +41,15 @@ export const FUNNEL_TITEL: Record<string, string> = {
 /** „zugesagt und weiter" — die Karten, bei denen die Person an Bord ist. */
 export const ZUGESAGT_UND_WEITER = ["zugesagt", "rechnung", "bezahlt"];
 
+/**
+ * Konferenzstatus, an denen nicht mehr geplant wird. Ihr Programm ist Archiv —
+ * der Funnel läuft trotzdem weiter, denn Rechnungen und Zahlungen kommen erst
+ * nach der Konferenz.
+ */
+export function istArchiv(konferenz: Konferenz | undefined): boolean {
+	return konferenz?.status === "gelaufen" || konferenz?.status === "abgesagt";
+}
+
 /** Der Fortschritt einer Checkliste. Gezählt, nie gespeichert. */
 export interface Aufgaben {
 	erledigt: number;

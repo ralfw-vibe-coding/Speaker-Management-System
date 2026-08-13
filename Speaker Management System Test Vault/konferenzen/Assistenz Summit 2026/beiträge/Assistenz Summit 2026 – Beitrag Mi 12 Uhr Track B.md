@@ -6,7 +6,7 @@ speaker:
 titel: Karrierepfade jenseits der Assistenz
 format: vortrag
 block: b7
-track: t3
+track: t2
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

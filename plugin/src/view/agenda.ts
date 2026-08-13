@@ -5,6 +5,7 @@ import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
 	ZUGESAGT_UND_WEITER,
+	istArchiv,
 	raumFuer,
 	type Beitrag,
 	type Block,
@@ -58,6 +59,8 @@ export class Agenda {
 	private tagIndex = 0;
 	private gezogen: Zug | null = null;
 	private konferenz: Konferenz | undefined;
+	/** Bei gelaufenen und abgesagten Konferenzen ist das Programm nur noch Archiv. */
+	private archiv = false;
 
 	constructor(
 		private daten: Datenzugriff,
@@ -69,6 +72,7 @@ export class Agenda {
 		buehne.empty();
 		buehne.addClass("sms-agenda");
 		this.konferenz = konferenz;
+		this.archiv = istArchiv(konferenz);
 
 		if (!konferenz) {
 			buehne.createEl("p", {
@@ -131,6 +135,12 @@ export class Agenda {
 		const heimatlose = beitraege.filter((beitrag) => heimatlos(beitrag, konferenz)).length;
 
 		const marken = kopf.createDiv({ cls: "sms-marken" });
+		if (this.archiv) {
+			marken.createSpan({
+				cls: "sms-marke sms-marke-archiv",
+				text: konferenz.status === "abgesagt" ? "abgesagt · Archiv" : "gelaufen · Archiv",
+			});
+		}
 		marken.createSpan({ cls: "sms-marke", text: `${loecher} Löcher an diesem Tag` });
 		marken.createSpan({ cls: "sms-marke", text: `${imPool} im Pool` });
 		if (heimatlose > 0) {
@@ -362,15 +372,19 @@ export class Agenda {
 			});
 		}
 
-		pool.createDiv({
-			cls: "sms-poolnotiz",
-			text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
-		});
+		if (!this.archiv) {
+			pool.createDiv({
+				cls: "sms-poolnotiz",
+				text: "Zieht man einen Kandidaten in einen freien Slot, entsteht sein Beitrag.",
+			});
+		}
 	}
 
 	// -------------------------------------------------------------- Ziehen
 
 	private alsZiehbar(element: HTMLElement, zug: Zug): void {
+		if (this.archiv) return;
+
 		element.draggable = true;
 		element.addClass("is-ziehbar");
 
@@ -397,6 +411,7 @@ export class Agenda {
 	 */
 	private alsZiel(element: HTMLElement, ziel: Ziel | undefined, belegtVon: Beitrag | undefined): void {
 		const erlaubt = (): boolean => {
+			if (this.archiv) return false;
 			const zug = this.gezogen;
 			if (!zug) return false;
 			if (zug.art === "beitrag") return zug.beitrag !== belegtVon;
@@ -530,7 +545,7 @@ export class Agenda {
 	 */
 	private umbenennenAnbieten(karte: HTMLElement, beitrag: Beitrag): void {
 		const konferenz = this.konferenz;
-		if (!konferenz || !beitrag.titel) return;
+		if (this.archiv || !konferenz || !beitrag.titel) return;
 		if (!istPlatzhalterName(beitrag.datei.basename, konferenz.name)) return;
 
 		const zeile = karte.createDiv({ cls: "sms-slot-hinweis" });

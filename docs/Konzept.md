@@ -88,9 +88,15 @@ Alles Konferenzspezifische liegt im Ordner seiner Konferenz. Eine gelaufene Konf
 archiviert man, indem man einen Ordner verschiebt. Die drei obersten Ordner sind in
 den Plugin-Einstellungen konfigurierbar.
 
-**Das Programm bleibt.** Nach der Konferenz wird nichts aufgeräumt: Raster, Beiträge
-und Engagements stehen weiter da, und die Agenda einer gelaufenen Konferenz ist damit
-ihr Archiv. Wer zwei Jahre später wissen will, was jemand damals gehalten hat, schaltet
+**Das Programm bleibt — und wird unveränderlich.** Nach der Konferenz wird nichts
+aufgeräumt: Raster, Beiträge und Engagements stehen weiter da, und die Agenda einer
+gelaufenen Konferenz ist damit ihr Archiv. Bei den Status `gelaufen` und `abgesagt`
+lässt die Agenda deshalb nichts mehr ziehen, anlegen oder umbenennen; ein versehentlicher
+Zug im Archiv fiele niemandem auf.
+
+**Der Funnel läuft weiter.** Die Statustafel bleibt bedienbar, denn die Arbeit hört mit
+der Konferenz nicht auf: Rechnungen kommen danach, Zahlungen noch später, und die
+`bewertung` wird überhaupt erst im Rückblick eingetragen. Wer zwei Jahre später wissen will, was jemand damals gehalten hat, schaltet
 im Kopf auf die alte Konferenz um oder folgt den Backlinks auf seiner Speakernotiz.
 Genau dafür tragen Engagements und Beiträge den Konferenznamen im Dateinamen.
 

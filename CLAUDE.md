@@ -147,6 +147,10 @@ den Platzhalternamen trägt.
 Im Katalog macht „merken" aus einem Speaker einen Kandidaten der ausgewählten Konferenz:
 ein Engagement im Status `gemerkt`, hinten an die Spalte gehängt.
 
+Bei Konferenzen im Status `gelaufen` oder `abgesagt` ist die **Agenda gesperrt** — das
+Programm ist Archiv. Die **Statustafel bleibt bedienbar**, weil Rechnungen, Zahlungen
+und die Bewertung erst nach der Konferenz kommen.
+
 **Noch nicht da:** das Anlegen von Konferenz und Veranstalter, das Bearbeiten des
 Rasters selbst — das setzt die offene Entscheidung voraus, **wer das Raster schreibt** —
 und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die Karte;
