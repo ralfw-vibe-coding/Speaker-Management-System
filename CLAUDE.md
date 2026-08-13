@@ -98,6 +98,11 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   das Plugin schreibt nur einen. Weitere Beteiligte stehen als Prosa im Body.
 - **Nichts sortiert sich von selbst.** Die Reihenfolge auf der Statustafel steht als
   `position` im Engagement und ändert sich nur, wenn jemand sie ändert.
+- **Die `wahl` gilt je Thema, die `bewertung` je Engagement.** Erste Wahl ist man für
+  ein Thema, nicht als Person; bewertet wird ein Auftritt, nicht ein Mensch. Im Katalog
+  erscheint die Bewertung als Historie — gerechnet, nicht gespeichert.
+- **Kein Import.** Speaker kommen von Hand in den Katalog oder beim Füllen eines Slots.
+  Es gibt keinen Call for Papers und keine Agenturlisten.
 
 ## Konventionen
 
@@ -123,18 +128,27 @@ drei Sichten. Alles Fachliche ist offen.
 
 Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen:
 
-1. **Datenschicht und Statustafel, lesend.** Kopf mit den Kennzahlen, die acht Spalten,
-   Karten mit Themen, Beitragszahl, Honorar, Checklistenbalken und Hinweisen. Prüfbar
-   gegen die Kennzahlen in `Demodaten.md`.
-2. **Statustafel, schreibend.** Karten zwischen den Spalten ziehen und umsortieren; das
+1. **Datenschicht und Speakerkatalog, lesend.** Liste aller Speaker mit Themen,
+   Formaten, Sprachen, Wahl und Historie, dazu Suche und Filter. Prüfbar gegen die
+   Kennzahlen für den Katalog in `Demodaten.md`.
+2. **Statustafel, lesend.** Kopf mit den Kennzahlen, die acht Spalten, Karten mit
+   Themen, Beitragszahl, Honorar, Checklistenbalken und Hinweisen.
+3. **Statustafel, schreibend.** Karten zwischen den Spalten ziehen und umsortieren; das
    schreibt `status` und `position`.
-3. **Agenda.**
+4. **Agenda.**
 
-Die Statustafel zuerst, weil dort die tägliche Arbeit liegt und weil sie die ganze
-Projektionslogik einmal durchspielt: Frontmatter lesen, Checklisten aus dem Body
+Der Katalog zuerst, weil er die kleinste Sicht mit der größten gemeinsamen Grundlage
+ist: ein Notiztyp, flaches Frontmatter, keine Summen. Was dabei entsteht — Notizen über
+den `metadataCache` finden, tolerant lesen, auf Änderungen reagieren, Klick öffnet die
+Notiz im Nachbar-Pane — trägt anschließend die Statustafel.
+
+Die Statustafel spielt danach die ganze Projektionslogik durch: Checklisten aus dem Body
 zählen, Beiträge über Wikilinks den Speakern zuordnen, Summen gegen das Budget. Vom
 Raster braucht sie allein die Blöcke, um heimatlose Beiträge zu erkennen. Danach ist die
 Agenda vor allem noch Darstellung und Drag & Drop.
+
+Die Aktion „als Kandidat für ⟨Konferenz⟩ merken" gehört **nicht** in den ersten Schritt:
+Sie schreibt ein Engagement und setzt eine ausgewählte Konferenz voraus.
 
 Am Ende von [docs/Konzept.md](docs/Konzept.md) steht eine Liste offener Punkte
 (Beiträge über mehrere Blöcke, Reisekosten, Bedarfsplanung, wo Konferenz und

@@ -2,7 +2,8 @@
 
 Dieser Vault enthält einen vollständigen, erfundenen Datensatz: den
 **Assistenz Summit 2026** zum Thema „Die Zukunft der Vorstandsassistenz",
-ausgerichtet von Acme Events am 4. und 5. November 2026.
+ausgerichtet von Acme Events am 4. und 5. November 2026. Daneben steht der
+gelaufene **Assistenz Summit 2025**, damit der Katalog eine Vergangenheit hat.
 
 Der Datensatz bildet **genau die beiden UI-Entwürfe** in `docs/ui/` ab. Wer die
 Sichten baut, kann sein Ergebnis direkt daneben halten.
@@ -11,11 +12,11 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 
 | | |
 |---|---|
-| 13 Speaker | im konferenzübergreifenden Katalog |
+| 13 Speaker | im konferenzübergreifenden Katalog, 11 davon mit `wahl` je Thema |
 | 1 Veranstalter | Acme Events |
-| 1 Konferenz | zwei Tage mit unterschiedlichem Raster |
-| 13 Engagements | über alle acht Status verteilt |
-| 18 Beiträge | 15 im Raster, 2 im Pool, 1 heimatlos |
+| 2 Konferenzen | 2026 in Planung, 2025 gelaufen |
+| 18 Engagements | 13 in der Konferenz 2026, 5 in der von 2025 |
+| 18 Beiträge | 15 im Raster, 2 im Pool, 1 heimatlos — alle in der Konferenz 2026 |
 
 ## Welche Fälle absichtlich vorkommen
 
@@ -45,6 +46,15 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
   ist auf 40 Teilnehmende angelegt, der Raum Speicher fasst 30. Genau darauf soll die
   Prüfung anspringen.
 - **Ein zweiter Tag mit anderem Raster** — nur ein Track, zwei lange Blöcke, noch leer.
+- **Eine gelaufene Konferenz ohne Raster.** Der Summit 2025 hat weder `tracks` noch
+  `bloecke` noch Beiträge — nach der Konferenz ist das Programm nicht weitergepflegt
+  worden. Das Lesen muss beides verkraften, ohne sich zu verschlucken.
+- **Fünf Speaker mit Historie**, alle auch 2026 wieder im Spiel: Vahlbruch, Lindqvist,
+  Ostrowski, Nowak und Ehrlich. Vier davon mit Bewertung, Ehrlich ohne — sie war
+  gestrichen und gar nicht da.
+- **Eine schlechte Bewertung mit Folgen.** Christa Nowak hat 2025 zwei Sterne bekommen,
+  weil die Zusammenarbeit zäh war; 2026 wartet man wieder seit acht Wochen auf ihre
+  Antwort. Das Muster soll im Katalog sichtbar werden.
 
 ## Kennzahlen, die stimmen sollten
 
@@ -57,6 +67,23 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
   Beiträgen
 
 Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
+
+## Kennzahlen für den Speakerkatalog
+
+- **13 Speaker**, davon 11 mit einer `wahl`, 2 noch nicht eingeschätzt
+  (Falkenrath, Brehmer)
+- 8 Speaker sind zu mindestens einem Thema **erste Wahl**
+- Filter **Format**: 11 halten Vorträge, 6 machen Workshops, 3 Keynotes
+- Filter **Sprache**: 13 deutsch, 5 englisch, je einer polnisch und türkisch
+- Filter **Thema `ki`**: zwei Treffer — Sobotta als erste, Ostrowski als zweite Wahl
+- **Historie**: 5 Speaker haben einen Auftritt 2025, 4 davon mit Sternen
+  (5, 4, 4, 2), Ehrlich ohne
+
+## Kennzahlen des Summits 2025
+
+- Honorarsumme **8.600 €** aus vier bezahlten Engagements
+- 5 Engagements, davon 4 bezahlt und 1 gestrichen
+- keine Beiträge, kein Raster
 
 ## Titel mit Doppelpunkt
 

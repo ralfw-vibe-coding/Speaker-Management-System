@@ -3,6 +3,10 @@ type: speaker
 email: marek@lindqvist.example.com
 web: https://lindqvist.example.com
 themen: [prozesse, automatisierung, kalender]
+wahl:
+  prozesse: 1
+  kalender: 1
+  automatisierung: 2
 formate: [vortrag, workshop]
 sprachen: [de, en]
 ort: Hamburg

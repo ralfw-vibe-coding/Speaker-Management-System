@@ -2,6 +2,9 @@
 type: speaker
 email: kontakt@vahlbruch-agentur.example.com
 themen: [diskretion, interne-kommunikation, protokoll]
+wahl:
+  diskretion: 1
+  protokoll: 1
 formate: [vortrag, workshop]
 sprachen: [de]
 ort: München

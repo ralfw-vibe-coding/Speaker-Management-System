@@ -133,6 +133,18 @@ Notizen entstehen **durch den View**, nicht von Hand. Das Plugin besitzt die Dat
 Es legt sie an, benennt sie, garantiert eindeutige Namen und korrektes Frontmatter.
 Damit braucht es keine Reparaturlogik für Zustände, die gar nicht erst entstehen.
 
+Speaker kommen auf zwei Wegen in den Katalog: **von Hand** über den Katalog, wenn man
+jemanden gesehen oder empfohlen bekommen hat, und **aus dem Slot heraus**, wenn man beim
+Planen einen Namen einträgt, den es noch nicht gibt — dann entstehen Speakernotiz und
+Engagement gleich mit. Einen Import gibt es nicht: Es läuft kein Call for Papers, es
+kommen keine Agenturlisten, die Leute werden einzeln zusammengesucht. Ein Importer wäre
+gebaute Vorratshaltung; ein einmaliger Altbestand wäre ein Skript, kein Feature.
+
+Beim Anlegen wird gegen die vorhandenen Namen geprüft. Weil der Dateiname die Identität
+ist, spaltet eine zweite Notiz „Petra Vahlbruch" die Historie in zwei Hälften, von denen
+jede vollständig aussieht. Das ist später kaum zu reparieren und jetzt fast umsonst zu
+verhindern.
+
 Trotzdem gilt: **eng schreiben, tolerant lesen.** In die Notizen wird von Hand
 hineingeschrieben — Gesprächsnotizen, Abstracts, ein Häkchen zwischendurch. Das Plugin
 fasst beim Schreiben nur die Felder an, die ihm gehören, und lässt Body und Fremdfelder
@@ -147,13 +159,30 @@ type: speaker
 email: ralf@example.com
 web: https://…
 themen: [softwarearchitektur, clean-code, tdd]
+wahl:
+  softwarearchitektur: 1
+  tdd: 2
 formate: [keynote, vortrag, workshop]
 sprachen: [de, en]
 ort: Hamburg
 ---
 ## Profil
 Bio, Eindrücke, „gut im Dialog, braucht langen Vorlauf".
+
+## Notizen
+„Antwortet erst nach mehrfachem Nachfassen."
 ```
+
+**Die Wahl gilt je Thema, nicht je Person.** Wer bei KI erste Wahl ist, kann bei
+Führung dritte sein — eine einzelne Zahl am Menschen träfe das nicht. Deshalb nennt
+`wahl` die Themen einzeln; ein Thema, das dort fehlt, ist noch nicht eingeschätzt und
+gilt nicht als dritte Wahl. `themen` bleibt daneben die flache Liste, nach der gefiltert
+und gesucht wird.
+
+Der Body trägt die Prosa: Profil und Notizen. Beides gehört nicht ins Frontmatter —
+mehrzeiliger Text ist dort weder zu schreiben noch zu lesen, und Wikilinks
+funktionieren nicht. Im Katalog erscheint die erste Zeile unter `## Notizen` als
+Vorschau auf der Karte, alles Weitere in der Notiz.
 
 ### Veranstalter
 
@@ -259,6 +288,7 @@ angefragt_am: 2026-03-01
 geantwortet_am: 2026-03-04
 rechnung_am:
 bezahlt_am:
+bewertung:                       # 1–5 Sterne, erst nach der Konferenz
 ---
 ## Zu klären
 - [x] Bio erhalten
@@ -278,6 +308,14 @@ und Speaker, das Plugin findet sie. So gibt es keine zwei Wahrheiten.
 Am Engagement steht, was **am Menschen** hängt und einmal je Konferenz anfällt: Bio,
 Foto, Vertrag, Reisekosten. Was am einzelnen Beitrag hängt, steht dort — sonst könnte
 ein Häkchen für jemanden mit zwei Vorträgen nicht stimmen.
+
+**Die `bewertung` ist die Rückkopplung in den Katalog.** Ein bis fünf Sterne, ausgefüllt
+nach der Konferenz, das Warum als Prosa im Body. Sie hängt am Engagement, weil sie einen
+Auftritt bewertet und nicht einen Menschen: Wer 2025 großartig war, kann 2026 mit einem
+lustlosen Vortrag kommen. Am Speaker steht dazu nichts — im Katalog erscheint die
+Bewertung als Teil seiner Historie, gerechnet aus den Engagements, die auf ihn zeigen.
+Erst damit wird der Katalog das Langzeitkapital, als das er gemeint ist: Man sieht nicht
+nur, *dass* jemand dabei war, sondern *wie es war*.
 
 **Das Honorar gehört ebenfalls hierher, nicht an den Beitrag.** Verhandelt wird mit dem
 Menschen, und zwar über das Paket: Wer zwei Beiträge liefert und 3.000 € vereinbart, für
@@ -414,7 +452,9 @@ Raster funktioniert ohnehin nur innerhalb eines Views. Drei eigene View-Typen w�
 drei Obsidian-Tabs, die man einzeln aufräumen muss.
 
 **Speakerkatalog** — konferenzübergreifend. Suchen und filtern nach Thema, Format,
-Sprache, Historie. Aktion: „als Kandidat für ⟨Konferenz⟩ merken".
+Sprache, Wahl und Historie. Je Speaker die Stammdaten, eine Vorschau seiner Notizen und
+seine Auftritte über die Jahre mit Ausgang und Sternen. Aktion: „als Kandidat für
+⟨Konferenz⟩ merken".
 
 **Statustafel** — je Konferenz. Kandidaten als Karten im Funnel, per Drag & Drop
 zwischen den Spalten. Zeigt je Karte die Beiträge und den Checklisten-Fortschritt.
@@ -442,6 +482,7 @@ Beitragsnotizen. Es gibt keine Datenbank neben den Notizen.
 | „⏱ 8 Wochen ohne Antwort" | `angefragt_am` gegen heute |
 | „1 Beitrag heimatlos" | ein Beitrag, dessen `block` es im Raster nicht mehr gibt |
 | „1 im Pool" | ein Beitrag ohne `block` |
+| „Assistenz Summit 2025 · bezahlt · ★★★★" | die Engagements, die auf diesen Speaker zeigen, mit `status` und `bewertung` |
 | „Saal Elbe · 150 Plätze" am Slot | der Track, überschrieben durch einen Eintrag in `slots` |
 | „⚠ Workshop für 40, Raum für 30" | `max_teilnehmer` des Beitrags gegen die `kapazitaet` des Slots |
 
@@ -513,7 +554,8 @@ Notizen im Zentrum.
 Doppelbelegung eines Slots · derselbe Speaker in zwei parallelen Tracks · ein Beitrag,
 dessen Format nicht in die Blockdauer passt · ein Beitrag, dessen `max_teilnehmer` über
 der `kapazitaet` seines Slots liegt · offene Slots · heimatlose Beiträge · Beiträge,
-deren Speaker noch nicht zugesagt hat.
+deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht in
+`themen` steht · ein zweiter Speaker mit demselben Namen.
 
 ---
 

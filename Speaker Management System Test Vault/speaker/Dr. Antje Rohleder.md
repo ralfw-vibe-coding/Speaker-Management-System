@@ -3,6 +3,10 @@ type: speaker
 email: rohleder@example.com
 web: https://rohleder-beratung.example.com
 themen: [chief-of-staff, führung, macht-in-organisationen]
+wahl:
+  chief-of-staff: 1
+  macht-in-organisationen: 1
+  führung: 2
 formate: [keynote, vortrag]
 sprachen: [de, en]
 ort: Zürich

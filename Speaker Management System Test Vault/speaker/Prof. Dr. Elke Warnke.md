@@ -2,6 +2,9 @@
 type: speaker
 email: warnke@uni-example.de
 themen: [organisationssoziologie, macht, informelle-strukturen]
+wahl:
+  macht: 1
+  organisationssoziologie: 1
 formate: [keynote]
 sprachen: [de, en]
 ort: Berlin

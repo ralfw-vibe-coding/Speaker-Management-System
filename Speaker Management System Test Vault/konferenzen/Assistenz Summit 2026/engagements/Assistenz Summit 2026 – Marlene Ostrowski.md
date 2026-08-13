@@ -13,5 +13,5 @@ honorar:
 - [ ] Reisekosten geklärt
 
 ## Gesprächsnotizen
-War 2024 dabei und hat gut funktioniert. Wäre die Rückfallebene,
+War 2025 dabei und hat gut funktioniert. Wäre die Rückfallebene,
 falls bei den KI-Themen jemand abspringt.
