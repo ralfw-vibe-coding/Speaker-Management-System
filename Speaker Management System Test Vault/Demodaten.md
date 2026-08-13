@@ -73,7 +73,9 @@ Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
 - **13 Speaker**, davon 11 mit einer `wahl`, 2 noch nicht eingeschätzt
   (Falkenrath, Brehmer)
 - 8 Speaker sind zu mindestens einem Thema **erste Wahl**
-- Filter **Format**: 11 halten Vorträge, 6 machen Workshops, 3 Keynotes
+- Filter **Format**: 11 halten Vorträge, 6 machen Workshops, 3 Keynotes, 2 sitzen auf
+  Panels, 1 moderiert
+- 10 Speaker haben einen `honorarrahmen`, 10 eine Telefonnummer, alle 13 eine `rolle`
 - Filter **Sprache**: 13 deutsch, 5 englisch, je einer polnisch und türkisch
 - Filter **Thema `ki`**: zwei Treffer — Sobotta als erste, Ostrowski als zweite Wahl
 - **Historie**: 5 Speaker haben einen Auftritt 2025, 4 davon mit Sternen

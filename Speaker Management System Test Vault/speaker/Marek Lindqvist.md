@@ -1,6 +1,8 @@
 ---
 type: speaker
+rolle: Prozessberater
 email: marek@lindqvist.example.com
+telefon: +49 40 555 7734
 web: https://lindqvist.example.com
 themen: [prozesse, automatisierung, kalender]
 wahl:
@@ -10,6 +12,7 @@ wahl:
 formate: [vortrag, workshop]
 sprachen: [de, en]
 ort: Hamburg
+honorarrahmen: 1500
 ---
 ## Profil
 Kommt aus der Prozessberatung, arbeitet sehr praktisch.

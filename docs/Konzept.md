@@ -156,7 +156,9 @@ Sonst wäre der Vorteil von Markdown wieder verspielt.
 ```yaml
 ---
 type: speaker
+rolle: Berater, ehem. Entwicklungsleiter
 email: ralf@example.com
+telefon: +49 …
 web: https://…
 themen: [softwarearchitektur, clean-code, tdd]
 wahl:
@@ -165,6 +167,7 @@ wahl:
 formate: [keynote, vortrag, workshop]
 sprachen: [de, en]
 ort: Hamburg
+honorarrahmen: 2500
 ---
 ## Profil
 Bio, Eindrücke, „gut im Dialog, braucht langen Vorlauf".
@@ -179,10 +182,26 @@ Führung dritte sein — eine einzelne Zahl am Menschen träfe das nicht. Deshal
 gilt nicht als dritte Wahl. `themen` bleibt daneben die flache Liste, nach der gefiltert
 und gesucht wird.
 
+Die `rolle` ist ein Einzeiler, der die Frage „wer ist das?" beantwortet, ohne dass man
+die Notiz öffnet — im Katalog steht sie unter dem Namen. Alles Ausführlichere gehört
+ins Profil.
+
+Der `honorarrahmen` ist ein **Richtwert je Auftritt**, keine Vereinbarung: was dieser
+Mensch üblicherweise kostet. Er hilft beim Kandidatenpicken, bevor man überhaupt
+angefragt hat — was tatsächlich vereinbart wurde, steht im `honorar` des Engagements
+und gilt dort für das ganze Paket. Die beiden Zahlen dürfen auseinandergehen; genau
+darin liegt ihr Zweck.
+
 Der Body trägt die Prosa: Profil und Notizen. Beides gehört nicht ins Frontmatter —
 mehrzeiliger Text ist dort weder zu schreiben noch zu lesen, und Wikilinks
 funktionieren nicht. Im Katalog erscheint die erste Zeile unter `## Notizen` als
 Vorschau auf der Karte, alles Weitere in der Notiz.
+
+#### Formate
+
+Die Werte sind festgeschrieben: `keynote`, `vortrag`, `workshop`, `panel`, `moderation`.
+Dieselbe Liste gilt für die `formate` eines Speakers und das `format` eines Beitrags —
+sonst greift der Filter „wer kann diesen Slot füllen?" ins Leere.
 
 ### Veranstalter
 
@@ -332,7 +351,7 @@ type: beitrag
 konferenz: "[[.NET Day 2026]]"
 speaker: ["[[Ralf Westphal]]"]   # darf leer sein
 titel: Wieder mehr Substanz      # darf leer sein
-format: keynote
+format: keynote                  # dieselben Werte wie beim Speaker
 max_teilnehmer: 20               # optional, meist nur bei Workshops
 block: b1                        # leer = im Pool
 track:                           # entfällt bei plenaren Blöcken

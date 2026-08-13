@@ -1,5 +1,6 @@
 ---
 type: speaker
+rolle: Rechtsanwalt für Gremien- und Gesellschaftsrecht
 email: yildiz@example.com
 themen: [governance, compliance, gremienrecht]
 wahl:

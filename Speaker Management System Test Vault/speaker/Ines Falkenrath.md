@@ -1,5 +1,6 @@
 ---
 type: speaker
+rolle: Beraterin für New Work
 email: falkenrath@example.com
 themen: [new-work, führung, hybrides-arbeiten]
 formate: [vortrag]
