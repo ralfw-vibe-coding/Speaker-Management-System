@@ -134,13 +134,15 @@ Geschrieben wird zweierlei: „+ Speaker" im Katalog legt eine Notiz an, und das
 einer Karte auf der Statustafel schreibt `status` und `position` — über
 `processFrontMatter`, das Body und Fremdfelder unangetastet lässt.
 
-**Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
-Drag & Drop in der Agenda, und die Streichen-Regel. Eine Karte nach `gestrichen` zu
-ziehen bewegt bisher nur die Karte; die Beiträge des Speakers werden **nicht** geleert.
+In der Agenda lassen sich Beiträge zwischen Pool und Raster ziehen; das schreibt `block`
+und `track`. Ist das Ziel belegt, **tauschen** die beiden ihre Plätze, statt einen Slot
+doppelt zu belegen.
 
-Die Agenda ist rein lesend, und das mit Absicht: Beiträge zwischen Pool und Raster zu
-ziehen schreibt `block` und `track` in Beitragsnotizen, das Raster selbst zu ändern
-setzt die Entscheidung voraus, **wer das Raster schreibt** — sie steht noch offen.
+**Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
+das Anlegen eines Beitrags durch Ziehen eines Kandidaten in einen Slot, das Bearbeiten
+des Rasters selbst — das setzt die offene Entscheidung voraus, **wer das Raster
+schreibt** —, und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt
+bisher nur die Karte; die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge
 
@@ -154,9 +156,9 @@ Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen
 3. ~~**Statustafel, schreibend.**~~ Steht seit v0.0.7. Karten zwischen den Spalten
    ziehen und umsortieren; das schreibt `status` und `position`. Offen bleibt die
    Streichen-Regel.
-4. **Agenda.** Lesend seit v0.0.8: Raster je Tag, Slots mit ihrem Reifegrad, Pool,
-   heimatlose Beiträge, Kandidaten ohne Beitrag, Raum- und Kapazitätskaskade. Das
-   Ziehen zwischen Pool und Raster fehlt noch.
+4. ~~**Agenda.**~~ Lesend seit v0.0.8, ziehend seit v0.0.9: Raster je Tag, Slots mit
+   ihrem Reifegrad, Pool, heimatlose Beiträge, Kandidaten ohne Beitrag, Raum- und
+   Kapazitätskaskade, Beiträge zwischen Pool und Raster verschiebbar.
 
 Der Katalog zuerst, weil er die kleinste Sicht mit der größten gemeinsamen Grundlage
 ist: ein Notiztyp, flaches Frontmatter, keine Summen. Was dabei entsteht — Notizen über

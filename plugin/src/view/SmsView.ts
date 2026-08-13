@@ -47,7 +47,7 @@ export class SmsView extends ItemView {
 			this.speakerAnlegen(vorhandene),
 		);
 		this.statustafel = new Statustafel(this.daten, this.schreiber, oeffnen);
-		this.agenda = new Agenda(this.daten, oeffnen);
+		this.agenda = new Agenda(this.daten, this.schreiber, oeffnen);
 	}
 
 	/** Der Dialog fragt nur nach dem Namen; gefüllt wird danach in der Notiz. */

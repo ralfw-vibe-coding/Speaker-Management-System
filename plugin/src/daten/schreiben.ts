@@ -89,6 +89,25 @@ export class Datenschreiber {
 		}
 	}
 
+	/**
+	 * Setzt `block` und `track` eines Beitrags — das Verschieben zwischen Pool
+	 * und Raster. Ein leerer Platz bedeutet Pool; das Feld verschwindet dann,
+	 * statt mit einem leeren Wert dazustehen. Gelesen wird ohnehin tolerant.
+	 */
+	async beitraegePlatzieren(
+		aenderungen: { datei: TFile; block?: string; track?: string }[],
+	): Promise<void> {
+		for (const aenderung of aenderungen) {
+			await this.app.fileManager.processFrontMatter(aenderung.datei, (fm) => {
+				if (aenderung.block) fm.block = aenderung.block;
+				else delete fm.block;
+
+				if (aenderung.track) fm.track = aenderung.track;
+				else delete fm.track;
+			});
+		}
+	}
+
 	private async ordnerSicherstellen(ordner: string): Promise<void> {
 		if (!ordner) return;
 		const pfad = normalizePath(ordner);

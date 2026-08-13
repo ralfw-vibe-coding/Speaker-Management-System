@@ -1,5 +1,6 @@
-import type { TFile } from "obsidian";
+import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
+import type { Datenschreiber } from "../daten/schreiben";
 import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
@@ -42,9 +43,11 @@ const MONATE_KURZ = [
  */
 export class Agenda {
 	private tagIndex = 0;
+	private gezogen: Beitrag | null = null;
 
 	constructor(
 		private daten: Datenzugriff,
+		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
 	) {}
 
@@ -208,6 +211,7 @@ export class Agenda {
 		if (!beitrag) {
 			const leer = raster.createDiv({ cls: "sms-slot sms-slot-leer" });
 			leer.createSpan({ text: "frei" });
+			this.alsZiel(leer, block.id, trackId, undefined);
 			return leer;
 		}
 
@@ -217,6 +221,8 @@ export class Agenda {
 
 		const zelle = raster.createDiv({ cls: `sms-slot sms-slot-${zustand}` });
 		zelle.addEventListener("click", () => this.notizOeffnen(beitrag.datei));
+		this.alsZiehbar(zelle, beitrag);
+		this.alsZiel(zelle, block.id, trackId, beitrag);
 
 		zelle.createDiv({
 			cls: beitrag.titel ? "sms-slot-titel" : "sms-slot-titel is-offen",
@@ -266,6 +272,7 @@ export class Agenda {
 		engagements: Map<string, Engagement>,
 	): void {
 		const pool = eltern.createDiv({ cls: "sms-pool" });
+		this.alsZiel(pool, undefined, undefined, undefined);
 
 		const ohneOrt = beitraege.filter(
 			(beitrag) => !beitrag.block || heimatlos(beitrag, konferenz),
@@ -284,6 +291,7 @@ export class Agenda {
 				cls: verwaist ? "sms-karte sms-poolkarte is-heimatlos" : "sms-karte sms-poolkarte",
 			});
 			karte.addEventListener("click", () => this.notizOeffnen(beitrag.datei));
+			this.alsZiehbar(karte, beitrag);
 
 			karte.createDiv({
 				cls: beitrag.titel ? "sms-slot-titel" : "sms-slot-titel is-offen",
@@ -324,6 +332,91 @@ export class Agenda {
 				cls: `sms-abzeichen sms-abzeichen-${engagement.status}`,
 				text: FUNNEL_TITEL[engagement.status] ?? engagement.status,
 			});
+		}
+	}
+
+	// -------------------------------------------------------------- Ziehen
+
+	private alsZiehbar(element: HTMLElement, beitrag: Beitrag): void {
+		element.draggable = true;
+		element.addClass("is-ziehbar");
+
+		element.addEventListener("dragstart", (ereignis) => {
+			this.gezogen = beitrag;
+			element.addClass("is-zieht");
+			// Ohne Nutzlast startet in Electron kein Zug.
+			ereignis.dataTransfer?.setData("text/plain", beitrag.datei.path);
+			if (ereignis.dataTransfer) ereignis.dataTransfer.effectAllowed = "move";
+		});
+
+		element.addEventListener("dragend", () => {
+			element.removeClass("is-zieht");
+			this.gezogen = null;
+		});
+	}
+
+	/**
+	 * Macht eine Zelle zum Ziel. Ohne Block ist das Ziel der Pool — dort landet
+	 * ein Beitrag, dessen Ort wieder offen sein soll.
+	 */
+	private alsZiel(
+		element: HTMLElement,
+		block: string | undefined,
+		track: string | undefined,
+		belegtVon: Beitrag | undefined,
+	): void {
+		element.addEventListener("dragover", (ereignis) => {
+			if (!this.gezogen || this.gezogen === belegtVon) return;
+			ereignis.preventDefault();
+			element.addClass("is-ziel");
+		});
+
+		element.addEventListener("dragleave", (ereignis) => {
+			if (element.contains(ereignis.relatedTarget as Node)) return;
+			element.removeClass("is-ziel");
+		});
+
+		element.addEventListener("drop", (ereignis) => {
+			if (!this.gezogen || this.gezogen === belegtVon) return;
+			ereignis.preventDefault();
+			ereignis.stopPropagation();
+			element.removeClass("is-ziel");
+			void this.platzieren(block, track, belegtVon);
+		});
+	}
+
+	/**
+	 * Schreibt den neuen Ort. Ist das Ziel belegt, tauschen die beiden ihre
+	 * Plätze, statt den Slot doppelt zu belegen — der Beitrag, der weichen
+	 * muss, landet dort, wo der gezogene herkam, notfalls im Pool. So geht
+	 * nichts verloren, und ein Zug lässt sich rückgängig machen, indem man ihn
+	 * wiederholt.
+	 */
+	private async platzieren(
+		block: string | undefined,
+		track: string | undefined,
+		belegtVon: Beitrag | undefined,
+	): Promise<void> {
+		const beitrag = this.gezogen;
+		this.gezogen = null;
+		if (!beitrag) return;
+		if (beitrag.block === block && beitrag.track === track) return;
+
+		const aenderungen: { datei: TFile; block?: string; track?: string }[] = [
+			{ datei: beitrag.datei, block, track },
+		];
+		if (belegtVon) {
+			aenderungen.push({
+				datei: belegtVon.datei,
+				block: beitrag.block,
+				track: beitrag.track,
+			});
+		}
+
+		try {
+			await this.schreiber.beitraegePlatzieren(aenderungen);
+		} catch (fehler) {
+			new Notice(`Der Beitrag ließ sich nicht verschieben: ${String(fehler)}`);
 		}
 	}
 
