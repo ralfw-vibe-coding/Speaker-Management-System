@@ -174,7 +174,8 @@ export class Datenschreiber {
 		untertitel?: string;
 		veranstalter: string;
 		veranstalterIstNeu: boolean;
-		datum?: string;
+		datumVon?: string;
+		datumBis?: string;
 		honorarbudget?: number;
 	}): Promise<TFile> {
 		if (angaben.veranstalterIstNeu) await this.veranstalterAnlegen(angaben.veranstalter);
@@ -182,29 +183,32 @@ export class Datenschreiber {
 		const ordner = `${this.plugin.settings.konferenzenOrdner}/${angaben.name}`;
 		await this.ordnerSicherstellen(ordner);
 
+		const tage = tageZwischen(angaben.datumVon, angaben.datumBis);
+
 		const zeilen = [
 			"---",
 			"type: konferenz",
 			`untertitel: ${angaben.untertitel ?? ""}`,
 			`veranstalter: "[[${angaben.veranstalter}]]"`,
 			// Ohne Termin ist es noch keine Planung, sondern eine Idee.
-			`status: ${angaben.datum ? "planung" : "idee"}`,
+			`status: ${tage.length > 0 ? "planung" : "idee"}`,
 			"deadline_programm:",
 			`honorarbudget: ${angaben.honorarbudget ?? ""}`,
 		];
 
-		if (angaben.datum) {
-			zeilen.push(
-				"tracks:",
-				"  - { id: t1, name: Hauptbühne }",
-				"tage:",
-				`  - datum: ${angaben.datum}`,
-				"    tracks: [t1]",
-				"    bloecke:",
-				'      - { id: b1, von: "09:00", bis: "09:45" }',
-				'      - { id: b2, von: "09:45", bis: "10:00", fix: Pause }',
-				'      - { id: b3, von: "10:00", bis: "10:45" }',
-			);
+		if (tage.length > 0) {
+			zeilen.push("tracks:", "  - { id: t1, name: Hauptbühne }", "tage:");
+
+			// Block-IDs sind konferenzweit eindeutig, also über alle Tage durchgezählt.
+			let naechste = 1;
+			for (const datum of tage) {
+				zeilen.push(`  - datum: ${datum}`, "    tracks: [t1]", "    bloecke:");
+				zeilen.push(
+					`      - { id: b${naechste++}, von: "09:00", bis: "09:45" }`,
+					`      - { id: b${naechste++}, von: "09:45", bis: "10:00", fix: Pause }`,
+					`      - { id: b${naechste++}, von: "10:00", bis: "10:45" }`,
+				);
+			}
 		}
 
 		zeilen.push(
@@ -400,6 +404,29 @@ function vorlaeufigerName(ziel: {
 /** Beim Beitrag wird bereinigt statt abgelehnt: Der Titel steht im Feld `titel`. */
 function ohneVerbotene(name: string): string {
 	return name.replace(new RegExp(VERBOTENE_ZEICHEN.source, "g"), "").trim();
+}
+
+/** Die längste Konferenz, die noch plausibel ist — darüber ist eher das Jahr vertippt. */
+export const HOECHSTENS_TAGE = 14;
+
+/**
+ * Zählt die Tage von `von` bis `bis` auf, beide einschließlich. Ohne `bis` ist
+ * es ein Tag, ohne `von` gar keiner — dann ist die Konferenz noch eine Idee.
+ */
+export function tageZwischen(von?: string, bis?: string): string[] {
+	if (!von) return [];
+
+	const start = new Date(`${von}T00:00:00Z`);
+	const ende = new Date(`${bis || von}T00:00:00Z`);
+	if (Number.isNaN(start.getTime()) || Number.isNaN(ende.getTime())) return [];
+	if (ende < start) return [];
+
+	const tage: string[] = [];
+	for (const lauf = new Date(start); lauf <= ende; lauf.setUTCDate(lauf.getUTCDate() + 1)) {
+		if (tage.length >= HOECHSTENS_TAGE) break;
+		tage.push(lauf.toISOString().slice(0, 10));
+	}
+	return tage;
 }
 
 /**
