@@ -108,8 +108,17 @@ export class Datenzugriff {
 					slots: slotsLesen(fm.slots),
 				};
 			})
-			// Die jüngste Konferenz zuerst — an ihr wird gerade gearbeitet.
-			.sort((a, b) => b.name.localeCompare(a.name, "de"));
+			// Die jüngste Konferenz zuerst — an ihr wird gerade gearbeitet. Wer
+			// noch keinen Termin hat, steht hinten: Eine Idee ohne Raster wäre
+			// eine schlechte Voreinstellung.
+			.sort((a, b) => {
+				const eigenes = a.tage[0]?.datum;
+				const fremdes = b.tage[0]?.datum;
+				if (eigenes && fremdes) return fremdes.localeCompare(eigenes);
+				if (eigenes) return -1;
+				if (fremdes) return 1;
+				return b.name.localeCompare(a.name, "de");
+			});
 	}
 
 	/**

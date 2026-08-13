@@ -14,9 +14,9 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 |---|---|
 | 13 Speaker | im konferenzübergreifenden Katalog, 11 davon mit `wahl` je Thema |
 | 1 Veranstalter | Acme Events |
-| 2 Konferenzen | 2026 in Planung, 2025 gelaufen |
+| 3 Konferenzen | 2026 in Planung, 2025 gelaufen, 2027 erst eine Idee |
 | 18 Engagements | 13 in der Konferenz 2026, 5 in der von 2025 |
-| 18 Beiträge | 15 im Raster, 2 im Pool, 1 heimatlos — alle in der Konferenz 2026 |
+| 26 Beiträge | 18 in der Konferenz 2026, 8 in der von 2025 |
 
 ## Welche Fälle absichtlich vorkommen
 
@@ -46,9 +46,12 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
   ist auf 40 Teilnehmende angelegt, der Raum Speicher fasst 30. Genau darauf soll die
   Prüfung anspringen.
 - **Ein zweiter Tag mit anderem Raster** — nur ein Track, zwei lange Blöcke, noch leer.
-- **Eine gelaufene Konferenz ohne Raster.** Der Summit 2025 hat weder `tracks` noch
-  `bloecke` noch Beiträge — nach der Konferenz ist das Programm nicht weitergepflegt
-  worden. Das Lesen muss beides verkraften, ohne sich zu verschlucken.
+- **Eine gelaufene Konferenz mit vollständigem Programm.** Der Summit 2025 behält
+  Raster und Beiträge; das Programm bleibt Jahre später lesbar. Sein Raster ist kleiner
+  als das von 2026: zwei Tracks, ein Workshoptag, acht Slots, alle belegt.
+- **Eine Konferenz, die nur eine Idee ist.** Der Summit 2027 hat weder Termin noch
+  Raster noch Kandidaten — kein `tracks`, kein `tage`. Das Lesen muss das verkraften,
+  ohne sich zu verschlucken, und die Sichten müssen etwas Vernünftiges anzeigen.
 - **Fünf Speaker mit Historie**, alle auch 2026 wieder im Spiel: Vahlbruch, Lindqvist,
   Ostrowski, Nowak und Ehrlich. Vier davon mit Bewertung, Ehrlich ohne — sie war
   gestrichen und gar nicht da.
@@ -83,9 +86,11 @@ Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
 
 ## Kennzahlen des Summits 2025
 
-- Honorarsumme **8.600 €** aus vier bezahlten Engagements
+- Honorarsumme **8.600 €** von 12.000 € Budget, aus vier bezahlten Engagements
 - 5 Engagements, davon 4 bezahlt und 1 gestrichen
-- keine Beiträge, kein Raster
+- 8 Slots, alle belegt — keine Löcher, nichts im Pool
+- 8 Beiträge, je zwei auf die vier Speaker verteilt
+- alle Checklisten durch: je Speaker 10 von 10
 
 ## Titel mit Doppelpunkt
 
