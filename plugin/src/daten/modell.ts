@@ -154,6 +154,38 @@ export interface Konferenz {
 }
 
 /**
+ * Zählt die Slots eines Tages: das Kreuzprodukt aus Blöcken und Tracks, minus
+ * Fixblöcke. Der plenare Block ist genau ein Slot, weil er alle Tracks belegt.
+ * Der leere Slot bleibt dabei ein Loch, kein Datenobjekt.
+ */
+export function slotsEinesTages(
+	konferenz: Konferenz,
+	tag: Tag,
+	belegt: (blockId: string, trackId?: string) => boolean,
+): { gesamt: number; belegt: number } {
+	const tracks = konferenz.tracks.filter((track) => tag.tracks.includes(track.id));
+
+	let gesamt = 0;
+	let gefuellt = 0;
+	for (const block of tag.bloecke) {
+		if (block.fix) continue;
+
+		if (block.plenar) {
+			gesamt++;
+			if (belegt(block.id)) gefuellt++;
+			continue;
+		}
+
+		for (const track of tracks) {
+			if (block.nur.length > 0 && !block.nur.includes(track.id)) continue;
+			gesamt++;
+			if (belegt(block.id, track.id)) gefuellt++;
+		}
+	}
+	return { gesamt, belegt: gefuellt };
+}
+
+/**
  * Raum und Kapazität kaskadieren: Der speziellere Eintrag gewinnt. Der Eintrag
  * ohne `track` deckt die ganze Blockzeile ab — und den plenaren Slot, der von
  * keinem Track erbt.

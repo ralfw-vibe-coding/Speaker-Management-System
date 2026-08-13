@@ -502,11 +502,16 @@ Status des zugehörigen Engagements.
 
 ## 5. Sichten
 
-Alle drei leben in **einem einzigen Obsidian-View**, der über ein Ribbon-Icon geöffnet
+Alle vier leben in **einem einzigen Obsidian-View**, der über ein Ribbon-Icon geöffnet
 wird und intern umschaltet. Sie teilen sich denselben Zustand — welche Konferenz gerade
 dran ist —, man springt ständig zwischen ihnen, und Drag & Drop zwischen Pool und
-Raster funktioniert ohnehin nur innerhalb eines Views. Drei eigene View-Typen wären
-drei Obsidian-Tabs, die man einzeln aufräumen muss.
+Raster funktioniert ohnehin nur innerhalb eines Views. Eigene View-Typen wären
+Obsidian-Tabs, die man einzeln aufräumen muss.
+
+**Konferenzübersicht** — konferenzübergreifend. Was ansteht, aufsteigend nach Termin,
+darunter das Archiv absteigend. Je Konferenz Termin, Veranstalter, Status, belegte
+Slots, Kandidaten und Honorar gegen das Budget. Ein Klick wählt sie aus und führt auf
+ihre Statustafel; von hier entstehen auch neue Konferenzen.
 
 **Speakerkatalog** — konferenzübergreifend. Suchen und filtern nach Thema, Format,
 Sprache, Wahl und Historie. Je Speaker die Stammdaten, eine Vorschau seiner Notizen und
@@ -628,9 +633,10 @@ deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht i
 
 - **Beiträge über mehrere Blöcke** — derzeit über lange Blöcke gelöst (`b5`, `b6`).
   Reicht das, oder braucht ein Beitrag eine Liste von Blöcken?
-- **Blöcke stapeln sich nicht** — Zeiten werden einzeln gepflegt; einen Block zu
-  verschieben lässt die folgenden stehen. Bei einem vollen Tag heißt das Nacharbeit.
-  Soll es später eine Kette geben, die alles Folgende mitschiebt?
+- **Blöcke, die auseinanderdriften** — Verschoben wird als Block: Ändert man die Zeit
+  eines Blocks, rücken die folgenden um dieselbe Spanne mit. Lücken und Überschneidungen
+  im Raster prüft aber niemand — zwei Blöcke dürfen sich überlappen, und zwischen zweien
+  darf eine halbe Stunde Niemandsland liegen. Soll das eine Prüfung werden?
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?

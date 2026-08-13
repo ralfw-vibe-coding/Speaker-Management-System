@@ -77,8 +77,8 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   Wikilinks.
 - **Sichten sind Projektionen.** Statustafel und Agenda halten keinen eigenen Zustand;
   alles auf den Karten ist gerechnet. Nichts Abgeleitetes wird zusätzlich gespeichert.
-- **Ein einziger View** mit interner Umschaltung zwischen Speakerkatalog, Statustafel
-  und Agenda — kein eigener View-Typ je Sicht.
+- **Ein einziger View** mit interner Umschaltung zwischen Konferenzübersicht,
+  Speakerkatalog, Statustafel und Agenda — kein eigener View-Typ je Sicht.
 - **Details in der Notiz, nicht im Formular.** Ein Klick auf eine Karte öffnet die
   Notiz im Nachbar-Pane.
 - **Das Plugin besitzt die Dateien.** Notizen entstehen durch den View, nicht von Hand;
@@ -124,6 +124,7 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
   tolerant lesen, samt Checklisten. Die `slots`-Ausnahmen der Konferenz werden noch
   nicht gelesen; sie kommen mit der Agenda.
 - `src/daten/schreiben.ts` — `Datenschreiber`: legt Notizen an, prüft Namen
+- `src/view/konferenzen.ts` — die Übersicht: bevorstehende Konferenzen und Archiv
 - `src/view/katalog.ts` — der Speakerkatalog mit Suche, Filtern und Historie
 - `src/view/SpeakerAnlegenModal.ts` — fragt nur nach dem Namen
 - `src/view/statustafel.ts` — die acht Spalten des Funnels mit ihren Karten

@@ -8,6 +8,7 @@ import {
 	ZUGESAGT_UND_WEITER,
 	istArchiv,
 	raumFuer,
+	slotsEinesTages,
 	type Beitrag,
 	type Block,
 	type Engagement,
@@ -573,9 +574,24 @@ export class Agenda {
 		if (!angaben) return;
 
 		// Die ID bleibt: An ihr hängen die Beiträge. Nur die Zeit ist ein Attribut.
-		const bloecke = tag.bloecke
-			.map((eigener) => (eigener.id === block.id ? { id: block.id, ...angaben } : eigener))
-			.sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		//
+		// Verschoben wird als Block: Was danach kommt, rückt um dieselbe Spanne
+		// mit. Gerechnet wird gegen das Ende, damit auch das Verlängern eines
+		// Blocks die folgenden schiebt statt sie zu überdecken.
+		const sortiert = [...tag.bloecke].sort((a, b) => (a.von ?? "").localeCompare(b.von ?? ""));
+		const stelle = sortiert.findIndex((eigener) => eigener.id === block.id);
+		const verschiebung = minuten(angaben.bis) - minuten(block.bis);
+
+		const bloecke = sortiert.map((eigener, index) => {
+			if (eigener.id === block.id) return { id: block.id, ...angaben };
+			if (verschiebung === 0 || index < stelle) return eigener;
+			return {
+				...eigener,
+				von: verschoben(eigener.von, verschiebung),
+				bis: verschoben(eigener.bis, verschiebung),
+			};
+		});
+
 		const tage = konferenz.tage.map((eigener) =>
 			eigener === tag ? { ...eigener, bloecke } : eigener,
 		);
@@ -822,26 +838,13 @@ export class Agenda {
 
 	/** Löcher sind die Slots dieses Tages, in denen nichts steht. */
 	private loecher(konferenz: Konferenz, tag: Tag, beitraege: Beitrag[]): number {
-		const tracks = konferenz.tracks.filter((track) => tag.tracks.includes(track.id));
-
-		let offen = 0;
-		for (const block of tag.bloecke) {
-			if (block.fix) continue;
-
-			if (block.plenar) {
-				if (!beitraege.some((beitrag) => beitrag.block === block.id)) offen++;
-				continue;
-			}
-
-			for (const track of tracks) {
-				if (block.nur.length > 0 && !block.nur.includes(track.id)) continue;
-				const belegt = beitraege.some(
-					(beitrag) => beitrag.block === block.id && beitrag.track === track.id,
-				);
-				if (!belegt) offen++;
-			}
-		}
-		return offen;
+		const gezaehlt = slotsEinesTages(konferenz, tag, (blockId, trackId) =>
+			beitraege.some(
+				(beitrag) =>
+					beitrag.block === blockId && (trackId === undefined || beitrag.track === trackId),
+			),
+		);
+		return gezaehlt.gesamt - gezaehlt.belegt;
 	}
 }
 
@@ -868,6 +871,22 @@ function heimatlos(beitrag: Beitrag, konferenz: Konferenz): boolean {
 
 	if (!konferenz.tracks.some((track) => track.id === beitrag.track)) return true;
 	return tag.tracks.length > 0 && !tag.tracks.includes(beitrag.track);
+}
+
+/** `09:45` wird zu 585. Fehlt die Zeit, ist sie null wert. */
+function minuten(zeit?: string): number {
+	const treffer = /^(\d{1,2}):(\d{2})/.exec(zeit ?? "");
+	if (!treffer) return 0;
+	return Number(treffer[1]) * 60 + Number(treffer[2]);
+}
+
+/** Schiebt eine Uhrzeit um Minuten, innerhalb desselben Tages. */
+function verschoben(zeit: string | undefined, um: number): string | undefined {
+	if (!zeit) return zeit;
+	const gesamt = Math.max(0, Math.min(24 * 60 - 1, minuten(zeit) + um));
+	const stunde = String(Math.floor(gesamt / 60)).padStart(2, "0");
+	const rest = String(gesamt % 60).padStart(2, "0");
+	return `${stunde}:${rest}`;
 }
 
 function anzahlBeitraege(wert: number): string {

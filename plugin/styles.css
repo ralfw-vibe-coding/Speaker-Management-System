@@ -215,6 +215,41 @@
 	margin-top: 8px;
 }
 
+/* ------------------------------------------------------- Konferenzübersicht */
+
+.sms-abschnittskopf {
+	margin: 18px 0 8px;
+	font-size: 0.95em;
+}
+
+.sms-konferenzkarte .sms-zeile {
+	margin-top: 8px;
+}
+
+.sms-status-idee {
+	background: var(--background-modifier-border);
+}
+
+.sms-status-planung {
+	background: var(--color-blue);
+	color: var(--text-on-accent);
+}
+
+.sms-status-programm-steht {
+	background: var(--color-green);
+	color: var(--text-on-accent);
+}
+
+.sms-status-gelaufen {
+	background: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+.sms-status-abgesagt {
+	background: var(--color-red);
+	color: var(--text-on-accent);
+}
+
 .sms-historie {
 	margin-top: 10px;
 	padding-top: 8px;

@@ -6,15 +6,17 @@ import type { Speaker } from "../daten/modell";
 import { Agenda } from "./agenda";
 import { KonferenzAnlegenModal } from "./KonferenzAnlegenModal";
 import { Speakerkatalog } from "./katalog";
+import { Konferenzuebersicht } from "./konferenzen";
 import { SpeakerAnlegenModal } from "./SpeakerAnlegenModal";
 import { Statustafel } from "./statustafel";
 
 export const VIEW_TYPE_SMS = "sms-arbeitsplatz";
 
 /** Die Sichten, zwischen denen der eine View umschaltet. */
-type Sicht = "katalog" | "statustafel" | "agenda";
+type Sicht = "konferenzen" | "katalog" | "statustafel" | "agenda";
 
 const SICHTEN: { id: Sicht; titel: string }[] = [
+	{ id: "konferenzen", titel: "Konferenzen" },
 	{ id: "katalog", titel: "Speakerkatalog" },
 	{ id: "statustafel", titel: "Statustafel" },
 	{ id: "agenda", titel: "Agenda" },
@@ -26,12 +28,13 @@ const SICHTEN: { id: Sicht; titel: string }[] = [
  * jeweilige Sicht.
  */
 export class SmsView extends ItemView {
-	private sicht: Sicht = "katalog";
+	private sicht: Sicht = "konferenzen";
 	/** Die Konferenz, die gerade dran ist. Alle Sichten teilen sie sich. */
 	private konferenzName: string | null = null;
 
 	private daten: Datenzugriff;
 	private schreiber: Datenschreiber;
+	private uebersicht: Konferenzuebersicht;
 	private katalog: Speakerkatalog;
 	private statustafel: Statustafel;
 	private agenda: Agenda;
@@ -44,6 +47,18 @@ export class SmsView extends ItemView {
 		this.schreiber = new Datenschreiber(plugin.app, plugin);
 
 		const oeffnen = (datei: TFile) => void this.notizOeffnen(datei);
+
+		this.uebersicht = new Konferenzuebersicht(
+			this.daten,
+			oeffnen,
+			(name) => {
+				// Eine Konferenz auszuwählen heißt: ab jetzt arbeite ich an der.
+				this.konferenzName = name;
+				this.sicht = "statustafel";
+				void this.render();
+			},
+			(vorhandene) => this.konferenzAnlegen(vorhandene),
+		);
 		this.katalog = new Speakerkatalog(this.daten, this.schreiber, oeffnen, (vorhandene) =>
 			this.speakerAnlegen(vorhandene),
 		);
@@ -157,6 +172,11 @@ export class SmsView extends ItemView {
 		const buehne = root.createDiv({ cls: "sms-buehne" });
 
 		const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
+
+		if (this.sicht === "konferenzen") {
+			this.uebersicht.zeichnen(buehne);
+			return;
+		}
 
 		if (this.sicht === "katalog") {
 			await this.katalog.zeichnen(buehne, konferenz);
