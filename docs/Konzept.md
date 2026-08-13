@@ -529,6 +529,12 @@ dran ist —, man springt ständig zwischen ihnen, und Drag & Drop zwischen Pool
 Raster funktioniert ohnehin nur innerhalb eines Views. Eigene View-Typen wären
 Obsidian-Tabs, die man einzeln aufräumen muss.
 
+Der **Status** einer Konferenz steht dort als Auswahl, nicht als Etikett: Er ist eine
+Entscheidung, keine Beschriftung. Er sperrt die Agenda, sobald die Konferenz gelaufen
+ist, und er ist der einzige Weg dorthin — ohne ihn käme keine Konferenz je ins Archiv,
+ohne dass jemand ins Frontmatter greift. Umgekehrt öffnet er ein Archiv wieder, wenn
+darin doch etwas zu berichtigen ist.
+
 **Konferenzübersicht** — konferenzübergreifend. Was ansteht, aufsteigend nach Termin,
 darunter das Archiv absteigend. Je Konferenz Termin, Veranstalter, Status, belegte
 Slots, Kandidaten und Honorar gegen das Budget. Ein Klick wählt sie aus und führt auf

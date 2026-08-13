@@ -240,6 +240,15 @@
 	margin-top: 8px;
 }
 
+.sms-statuswahl {
+	height: auto;
+	padding: 2px 24px 2px 8px;
+	font-size: 0.75em;
+	border-radius: 999px;
+	border: none;
+	cursor: pointer;
+}
+
 .sms-status-idee {
 	background: var(--background-modifier-border);
 }

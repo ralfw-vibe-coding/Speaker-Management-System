@@ -174,7 +174,8 @@ Themen-Chip schaltet die `wahl` zu diesem Thema weiter.
 
 Bei Konferenzen im Status `gelaufen` oder `abgesagt` ist die **Agenda gesperrt** — das
 Programm ist Archiv. Die **Statustafel bleibt bedienbar**, weil Rechnungen, Zahlungen
-und die Bewertung erst nach der Konferenz kommen.
+und die Bewertung erst nach der Konferenz kommen. Den Status setzt man auf der Karte in
+der Übersicht; das ist auch der Weg, ein Archiv für eine Berichtigung wieder zu öffnen.
 
 Eine Karte nach `gestrichen` zu ziehen löst die **Streichen-Regel** aus, hinter einer
 Rückfrage: Themen mit Titel landen ohne Speaker im Pool, titellose Beiträge im

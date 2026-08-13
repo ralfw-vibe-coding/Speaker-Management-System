@@ -113,6 +113,18 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Setzt den Status einer Konferenz. Er entscheidet über mehr als eine
+	 * Beschriftung: Bei `gelaufen` und `abgesagt` ist die Agenda Archiv, und
+	 * ohne diesen Weg käme eine Konferenz nie dorthin, ohne dass jemand ins
+	 * Frontmatter greift.
+	 */
+	async konferenzstatusSetzen(datei: TFile, status: string): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			fm.status = status;
+		});
+	}
+
+	/**
 	 * Setzt die Wahl eines Speakers zu einem Thema. `undefined` heißt „nicht
 	 * eingeschätzt" — dann verschwindet der Eintrag, statt als Null dazustehen;
 	 * und ist keiner mehr übrig, verschwindet auch das Feld.

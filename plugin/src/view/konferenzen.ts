@@ -1,6 +1,9 @@
-import type { TFile } from "obsidian";
+import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
+import type { Datenschreiber } from "../daten/schreiben";
 import {
+	KONFERENZSTATUS,
+	KONFERENZSTATUS_TITEL,
 	ZUGESAGT_UND_WEITER,
 	istArchiv,
 	slotsEinesTages,
@@ -34,14 +37,6 @@ const MONATE = [
 	"Dezember",
 ];
 
-const STATUS_TITEL: Record<string, string> = {
-	idee: "Idee",
-	planung: "in Planung",
-	"programm-steht": "Programm steht",
-	gelaufen: "gelaufen",
-	abgesagt: "abgesagt",
-};
-
 /**
  * Die Übersicht über alle Konferenzen: was ansteht und was gelaufen ist.
  * Konferenzübergreifend wie der Katalog — hier wählt man aus, woran man
@@ -50,6 +45,7 @@ const STATUS_TITEL: Record<string, string> = {
 export class Konferenzuebersicht {
 	constructor(
 		private daten: Datenzugriff,
+		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
 		private waehlen: (name: string) => void,
 		private konferenzAnlegen: (vorhandene: string[]) => void,
@@ -130,6 +126,17 @@ export class Konferenzuebersicht {
 		});
 	}
 
+	private async statusSetzen(konferenz: Konferenz, status: string): Promise<void> {
+		try {
+			await this.schreiber.konferenzstatusSetzen(konferenz.datei, status);
+			if (istArchiv({ ...konferenz, status })) {
+				new Notice(`${konferenz.name} ist jetzt Archiv — die Agenda lässt sich nicht mehr ändern.`);
+			}
+		} catch (fehler) {
+			new Notice(`Der Status ließ sich nicht setzen: ${String(fehler)}`);
+		}
+	}
+
 	private abschnitt(buehne: HTMLElement, titel: string, karten: Karte[]): void {
 		if (karten.length === 0) return;
 
@@ -150,9 +157,22 @@ export class Konferenzuebersicht {
 
 		const kopf = kasten.createDiv({ cls: "sms-karte-kopf" });
 		kopf.createSpan({ cls: "sms-name", text: konferenz.name });
-		kopf.createSpan({
-			cls: `sms-abzeichen sms-status-${konferenz.status ?? "idee"}`,
-			text: STATUS_TITEL[konferenz.status ?? ""] ?? konferenz.status ?? "ohne Status",
+		// Der Status ist kein Etikett, sondern eine Entscheidung: Er sperrt die
+		// Agenda, sobald die Konferenz gelaufen ist. Deshalb steht er hier zum
+		// Ändern und nicht nur zum Lesen.
+		const auswahl = kopf.createEl("select", {
+			cls: `dropdown sms-statuswahl sms-status-${konferenz.status ?? "idee"}`,
+		});
+		for (const wert of KONFERENZSTATUS) {
+			const eintrag = auswahl.createEl("option", {
+				text: KONFERENZSTATUS_TITEL[wert],
+				value: wert,
+			});
+			if (wert === (konferenz.status ?? "idee")) eintrag.selected = true;
+		}
+		auswahl.addEventListener("click", (ereignis) => ereignis.stopPropagation());
+		auswahl.addEventListener("change", () => {
+			void this.statusSetzen(konferenz, auswahl.value);
 		});
 
 		const unterzeile = [konferenz.untertitel, konferenz.veranstalter, karte.spanne].filter(

@@ -50,6 +50,7 @@ export class SmsView extends ItemView {
 
 		this.uebersicht = new Konferenzuebersicht(
 			this.daten,
+			this.schreiber,
 			oeffnen,
 			(name) => {
 				// Eine Konferenz auszuwählen heißt: ab jetzt arbeite ich an der.

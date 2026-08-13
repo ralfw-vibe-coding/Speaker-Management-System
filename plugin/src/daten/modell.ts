@@ -41,6 +41,23 @@ export const FUNNEL_TITEL: Record<string, string> = {
 /** „zugesagt und weiter" — die Karten, bei denen die Person an Bord ist. */
 export const ZUGESAGT_UND_WEITER = ["zugesagt", "rechnung", "bezahlt"];
 
+/** Der Lebenslauf einer Konferenz, in seiner Reihenfolge. */
+export const KONFERENZSTATUS = [
+	"idee",
+	"planung",
+	"programm-steht",
+	"gelaufen",
+	"abgesagt",
+] as const;
+
+export const KONFERENZSTATUS_TITEL: Record<string, string> = {
+	idee: "Idee",
+	planung: "in Planung",
+	"programm-steht": "Programm steht",
+	gelaufen: "gelaufen",
+	abgesagt: "abgesagt",
+};
+
 /**
  * Konferenzstatus, an denen nicht mehr geplant wird. Ihr Programm ist Archiv —
  * der Funnel läuft trotzdem weiter, denn Rechnungen und Zahlungen kommen erst
