@@ -1,5 +1,6 @@
-import type { TFile } from "obsidian";
+import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
+import type { Datenschreiber } from "../daten/schreiben";
 import {
 	FUNNEL,
 	FUNNEL_TITEL,
@@ -46,8 +47,16 @@ const MONATE = [
  * alles andere ist aus Engagements, Beiträgen und dem Raster gerechnet.
  */
 export class Statustafel {
+	/** Die Karten der gerade gezeichneten Tafel — Grundlage fürs Umsortieren. */
+	private aktuelle: Karte[] = [];
+	private gezogen: Karte | null = null;
+	private gezogenEl: HTMLElement | null = null;
+	private marke: HTMLElement | null = null;
+	private zielIndex = 0;
+
 	constructor(
 		private daten: Datenzugriff,
+		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
 	) {}
 
@@ -64,6 +73,7 @@ export class Statustafel {
 		}
 
 		const karten = await this.karten(konferenz);
+		this.aktuelle = karten;
 
 		this.kopfZeichnen(buehne, konferenz, karten);
 
@@ -166,6 +176,26 @@ export class Statustafel {
 		kopf.createSpan({ cls: "sms-spalte-titel", text: FUNNEL_TITEL[status] ?? status });
 		kopf.createSpan({ cls: "sms-spalte-zahl", text: karten.length > 0 ? String(karten.length) : "" });
 
+		spalte.addEventListener("dragover", (ereignis) => {
+			if (!this.gezogen) return;
+			ereignis.preventDefault();
+			spalte.addClass("is-ziel");
+			this.zielIndex = this.markeSetzen(spalte, ereignis.clientY);
+		});
+
+		spalte.addEventListener("dragleave", (ereignis) => {
+			// dragleave feuert auch beim Wechsel auf ein Kindelement.
+			if (spalte.contains(ereignis.relatedTarget as Node)) return;
+			spalte.removeClass("is-ziel");
+		});
+
+		spalte.addEventListener("drop", (ereignis) => {
+			if (!this.gezogen) return;
+			ereignis.preventDefault();
+			spalte.removeClass("is-ziel");
+			void this.verschieben(status, this.zielIndex);
+		});
+
 		for (const karte of karten) this.karteZeichnen(spalte, karte);
 	}
 
@@ -175,6 +205,20 @@ export class Statustafel {
 		const kasten = spalte.createDiv({ cls: "sms-karte sms-tafel-karte" });
 		if (karte.gesamt > 0 && karte.erledigt === karte.gesamt) kasten.addClass("is-vollstaendig");
 		kasten.addEventListener("click", () => this.notizOeffnen(engagement.datei));
+
+		kasten.draggable = true;
+		kasten.addEventListener("dragstart", (ereignis) => {
+			this.gezogen = karte;
+			this.gezogenEl = kasten;
+			kasten.addClass("is-zieht");
+			// Ohne Nutzlast startet in Electron kein Zug.
+			ereignis.dataTransfer?.setData("text/plain", engagement.datei.path);
+			if (ereignis.dataTransfer) ereignis.dataTransfer.effectAllowed = "move";
+		});
+		kasten.addEventListener("dragend", () => {
+			kasten.removeClass("is-zieht");
+			this.aufraeumen();
+		});
 
 		kasten.createDiv({ cls: "sms-name", text: engagement.speaker });
 
@@ -220,6 +264,94 @@ export class Statustafel {
 				cls: "sms-hinweis sms-hinweis-gelb",
 				text: `⏱ ${karte.wochenOhneAntwort} Wochen ohne Antwort`,
 			});
+		}
+	}
+
+	// ----------------------------------------------------------- Umsortieren
+
+	/**
+	 * Setzt die Einfügemarke dorthin, wo die Karte landen würde, und meldet den
+	 * Index. Gerechnet wird gegen die Mitten der Karten, die schon dort liegen —
+	 * die gezogene zählt nicht mit, sie verlässt ihren Platz ja.
+	 */
+	private markeSetzen(spalte: HTMLElement, y: number): number {
+		const vorhandene = Array.from(
+			spalte.querySelectorAll<HTMLElement>(".sms-tafel-karte"),
+		).filter((element) => element !== this.gezogenEl);
+
+		let index = vorhandene.length;
+		for (let i = 0; i < vorhandene.length; i++) {
+			const kasten = vorhandene[i].getBoundingClientRect();
+			if (y < kasten.top + kasten.height / 2) {
+				index = i;
+				break;
+			}
+		}
+
+		if (!this.marke) {
+			this.marke = document.createElement("div");
+			this.marke.className = "sms-einfuegemarke";
+		}
+
+		const davor = vorhandene[index];
+		if (davor) spalte.insertBefore(this.marke, davor);
+		else spalte.appendChild(this.marke);
+
+		return index;
+	}
+
+	private aufraeumen(): void {
+		this.marke?.remove();
+		this.marke = null;
+		this.gezogen = null;
+		this.gezogenEl = null;
+		for (const spalte of Array.from(document.querySelectorAll(".sms-spalte.is-ziel"))) {
+			spalte.classList.remove("is-ziel");
+		}
+	}
+
+	/**
+	 * Nummeriert die betroffenen Spalten neu und schreibt sie in einem
+	 * Durchgang. Die Zielspalte rückt an der Einfügestelle auf, die Quellspalte
+	 * wird geschlossen — sonst bliebe dort eine Lücke, die beim nächsten Zug
+	 * wieder auffällt. Geschrieben wird nur, was sich wirklich ändert.
+	 */
+	private async verschieben(zielStatus: string, index: number): Promise<void> {
+		const karte = this.gezogen;
+		this.aufraeumen();
+		if (!karte) return;
+
+		const quellStatus = karte.engagement.status;
+		const nachPosition = (a: Karte, b: Karte) =>
+			a.engagement.position - b.engagement.position ||
+			a.engagement.speaker.localeCompare(b.engagement.speaker, "de");
+
+		const ziel = this.aktuelle
+			.filter((k) => k.engagement.status === zielStatus && k !== karte)
+			.sort(nachPosition);
+		ziel.splice(Math.max(0, Math.min(index, ziel.length)), 0, karte);
+
+		const aenderungen: { datei: TFile; status: string; position: number }[] = [];
+		const merken = (k: Karte, status: string, position: number) => {
+			if (k.engagement.status === status && k.engagement.position === position) return;
+			aenderungen.push({ datei: k.engagement.datei, status, position });
+		};
+
+		ziel.forEach((k, i) => merken(k, zielStatus, i));
+
+		if (quellStatus !== zielStatus) {
+			this.aktuelle
+				.filter((k) => k.engagement.status === quellStatus && k !== karte)
+				.sort(nachPosition)
+				.forEach((k, i) => merken(k, quellStatus, i));
+		}
+
+		if (aenderungen.length === 0) return;
+
+		try {
+			await this.schreiber.statusUndPosition(aenderungen);
+		} catch (fehler) {
+			new Notice(`Die Karte ließ sich nicht verschieben: ${String(fehler)}`);
 		}
 	}
 }

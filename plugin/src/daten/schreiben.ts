@@ -70,6 +70,25 @@ export class Datenschreiber {
 		return this.app.vault.create(pfad, inhalt);
 	}
 
+	/**
+	 * Schreibt `status` und `position` in mehrere Engagements — die einzige
+	 * Änderung, die das Verschieben einer Karte auslöst.
+	 *
+	 * `processFrontMatter` fasst genau die genannten Felder an und lässt Body
+	 * und Fremdfelder unangetastet. Das ist „eng schreiben": Gesprächsnotizen,
+	 * Häkchen und Felder anderer Werkzeuge überleben jeden Zug.
+	 */
+	async statusUndPosition(
+		aenderungen: { datei: TFile; status: string; position: number }[],
+	): Promise<void> {
+		for (const aenderung of aenderungen) {
+			await this.app.fileManager.processFrontMatter(aenderung.datei, (fm) => {
+				fm.status = aenderung.status;
+				fm.position = aenderung.position;
+			});
+		}
+	}
+
 	private async ordnerSicherstellen(ordner: string): Promise<void> {
 		if (!ordner) return;
 		const pfad = normalizePath(ordner);

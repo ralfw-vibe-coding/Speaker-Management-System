@@ -130,9 +130,13 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 - `src/view/SmsView.ts` — der View mit drei Reitern und der Konferenzauswahl;
   **die Agenda ist weiterhin Platzhalter**
 
-**Geschrieben wird bisher nur eins:** „+ Speaker" im Katalog legt eine Notiz mit leeren
-Feldern an und öffnet sie. Es gibt weder „als Kandidat merken" noch Drag & Drop, und
-keine Sicht **ändert** eine bestehende Notiz.
+Geschrieben wird zweierlei: „+ Speaker" im Katalog legt eine Notiz an, und das Ziehen
+einer Karte auf der Statustafel schreibt `status` und `position` — über
+`processFrontMatter`, das Body und Fremdfelder unangetastet lässt.
+
+**Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
+und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die
+Karte; die Beiträge des Speakers werden **nicht** geleert.
 
 ### Reihenfolge
 
@@ -143,8 +147,9 @@ Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen
    Prüfbar gegen die Kennzahlen für den Katalog in `Demodaten.md`.
 2. ~~**Statustafel, lesend.**~~ Steht seit v0.0.5. Kopf mit den Kennzahlen, die acht
    Spalten, Karten mit Themen, Beitragszahl, Honorar, Checklistenbalken und Hinweisen.
-3. **Statustafel, schreibend.** Karten zwischen den Spalten ziehen und umsortieren; das
-   schreibt `status` und `position`.
+3. ~~**Statustafel, schreibend.**~~ Steht seit v0.0.7. Karten zwischen den Spalten
+   ziehen und umsortieren; das schreibt `status` und `position`. Offen bleibt die
+   Streichen-Regel.
 4. **Agenda.**
 
 Der Katalog zuerst, weil er die kleinste Sicht mit der größten gemeinsamen Grundlage
