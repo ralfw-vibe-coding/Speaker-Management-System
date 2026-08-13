@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "conversationId": "conv-1786651534147-u45dollvz",
+  "records": [
+    {
+      "schemaVersion": 1,
+      "id": "msg-1786651534226-jpn8cyy",
+      "userTurnOrdinal": 1,
+      "state": "accepted",
+      "localMessageId": "msg-1786651534138-vcqly4s",
+      "timestamp": 1786651534138,
+      "rawDisplayText": "welche konferenzen gibt es?",
+      "canonicalText": "welche konferenzen gibt es?",
+      "images": [],
+      "contentDigest": "bfee6344dd9ecb0a08a5ba5ccc6c0e7951e6993e7e0db7cd6a21a4c3a0855175",
+      "providerUserMessageId": "a5e6ba92-7394-44ae-b443-9e8fa83bbab5",
+      "providerAssistantMessageId": "0801c03e-52b3-49cc-943c-88f28a8a1dab"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1786651595661-86ct6rh",
+      "userTurnOrdinal": 2,
+      "state": "accepted",
+      "localMessageId": "msg-1786651595657-skfbup6",
+      "timestamp": 1786651595657,
+      "rawDisplayText": "welche konferenz sehe ich grad im anderen tab?",
+      "canonicalText": "welche konferenz sehe ich grad im anderen tab?",
+      "images": [],
+      "contentDigest": "7a4d766662a54ca9d4902bc8d34b9073dd9b04fc26f06141594d916252608459",
+      "providerUserMessageId": "63737ee6-47ef-4840-b2bb-be63be944254",
+      "providerAssistantMessageId": "21afb2de-52c0-46ef-8c02-076f810275de"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1786651693626-jocyz8q",
+      "userTurnOrdinal": 3,
+      "state": "accepted",
+      "localMessageId": "msg-1786651693622-i5s6j78",
+      "timestamp": 1786651693622,
+      "rawDisplayText": "ok, schau dir die konferenz \"assistenz summit 2026\" an und mache dir ein bild davon, wie in den frontmatter eigenschaften tage, tracks und slots eine agenda strukturiert werden kann. verstehst du das?",
+      "canonicalText": "ok, schau dir die konferenz \"assistenz summit 2026\" an und mache dir ein bild davon, wie in den frontmatter eigenschaften tage, tracks und slots eine agenda strukturiert werden kann. verstehst du das?",
+      "images": [],
+      "contentDigest": "aad8d48f88aceb38359ac66f4bcac5173cc9c5ec8080ed384c2e371582eaeaeb",
+      "providerUserMessageId": "31a363f6-1705-4073-b9e8-979cf51f3b6b",
+      "providerAssistantMessageId": "a924afba-cd5b-4535-9cfa-15dd2b1d61a1"
+    },
+    {
+      "schemaVersion": 1,
+      "id": "msg-1786651977899-a16c7cx",
+      "userTurnOrdinal": 4,
+      "state": "accepted",
+      "localMessageId": "msg-1786651977894-deucd34",
+      "timestamp": 1786651977894,
+      "rawDisplayText": "super. dann strukturiere die agenda von tag 1 beim office day 2027 so:\n\n9:00-9:45 Keynote\n\n2 Tracks (A, B)\n\nZeitblöcke:\n\n10:00-10:55\n11:00-12:00\n\n13:00-14:00\n14:30-15:25",
+      "canonicalText": "super. dann strukturiere die agenda von tag 1 beim office day 2027 so:\n\n9:00-9:45 Keynote\n\n2 Tracks (A, B)\n\nZeitblöcke:\n\n10:00-10:55\n11:00-12:00\n\n13:00-14:00\n14:30-15:25",
+      "images": [],
+      "contentDigest": "620fae30b43293cd048e881e401b43724800d4fabb6e8b45f35b40150e92454a",
+      "providerUserMessageId": "397793ef-cc32-4bf8-8d4b-2e2c598e8f61",
+      "providerAssistantMessageId": "1ee36aa0-9d7b-4ca6-8dc4-11af6273a285"
+    }
+  ]
+}
