@@ -155,6 +155,7 @@ export class Datenschreiber {
 			`speaker: ["[[${ziel.speaker}]]"]`,
 			"titel:",
 			"format:",
+			"dauer:",
 			"max_teilnehmer:",
 			`block: ${ziel.block.id}`,
 			ziel.track ? `track: ${ziel.track.id}` : "track:",

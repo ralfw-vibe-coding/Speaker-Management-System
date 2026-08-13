@@ -101,6 +101,12 @@ export interface Beitrag {
 	format?: string;
 	maxTeilnehmer?: number;
 	/**
+	 * Die **gewünschte** Dauer in Minuten, mit dem Speaker verhandelt. Die
+	 * tatsächliche ergibt sich weiterhin aus den Blöcken; hier steht, was der
+	 * Beitrag braucht — so wie `max_teilnehmer` steht, was er verträgt.
+	 */
+	dauer?: number;
+	/**
 	 * Die Blöcke, über die der Beitrag läuft. Leer heißt: im Pool. Ein langer
 	 * Workshop belegt mehrere; das Feld heißt im Frontmatter `block` und
 	 * verträgt einen einzelnen Wert wie eine Liste.

@@ -45,6 +45,10 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 - **Ein Beitrag, der nicht in seinen Raum passt** — „Workshop: Protokoll in 15 Minuten"
   ist auf 40 Teilnehmende angelegt, der Raum Speicher fasst 30. Genau darauf soll die
   Prüfung anspringen.
+- **Ein Beitrag, der nicht in seine Zeit passt** — „Workshop: Der perfekte Board-Report"
+  braucht 90 Minuten und liegt in einem 45-Minuten-Block. Zweimal auf ⤓ heilt es.
+  „Workshop: Netzwerken auf Vorstandsebene" braucht drei Stunden und passt damit nur an
+  Tag 2 — dort dauern die Blöcke genau so lang.
 - **Ein zweiter Tag mit anderem Raster** — nur ein Track, zwei lange Blöcke, noch leer.
 - **Eine gelaufene Konferenz mit vollständigem Programm.** Der Summit 2025 behält
   Raster und Beiträge; das Programm bleibt Jahre später lesbar. Sein Raster ist kleiner

@@ -84,6 +84,7 @@ export class Datenzugriff {
 				titel: text(fm.titel),
 				format: text(fm.format),
 				maxTeilnehmer: zahl(fm.max_teilnehmer),
+				dauer: zahl(fm.dauer),
 				bloecke: liste(fm.block),
 				track: text(fm.track),
 				aufgaben: this.aufgaben(datei),

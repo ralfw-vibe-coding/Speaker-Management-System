@@ -390,6 +390,7 @@ konferenz: "[[.NET Day 2026]]"
 speaker: ["[[Ralf Westphal]]"]   # darf leer sein
 titel: Wieder mehr Substanz      # darf leer sein
 format: keynote                  # dieselben Werte wie beim Speaker
+dauer: 45                        # optional, die gewünschte Dauer in Minuten
 max_teilnehmer: 20               # optional, meist nur bei Workshops
 block: b1                        # leer = im Pool, Liste = über mehrere Blöcke
 track:                           # entfällt bei plenaren Blöcken
@@ -423,6 +424,13 @@ Häkchen, das wäre eine zweite Wahrheit. Übrig bleiben die
 Zulieferungen und Absprachen zum einzelnen Beitrag: Abstract, Folien, Technikbedarf. Der
 Technikbedarf steht hier und nicht am Engagement, weil er am Format hängt: derselbe
 Mensch braucht für die Live-Demo WLAN und für den Workshop bewegliche Stühle.
+
+**`dauer` ist die gewünschte Dauer in Minuten**, mit dem Speaker verhandelt — nicht die
+tatsächliche, die weiterhin aus den Blöcken kommt. Aus dem Format lässt sie sich nicht
+ableiten: Ein Workshop dauert 90 Minuten oder vier Stunden, je nachdem. Wo beide Zahlen
+dastehen, vergleicht das Plugin sie und meldet, wenn der Platz nicht reicht. Fixblöcke,
+über die ein langer Workshop hinwegläuft, zählen dabei nicht mit — in der Kaffeepause
+arbeitet niemand.
 
 `max_teilnehmer` ist die Obergrenze, die der Beitrag selbst mitbringt — meist ein
 Workshop, der in kleiner Runde stattfinden soll. Sie ist optional und hat nichts mit der
@@ -634,9 +642,9 @@ Notizen im Zentrum.
 
 ### Was das Plugin prüft, ohne dass man fragt
 
-Doppelbelegung eines Slots · derselbe Speaker in zwei parallelen Tracks · ein Beitrag,
-dessen Format nicht in die Blockdauer passt · ein Beitrag, dessen `max_teilnehmer` über
-der `kapazitaet` seines Slots liegt · offene Slots · heimatlose Beiträge · Beiträge,
+Doppelbelegung eines Slots · derselbe Speaker in zwei gleichzeitigen Beiträgen · ein
+Beitrag, dessen `dauer` mehr verlangt, als seine Blöcke hergeben · ein Beitrag, dessen
+`max_teilnehmer` über der `kapazitaet` seines Slots liegt · offene Slots · heimatlose Beiträge · Beiträge,
 deren Speaker noch nicht zugesagt hat · eine `wahl` zu einem Thema, das nicht in
 `themen` steht · ein zweiter Speaker mit demselben Namen · **Lücken und
 Überschneidungen zwischen den Blöcken eines Tages**.

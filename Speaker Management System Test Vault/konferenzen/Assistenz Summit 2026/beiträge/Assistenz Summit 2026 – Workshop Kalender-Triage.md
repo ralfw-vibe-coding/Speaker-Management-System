@@ -4,6 +4,7 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Marek Lindqvist]]"]
 titel: "Workshop: Kalender-Triage"
 format: workshop
+dauer: 45
 max_teilnehmer: 25
 block: b5
 track: t3

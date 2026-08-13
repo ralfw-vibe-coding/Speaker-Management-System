@@ -421,6 +421,16 @@ export class Agenda {
 			});
 		}
 
+		// Gewünschte Dauer gegen das, was die Blöcke hergeben. Eine Regel je
+		// Format gäbe es nicht: Ein Workshop dauert 90 Minuten oder vier Stunden.
+		const vorhanden = this.dauerImRaster(beitrag, ziel.tag);
+		if (beitrag.dauer !== undefined && vorhanden > 0 && beitrag.dauer > vorhanden) {
+			zelle.createDiv({
+				cls: "sms-slot-hinweis sms-hinweis-rot",
+				text: `⚠ braucht ${dauerText(beitrag.dauer)}, hat ${dauerText(vorhanden)}`,
+			});
+		}
+
 		// Doppelbelegung: Gezeichnet wird nur der erste — ohne diesen Hinweis
 		// wäre der zweite unsichtbar, und das ist schlimmer als bunt.
 		if (nachbarn.weitere > 0) {
@@ -555,8 +565,8 @@ export class Agenda {
 		band.style.gridColumn = `2 / span ${spalten}`;
 		band.setText(
 			spanne > 0
-				? `${dauer(spanne)} unverplant`
-				: `⚠ ${dauer(-spanne)} Überschneidung mit dem Block davor`,
+				? `${dauerText(spanne)} unverplant`
+				: `⚠ ${dauerText(-spanne)} Überschneidung mit dem Block davor`,
 		);
 	}
 
@@ -934,6 +944,17 @@ export class Agenda {
 	}
 
 	/**
+	 * Wie viel Zeit die belegten Blöcke zusammen hergeben. Fixblöcke, über die
+	 * ein Workshop hinwegläuft, zählen nicht mit — in der Kaffeepause arbeitet
+	 * niemand.
+	 */
+	private dauerImRaster(beitrag: Beitrag, tag: Tag): number {
+		return tag.bloecke
+			.filter((block) => beitrag.bloecke.includes(block.id))
+			.reduce((summe, block) => summe + Math.max(0, minuten(block.bis) - minuten(block.von)), 0);
+	}
+
+	/**
 	 * Andere Beiträge desselben Speakers, die sich mit diesem einen Block
 	 * teilen. Bei parallelen Tracks ist das ein Fehler im Programm, den man
 	 * beim Ziehen nicht sieht — man schaut auf die Spalte, nicht auf die Zeile.
@@ -1238,7 +1259,7 @@ function ueberschneidungen(tag: Tag): number {
 }
 
 /** Aus 75 wird `1 Std 15 Min`. */
-function dauer(minuten: number): string {
+function dauerText(minuten: number): string {
 	const stunden = Math.floor(minuten / 60);
 	const rest = minuten % 60;
 	if (stunden === 0) return `${rest} Min`;

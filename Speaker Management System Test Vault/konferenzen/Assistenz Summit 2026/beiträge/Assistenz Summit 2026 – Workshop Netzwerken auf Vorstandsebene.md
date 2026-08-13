@@ -4,6 +4,7 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Bettina Kuraszkiewicz]]"]
 titel: "Workshop: Netzwerken auf Vorstandsebene"
 format: workshop
+dauer: 180
 max_teilnehmer: 20
 block: b7
 track: t4

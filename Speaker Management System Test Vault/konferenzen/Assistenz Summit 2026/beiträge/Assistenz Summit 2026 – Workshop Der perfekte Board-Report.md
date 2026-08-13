@@ -4,6 +4,7 @@ konferenz: "[[Assistenz Summit 2026]]"
 speaker: ["[[Christa Nowak]]"]
 titel: "Workshop: Der perfekte Board-Report"
 format: workshop
+dauer: 90
 max_teilnehmer: 24
 block: b3
 track: t3
