@@ -1,6 +1,16 @@
 import { App, TFile } from "obsidian";
 import type SmsPlugin from "../main";
-import type { Aufgaben, Beitrag, Block, Engagement, Konferenz, Speaker, Tag, Track } from "./modell";
+import type {
+	Aufgaben,
+	Beitrag,
+	Block,
+	Engagement,
+	Konferenz,
+	SlotAngabe,
+	Speaker,
+	Tag,
+	Track,
+} from "./modell";
 
 /** Die Überschrift, unter der in jeder Notiz die Checkliste steht. */
 const CHECKLISTE = "Zu klären";
@@ -95,6 +105,7 @@ export class Datenzugriff {
 					deadlineProgramm: text(fm.deadline_programm),
 					tracks: tracksLesen(fm.tracks),
 					tage: tageLesen(fm.tage),
+					slots: slotsLesen(fm.slots),
 				};
 			})
 			// Die jüngste Konferenz zuerst — an ihr wird gerade gearbeitet.
@@ -241,6 +252,17 @@ function bloeckeLesen(wert: unknown): Block[] {
 			nur: liste(roh.nur),
 		}))
 		.filter((block) => block.id.length > 0);
+}
+
+function slotsLesen(wert: unknown): SlotAngabe[] {
+	return eintraege(wert)
+		.map((roh) => ({
+			block: text(roh.block) ?? "",
+			track: text(roh.track),
+			raum: text(roh.raum),
+			kapazitaet: zahl(roh.kapazitaet),
+		}))
+		.filter((slot) => slot.block.length > 0);
 }
 
 /** Ein Tag ohne `bloecke` ist erlaubt — eine gelaufene Konferenz hat kein Raster mehr. */

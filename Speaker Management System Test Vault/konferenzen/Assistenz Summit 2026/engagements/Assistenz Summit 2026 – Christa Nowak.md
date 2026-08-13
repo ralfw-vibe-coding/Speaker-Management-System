@@ -2,8 +2,8 @@
 type: engagement
 konferenz: "[[Assistenz Summit 2026]]"
 speaker: "[[Christa Nowak]]"
-status: angefragt
-position: 0
+status: geantwortet
+position: 1
 honorar: 2700
 angefragt_am: 2026-06-12
 ---

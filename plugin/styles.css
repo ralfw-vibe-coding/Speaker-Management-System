@@ -415,6 +415,197 @@
 	margin: -3px 0;
 }
 
+/* ------------------------------------------------------------------ Agenda */
+
+.sms-tage {
+	display: flex;
+	gap: 6px;
+	margin-bottom: 16px;
+}
+
+.sms-agenda-unten {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.sms-raster {
+	flex: 1;
+	display: grid;
+	gap: 6px;
+	align-items: stretch;
+	overflow-x: auto;
+}
+
+.sms-raster-ecke {
+	color: var(--text-faint);
+	font-size: 0.7em;
+	letter-spacing: 0.08em;
+	align-self: end;
+	padding-bottom: 6px;
+}
+
+.sms-trackkopf {
+	display: flex;
+	flex-direction: column;
+	padding: 6px 10px;
+	border-radius: 8px;
+	background: var(--background-secondary);
+}
+
+.sms-trackname {
+	font-weight: 600;
+	font-size: 0.9em;
+}
+
+.sms-trackraum {
+	color: var(--text-muted);
+	font-size: 0.75em;
+}
+
+.sms-zeit {
+	color: var(--text-muted);
+	font-size: 0.8em;
+	padding-top: 8px;
+}
+
+.sms-zeit-bis {
+	color: var(--text-faint);
+}
+
+.sms-fixblock {
+	background: var(--background-secondary);
+	border-radius: 6px;
+	padding: 5px 10px;
+	color: var(--text-muted);
+	font-size: 0.8em;
+	text-align: center;
+}
+
+.sms-slot {
+	border: 1px solid var(--background-modifier-border);
+	border-left-width: 3px;
+	border-radius: 8px;
+	padding: 8px 10px;
+	cursor: pointer;
+	min-height: 62px;
+}
+
+.sms-slot-entfaellt {
+	border: none;
+}
+
+.sms-slot-leer {
+	border: 1px dashed var(--background-modifier-border);
+	color: var(--text-faint);
+	font-size: 0.8em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: default;
+}
+
+/* Grün erst, wenn gefüllt und zugesagt; orange, wenn auf Verdacht platziert. */
+.sms-slot-gruen {
+	border-color: var(--color-green);
+	background: var(--background-modifier-success);
+}
+
+.sms-slot-verdacht {
+	border-color: var(--color-orange);
+}
+
+.sms-slot-halb {
+	border-color: var(--color-blue);
+}
+
+.sms-slot-titel {
+	font-weight: 600;
+	font-size: 0.88em;
+}
+
+.sms-slot-speaker {
+	color: var(--text-muted);
+	font-size: 0.8em;
+}
+
+.sms-slot-titel.is-offen,
+.sms-slot-speaker.is-offen {
+	font-style: italic;
+	color: var(--text-faint);
+	font-weight: 400;
+}
+
+.sms-slot-fuss {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-top: 6px;
+}
+
+.sms-abzeichen {
+	padding: 1px 7px;
+	border-radius: 999px;
+	font-size: 0.72em;
+	background: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+.sms-abzeichen-zugesagt,
+.sms-abzeichen-rechnung,
+.sms-abzeichen-bezahlt {
+	background: var(--color-green);
+	color: var(--text-on-accent);
+}
+
+.sms-abzeichen-angefragt,
+.sms-abzeichen-geantwortet,
+.sms-abzeichen-verhandlung {
+	background: var(--color-orange);
+	color: var(--text-on-accent);
+}
+
+.sms-abzeichen-gestrichen {
+	background: var(--color-red);
+	color: var(--text-on-accent);
+}
+
+.sms-slot-hinweis {
+	margin-top: 4px;
+	color: var(--text-muted);
+	font-size: 0.75em;
+}
+
+.sms-pool {
+	width: 300px;
+	flex: none;
+	background: var(--background-secondary);
+	border-radius: 10px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.sms-poolkarte.is-heimatlos {
+	border-color: var(--color-red);
+}
+
+.sms-kandidat {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 5px 8px;
+	border-radius: 6px;
+	font-size: 0.85em;
+	cursor: pointer;
+}
+
+.sms-kandidat:hover {
+	background: var(--background-modifier-hover);
+}
+
 .sms-tafel-karte .sms-name {
 	display: block;
 }

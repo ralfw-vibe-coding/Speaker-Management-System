@@ -3,6 +3,7 @@ import type SmsPlugin from "../main";
 import { Datenzugriff } from "../daten/lesen";
 import { Datenschreiber } from "../daten/schreiben";
 import type { Speaker } from "../daten/modell";
+import { Agenda } from "./agenda";
 import { Speakerkatalog } from "./katalog";
 import { SpeakerAnlegenModal } from "./SpeakerAnlegenModal";
 import { Statustafel } from "./statustafel";
@@ -32,6 +33,7 @@ export class SmsView extends ItemView {
 	private schreiber: Datenschreiber;
 	private katalog: Speakerkatalog;
 	private statustafel: Statustafel;
+	private agenda: Agenda;
 
 	constructor(leaf: WorkspaceLeaf, private plugin: SmsPlugin) {
 		super(leaf);
@@ -45,6 +47,7 @@ export class SmsView extends ItemView {
 			this.speakerAnlegen(vorhandene),
 		);
 		this.statustafel = new Statustafel(this.daten, this.schreiber, oeffnen);
+		this.agenda = new Agenda(this.daten, oeffnen);
 	}
 
 	/** Der Dialog fragt nur nach dem Namen; gefüllt wird danach in der Notiz. */
@@ -132,16 +135,14 @@ export class SmsView extends ItemView {
 			return;
 		}
 
+		const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
+
 		if (this.sicht === "statustafel") {
-			const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
 			await this.statustafel.zeichnen(buehne, konferenz);
 			return;
 		}
 
-		buehne.createEl("p", {
-			text: `Hier entsteht die Sicht „${SICHTEN.find((s) => s.id === this.sicht)?.titel}“.`,
-			cls: "sms-platzhalter",
-		});
+		await this.agenda.zeichnen(buehne, konferenz);
 	}
 
 	/**

@@ -127,16 +127,20 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 - `src/view/katalog.ts` — der Speakerkatalog mit Suche, Filtern und Historie
 - `src/view/SpeakerAnlegenModal.ts` — fragt nur nach dem Namen
 - `src/view/statustafel.ts` — die acht Spalten des Funnels mit ihren Karten
-- `src/view/SmsView.ts` — der View mit drei Reitern und der Konferenzauswahl;
-  **die Agenda ist weiterhin Platzhalter**
+- `src/view/agenda.ts` — das Raster je Tag, der Pool, die Kandidaten ohne Beitrag
+- `src/view/SmsView.ts` — der View mit drei Reitern und der Konferenzauswahl
 
 Geschrieben wird zweierlei: „+ Speaker" im Katalog legt eine Notiz an, und das Ziehen
 einer Karte auf der Statustafel schreibt `status` und `position` — über
 `processFrontMatter`, das Body und Fremdfelder unangetastet lässt.
 
 **Noch nicht da:** „als Kandidat merken", das Anlegen von Konferenz und Veranstalter,
-und die Streichen-Regel. Eine Karte nach `gestrichen` zu ziehen bewegt bisher nur die
-Karte; die Beiträge des Speakers werden **nicht** geleert.
+Drag & Drop in der Agenda, und die Streichen-Regel. Eine Karte nach `gestrichen` zu
+ziehen bewegt bisher nur die Karte; die Beiträge des Speakers werden **nicht** geleert.
+
+Die Agenda ist rein lesend, und das mit Absicht: Beiträge zwischen Pool und Raster zu
+ziehen schreibt `block` und `track` in Beitragsnotizen, das Raster selbst zu ändern
+setzt die Entscheidung voraus, **wer das Raster schreibt** — sie steht noch offen.
 
 ### Reihenfolge
 
@@ -150,7 +154,9 @@ Verabredet ist, in dieser Reihenfolge zu bauen — nicht mit der Agenda anfangen
 3. ~~**Statustafel, schreibend.**~~ Steht seit v0.0.7. Karten zwischen den Spalten
    ziehen und umsortieren; das schreibt `status` und `position`. Offen bleibt die
    Streichen-Regel.
-4. **Agenda.**
+4. **Agenda.** Lesend seit v0.0.8: Raster je Tag, Slots mit ihrem Reifegrad, Pool,
+   heimatlose Beiträge, Kandidaten ohne Beitrag, Raum- und Kapazitätskaskade. Das
+   Ziehen zwischen Pool und Raster fehlt noch.
 
 Der Katalog zuerst, weil er die kleinste Sicht mit der größten gemeinsamen Grundlage
 ist: ein Notiztyp, flaches Frontmatter, keine Summen. Was dabei entsteht — Notizen über

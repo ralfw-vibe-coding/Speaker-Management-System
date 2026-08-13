@@ -122,6 +122,14 @@ export interface Tag {
 	bloecke: Block[];
 }
 
+/** Eine Ausnahme von dem, was der Track vorgibt. Ohne `track`: die ganze Blockzeile. */
+export interface SlotAngabe {
+	block: string;
+	track?: string;
+	raum?: string;
+	kapazitaet?: number;
+}
+
 export interface Konferenz {
 	datei: TFile;
 	name: string;
@@ -132,6 +140,30 @@ export interface Konferenz {
 	deadlineProgramm?: string;
 	tracks: Track[];
 	tage: Tag[];
+	/** Trägt nur die Ausnahmen; der Normalfall steht am Track. */
+	slots: SlotAngabe[];
+}
+
+/**
+ * Raum und Kapazität kaskadieren: Der speziellere Eintrag gewinnt. Der Eintrag
+ * ohne `track` deckt die ganze Blockzeile ab — und den plenaren Slot, der von
+ * keinem Track erbt.
+ */
+export function raumFuer(
+	konferenz: Konferenz,
+	blockId: string,
+	trackId?: string,
+): { raum?: string; kapazitaet?: number; abweichend: boolean } {
+	const genau = trackId
+		? konferenz.slots.find((s) => s.block === blockId && s.track === trackId)
+		: undefined;
+	if (genau) return { raum: genau.raum, kapazitaet: genau.kapazitaet, abweichend: true };
+
+	const zeile = konferenz.slots.find((s) => s.block === blockId && !s.track);
+	if (zeile) return { raum: zeile.raum, kapazitaet: zeile.kapazitaet, abweichend: true };
+
+	const track = trackId ? konferenz.tracks.find((t) => t.id === trackId) : undefined;
+	return { raum: track?.raum, kapazitaet: track?.kapazitaet, abweichend: false };
 }
 
 /** Ein Auftritt in der Historie eines Speakers — gerechnet, nirgends gespeichert. */
