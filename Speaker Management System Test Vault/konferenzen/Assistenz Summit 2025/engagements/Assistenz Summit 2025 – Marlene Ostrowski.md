@@ -11,6 +11,7 @@ geantwortet_am: 2025-05-15
 rechnung_am: 2025-11-08
 bezahlt_am: 2025-12-04
 bewertung: 4
+rollen: []
 ---
 ## Zu klären
 - [x] Bio erhalten

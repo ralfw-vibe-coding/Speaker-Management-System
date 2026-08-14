@@ -3,7 +3,9 @@ import { describe, it } from "node:test";
 import {
 	dauerImRaster,
 	doppeltBelegte,
+	erwartetBeitrag,
 	frueherGehalten,
+	hatRolle,
 	heimatlos,
 	parallelStehende,
 	plaetzeEinesBlocks,
@@ -368,5 +370,27 @@ describe("verschoben", () => {
 
 	it("lässt eine fehlende Zeit fehlen", () => {
 		assert.equal(verschoben(undefined, 15), undefined);
+	});
+});
+
+describe("Rollen", () => {
+	it("erkennt eine gesetzte Rolle", () => {
+		assert.equal(hatRolle(engagement({ rollen: ["moderation"] }), "moderation"), true);
+	});
+
+	it("liest tolerant — Großschreibung und Leerraum von Hand", () => {
+		assert.equal(hatRolle(engagement({ rollen: [" Moderation "] }), "moderation"), true);
+	});
+
+	it("ohne Rollen ist nichts gesetzt", () => {
+		assert.equal(hatRolle(engagement(), "moderation"), false);
+	});
+
+	it("wer moderiert, wartet auf keinen Slot", () => {
+		assert.equal(erwartetBeitrag(engagement({ rollen: ["moderation"] })), false);
+	});
+
+	it("wer keine Rolle hat, wird als Kandidat erwartet", () => {
+		assert.equal(erwartetBeitrag(engagement()), true);
 	});
 });

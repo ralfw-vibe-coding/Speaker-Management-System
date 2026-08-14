@@ -219,6 +219,14 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   die Liste `slots` in der Konferenznotiz trägt nur die Ausnahmen.
 - **Das Honorar hängt am Engagement, nicht am Beitrag.** Verhandelt wird mit dem
   Menschen über das Paket; eine Aufteilung auf einzelne Beiträge wäre erfunden.
+- **Die durchgehende Moderation ist eine Rolle am Engagement, kein Beitrag.** Sie führt
+  über alle Blöcke und belegt keinen Slot; als Beitrag eingetragen wäre jeder
+  Vortragsslot doppelt belegt. Sie zählt trotzdem gegen das Honorarbudget, weil das
+  Honorar ohnehin am Engagement hängt. Wer moderiert *und* vorträgt, hat beides an einem
+  Engagement. Die Eröffnung dagegen bleibt ein Beitrag mit `format: moderation` in einem
+  plenaren Block.
+- **Die Abendveranstaltung ist ein plenarer Block**, kein Fixblock — sonst wäre sie nicht
+  besetzbar. Die Künstler sind Speaker mit `format: rahmenprogramm`.
 - **Ein Beitrag, ein Speaker.** Das Feld ist eine Liste und wird tolerant gelesen, aber
   das Plugin schreibt nur einen. Weitere Beteiligte stehen als Prosa im Body.
 - **Nichts sortiert sich von selbst.** Die Reihenfolge auf der Statustafel steht als

@@ -959,6 +959,87 @@
 	font-size: 1em;
 }
 
+/*
+ * Die Rollen als Schalter. Von vierzehn Karten braucht ihn eine — ungesetzt
+ * stört er also überall sonst. Deshalb dieselbe Lösung wie bei der
+ * Teilnehmerbegrenzung: Er kommt beim Überfahren der Karte. Gesetzt steht er
+ * immer da, denn dann ist er eine Aussage und kein Angebot.
+ */
+.sms-rollen {
+	display: flex;
+	gap: 6px;
+	margin-top: 6px;
+}
+
+/* Ohne gesetzte Rolle bleibt die Zeile ganz weg — kein Leerraum je Karte. */
+.sms-rollen.is-leer {
+	display: none;
+}
+
+.sms-karte:hover .sms-rollen.is-leer {
+	display: flex;
+}
+
+.sms-rolle-chip {
+	padding: 1px 8px;
+	font-size: 0.75em;
+	border-radius: 999px;
+	border: 1px dashed var(--background-modifier-border);
+	color: var(--text-faint);
+	cursor: pointer;
+}
+
+/* Eine ausgeschaltete Rolle neben einer eingeschalteten: auch nur beim Überfahren. */
+.sms-rollen:not(.is-leer) .sms-rolle-chip:not(.is-an) {
+	visibility: hidden;
+}
+
+.sms-karte:hover .sms-rolle-chip:not(.is-an) {
+	visibility: visible;
+}
+
+.sms-rolle-chip:hover {
+	border-color: var(--interactive-accent);
+	color: var(--text-accent);
+}
+
+.sms-rolle-chip.is-an {
+	visibility: visible;
+	border-style: solid;
+	border-color: var(--interactive-accent);
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+/*
+ * Das Moderationsband liegt über dem Raster, weil die Moderation über allen
+ * Blöcken liegt — sie belegt keinen Slot, also steht sie in keiner Spalte.
+ */
+.sms-moderation {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin: 0 0 8px;
+	padding: 6px 12px;
+	border-left: 3px solid var(--interactive-accent);
+	border-radius: 4px;
+	background: var(--background-secondary);
+}
+
+.sms-moderation-titel {
+	font-size: 0.75em;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-accent);
+}
+
+.sms-moderation-zusatz {
+	margin-left: auto;
+	font-size: 0.8em;
+	color: var(--text-muted);
+}
+
 /* Die Bewertung im Rückblick: Sterne zum Anklicken. */
 .sms-bewertung {
 	margin-top: 6px;

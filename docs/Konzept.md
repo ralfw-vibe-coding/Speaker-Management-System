@@ -266,9 +266,21 @@ Vorschau auf der Karte, alles Weitere in der Notiz.
 
 #### Formate
 
-Die Werte sind festgeschrieben: `keynote`, `vortrag`, `workshop`, `panel`, `moderation`.
-Dieselbe Liste gilt für die `formate` eines Speakers und das `format` eines Beitrags —
-sonst greift der Filter „wer kann diesen Slot füllen?" ins Leere.
+Die Werte sind festgeschrieben: `keynote`, `vortrag`, `workshop`, `panel`, `moderation`,
+`rahmenprogramm`. Dieselbe Liste gilt für die `formate` eines Speakers und das `format`
+eines Beitrags — sonst greift der Filter „wer kann diesen Slot füllen?" ins Leere.
+
+**`rahmenprogramm`** ist alles, was nicht Fachprogramm ist: die Band am Abend, der
+Comedian, die Zauberin. Aus Sicht des Systems ist so jemand ein Speaker wie jeder
+andere — ein Mensch, mit dem verhandelt wird, der auftritt und Geld kostet. Damit
+laufen Katalog, Funnel, Honorar, Reisekosten und Bewertung ohne Sonderfall, und man
+sieht im nächsten Jahr, wen man schon einmal gebucht hat und wie es war.
+
+**Die Abendveranstaltung selbst ist ein ganz normaler plenarer Block**, nur mit später
+Zeit. Kein `fix` — das wäre ein Programmpunkt ohne Speaker und damit nicht besetzbar.
+Hat der Abend mehrere Nummern, sind es mehrere Blöcke untereinander. Dass zwischen dem
+letzten Fachblock und dem Abend eine Lücke klafft, stört nicht: Das Raster ist eine
+Liste von Blöcken, kein Zeitstrahl.
 
 ### Veranstalter
 
@@ -372,6 +384,7 @@ type: engagement
 konferenz: "[[.NET Day 2026]]"
 speaker: "[[Ralf Westphal]]"
 status: zugesagt
+rollen: []                       # Aufgaben ohne eigenen Slot, z. B. [moderation]
 position: 1
 honorar: 3000
 reisekosten: 400
@@ -399,6 +412,34 @@ und Speaker, das Plugin findet sie. So gibt es keine zwei Wahrheiten.
 Am Engagement steht, was **am Menschen** hängt und einmal je Konferenz anfällt: Bio,
 Foto, Vertrag, Reisekosten. Was am einzelnen Beitrag hängt, steht dort — sonst könnte
 ein Häkchen für jemanden mit zwei Vorträgen nicht stimmen.
+
+**Die `rollen` sind das, was jemand tut, ohne einen Slot zu belegen.** Bisher gibt es
+genau eine: `moderation`, gemeint als die durchgehende Moderation, die durch den ganzen
+Tag führt.
+
+Sie steht **über** dem Raster und nicht darin. Als Beitrag eingetragen liefe sie über
+alle Blöcke und machte jeden Vortragsslot doppelt belegt — das Plugin meldete das sogar
+als Fehler. Sie hängt am Engagement, weil dort auch das Honorar hängt: Verhandelt wird
+das Paket, und damit zählt die Moderation ohne Weiteres gegen das Honorarbudget, obwohl
+sie in keinem Slot steht. Auf der Statustafel ist sie eine Karte wie jede andere.
+
+Wer moderiert **und** einen Vortrag hält, hat beides an einem Engagement: die Rolle hier,
+den Vortrag als Beitrag im Slot. Ein Mensch, ein Honorar, zwei Sachen. Eine Aufteilung
+des Honorars auf Moderation und Vortrag gibt es nicht — sie wäre erfunden.
+
+Die zweite Wirkung ist eine Verneinung: Wer eine Rolle trägt, erscheint **nicht** unter
+„Kandidaten ohne Beitrag". Dort steht sonst jedes Engagement ohne Beitrag und mahnt
+etwas an; bei der Moderatorin wäre der fehlende Beitrag aber keine offene Aufgabe,
+sondern die Sache selbst. Sie stünde bis zum Konferenztag in der Liste.
+
+Die **Eröffnung** ist etwas anderes und bleibt ein Beitrag: Sie hat eine eigene Zeit im
+Programm und gehört als `format: moderation` in einen plenaren Block. Beides schließt
+sich nicht aus — man kann die Eröffnung halten und den Tag durchmoderieren.
+
+Weitere Rollen wären dieselbe Sorte Angabe (Begrüßung, Schlusswort, Gastgeberin);
+deshalb ist es eine Liste und kein Wahrheitswert. **Eine Zuordnung zu Tag oder Track
+gibt es nicht** — solange eine Person die ganze Konferenz moderiert, ist nichts zu
+unterscheiden. Sobald zwei Leute je einen Track übernehmen, wird das zu wenig sein.
 
 **Die `bewertung` ist die Rückkopplung in den Katalog.** Ein bis fünf Sterne, ausgefüllt
 nach der Konferenz, das Warum als Prosa im Body. Sie hängt am Engagement, weil sie einen

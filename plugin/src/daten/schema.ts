@@ -153,6 +153,13 @@ const ENGAGEMENT: Notizschema = {
 		{ name: "konferenz", art: "link", bedeutung: "zu welcher Konferenz" },
 		{ name: "speaker", art: "link", bedeutung: "welcher Mensch" },
 		{ name: "status", art: "text", bedeutung: "die acht Stufen des Funnels" },
+		{
+			name: "rollen",
+			art: "liste",
+			bedeutung: "Aufgaben ohne eigenen Slot, derzeit nur moderation",
+			// Keine Rolle heißt: keine. Das ist eine Aussage, keine Lücke.
+			fehlend: "neutral",
+		},
 		{ name: "position", art: "zahl", bedeutung: "Reihenfolge in der Spalte", fehlend: "neutral" },
 		{
 			name: "honorar",

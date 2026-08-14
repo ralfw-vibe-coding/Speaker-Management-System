@@ -6,7 +6,9 @@ import { BestaetigenModal, BlockModal, TagModal, TrackModal } from "./rasterModa
 import {
 	dauerImRaster,
 	doppeltBelegte,
+	erwartetBeitrag,
 	frueherGehalten,
+	hatRolle,
 	heimatlos,
 	minuten,
 	nachZeit,
@@ -119,6 +121,7 @@ export class Agenda {
 		const tag = konferenz.tage[this.tagIndex];
 
 		this.kopfZeichnen(buehne, konferenz, tag, beitraege);
+		this.moderationZeichnen(buehne, [...engagements.values()]);
 
 		if (konferenz.tage.length === 0) {
 			buehne.createEl("p", {
@@ -229,6 +232,26 @@ export class Agenda {
 			// In einer Karte darf der Knopf nicht auch noch die Notiz öffnen.
 			ereignis.stopPropagation();
 			tun();
+		});
+	}
+
+	/**
+	 * Ein Band über dem Raster — dort, wo die durchgehende Moderation auch
+	 * sachlich liegt: über allen Blöcken, ohne selbst einen Slot zu belegen.
+	 * Als kleine Zeile im Kopf ging sie unter, neben dem Untertitel.
+	 */
+	private moderationZeichnen(buehne: HTMLElement, engagements: Engagement[]): void {
+		const moderation = engagements
+			.filter((engagement) => engagement.status !== "gestrichen" && hatRolle(engagement, "moderation"))
+			.map((engagement) => engagement.speaker);
+		if (moderation.length === 0) return;
+
+		const band = buehne.createDiv({ cls: "sms-moderation" });
+		band.createSpan({ cls: "sms-moderation-titel", text: "Moderation" });
+		band.createSpan({ text: moderation.join(", ") });
+		band.createSpan({
+			cls: "sms-moderation-zusatz",
+			text: "führt durch den Tag · belegt keinen Slot",
 		});
 	}
 
@@ -553,7 +576,10 @@ export class Agenda {
 		const mitBeitrag = new Set(beitraege.flatMap((beitrag) => beitrag.speaker));
 		const ohneBeitrag = [...engagements.values()].filter(
 			(engagement) =>
-				engagement.status !== "gestrichen" && !mitBeitrag.has(engagement.speaker),
+				engagement.status !== "gestrichen" &&
+				!mitBeitrag.has(engagement.speaker) &&
+				// Wer durch den Tag führt, wartet auf keinen Slot.
+				erwartetBeitrag(engagement),
 		);
 
 		if (ohneBeitrag.length === 0) return;

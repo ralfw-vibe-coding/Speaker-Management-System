@@ -53,6 +53,7 @@ export function engagement(teile: Partial<Engagement> = {}): Engagement {
 		konferenz: "Testkonferenz",
 		speaker: "Wer Auchimmer",
 		status: "gemerkt",
+		rollen: [],
 		position: 0,
 		aufgaben: { erledigt: 0, gesamt: 0 },
 		...teile,

@@ -112,6 +112,25 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Schaltet eine Rolle an oder aus. Sie ist eine Liste, auch wenn es bisher
+	 * nur die Moderation gibt — Begrüßung und Schlusswort wären dieselbe Sorte
+	 * Angabe, und ein Wahrheitswert ließe sich nie erweitern.
+	 */
+	async rolleUmschalten(datei: TFile, rolle: string): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			const bisher: string[] = Array.isArray(fm.rollen) ? fm.rollen.map((r: unknown) => String(r)) : [];
+			const drin = bisher.some((eigene) => eigene.trim().toLowerCase() === rolle);
+			const neu = drin
+				? bisher.filter((eigene) => eigene.trim().toLowerCase() !== rolle)
+				: [...bisher, rolle];
+
+			// Leer gelassen heißt „keine Rolle" — dann soll auch nichts dastehen.
+			if (neu.length === 0) delete fm.rollen;
+			else fm.rollen = neu;
+		});
+	}
+
+	/**
 	 * Setzt den Status einer Konferenz. Er entscheidet über mehr als eine
 	 * Beschriftung: Bei `gelaufen` und `abgesagt` ist die Agenda Archiv, und
 	 * ohne diesen Weg käme eine Konferenz nie dorthin, ohne dass jemand ins

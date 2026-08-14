@@ -80,7 +80,7 @@ Konferenzübergreifend, das Langzeitkapital. Dateiname ist der blanke Personenna
 | `zielgruppe` | Liste | für wen der Mensch passt; im Katalog ein Filter |
 | `themen` | Liste Text | Freies Vokabular, keine feste Liste |
 | `wahl` | Zuordnung Thema → Zahl | Erste/zweite/dritte Wahl **je Thema** (1, 2, 3) |
-| `formate` | Liste | aus `keynote`, `vortrag`, `workshop`, `panel`, `moderation` |
+| `formate` | Liste | aus `keynote`, `vortrag`, `workshop`, `panel`, `moderation`, `rahmenprogramm` |
 | `sprachen` | Liste Text | z. B. `[de, en]` |
 | `ort` | Text | für die Einschätzung von Reisekosten |
 | `honorarrahmen` | Zahl | Richtwert je Auftritt, **keine** Vereinbarung |
@@ -229,6 +229,7 @@ Die Beziehung Speaker × Konferenz. Trägt den Funnel und das Honorar.
 | `type` | `engagement` | |
 | `konferenz`, `speaker` | Wikilink | |
 | `status` | siehe unten | die Spalte auf der Statustafel |
+| `rollen` | Liste | Aufgaben ohne eigenen Slot, derzeit nur `moderation` |
 | `position` | Zahl ab 0 | die Zeile innerhalb dieser Spalte |
 | `reisekosten` | Zahl | eigener Betrag; läuft **nicht** gegen das Honorarbudget |
 | `honorar` | Zahl | für **das ganze Paket**, nicht je Beitrag |
@@ -247,6 +248,19 @@ und doppelte Nummern werden beim Lesen vertragen.
 Das Honorar hängt hier und nicht am Beitrag: Verhandelt wird mit dem Menschen über das
 Paket, eine Aufteilung auf einzelne Beiträge wäre erfunden.
 
+`rollen` sagt, was jemand tut, **ohne dafür einen Slot zu belegen**. Die durchgehende
+Moderation führt durch den ganzen Tag und steht damit über dem Raster, nicht darin — als
+Beitrag eingetragen liefe sie über alle Blöcke und machte jeden Vortragsslot doppelt
+belegt. Wer eine Rolle hat, erscheint deshalb nicht mehr unter „Kandidaten ohne Beitrag";
+der fehlende Beitrag ist dort keine offene Aufgabe, sondern die Sache selbst.
+
+Wer moderiert **und** einen Vortrag hält, hat beides an einem Engagement: die Rolle hier,
+den Vortrag als ganz normalen Beitrag im Slot. Ein Mensch, ein Honorar, zwei Sachen —
+denn verhandelt wurde das Paket.
+
+Die **Eröffnung** ist etwas anderes und bleibt ein Beitrag: Sie hat eine eigene Zeit im
+Programm und gehört als `format: moderation` in einen plenaren Block.
+
 ## beitrag
 
 Was in einem Slot stattfindet — oder noch keinen Slot hat.
@@ -257,7 +271,7 @@ Was in einem Slot stattfindet — oder noch keinen Slot hat.
 | `konferenz` | Wikilink | |
 | `speaker` | Liste von Wikilinks | darf leer sein; das Plugin schreibt genau einen |
 | `titel` | Text | darf fehlen |
-| `format` | `keynote`, `vortrag`, `workshop`, `panel`, `moderation` | |
+| `format` | `keynote`, `vortrag`, `workshop`, `panel`, `moderation`, `rahmenprogramm` | |
 | `dauer` | Zahl (Minuten) | **gewünschte** Dauer; die tatsächliche ergibt sich aus den Blöcken |
 | `max_teilnehmer` | Zahl | wird gegen die Kapazität des Slots geprüft |
 | `block` | Text **oder** Liste | leer = im Pool; mehrere = der Beitrag läuft über mehrere Blöcke |

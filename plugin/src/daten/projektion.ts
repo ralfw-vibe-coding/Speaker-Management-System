@@ -20,6 +20,29 @@ export function slotZustand(
 }
 
 /**
+ * Trägt dieses Engagement die Rolle? Tolerant gelesen — Groß- und Kleinschreibung
+ * und Leerraum sind von Hand geschrieben schnell verschieden.
+ */
+export function hatRolle(engagement: Engagement, rolle: string): boolean {
+	return engagement.rollen.some((eigene) => eigene.trim().toLowerCase() === rolle);
+}
+
+/**
+ * Erwartet dieses Engagement noch einen Beitrag im Raster?
+ *
+ * Wer eine Rolle hat, führt durch den Tag, statt einen Slot zu belegen — der
+ * fehlende Beitrag ist dann kein Rückstand, sondern die Sache selbst. Ohne
+ * diese Unterscheidung stünde die Moderatorin bis zum Konferenztag unter
+ * „Kandidaten ohne Beitrag" und mahnte etwas an, das nie kommt.
+ *
+ * Wer moderiert **und** einen Vortrag hält, hat einen Beitrag; der steht dann
+ * ganz normal im Raster. Diese Frage stellt sich nur, solange keiner da ist.
+ */
+export function erwartetBeitrag(engagement: Engagement): boolean {
+	return engagement.rollen.length === 0;
+}
+
+/**
  * Heimatlos ist ein Beitrag, dessen Slot es nicht mehr gibt: Der Block fehlt im
  * Raster, oder sein Track ist an diesem Tag nicht dabei. Ein Beitrag ganz ohne
  * Block liegt dagegen im Pool und ist nicht heimatlos.

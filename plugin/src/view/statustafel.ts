@@ -1,12 +1,14 @@
 import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
-import { heimatlos } from "../daten/projektion";
+import { hatRolle, heimatlos } from "../daten/projektion";
 import { StreichenModal } from "./StreichenModal";
 import {
 	FUNNEL,
 	istArchiv,
 	FUNNEL_TITEL,
+	ROLLEN,
+	ROLLEN_TITEL,
 	ZUGESAGT_UND_WEITER,
 	type Beitrag,
 	type Engagement,
@@ -248,6 +250,7 @@ export class Statustafel {
 		this.betragZeichnen(zeile, kasten, engagement, "honorar", "Honorar");
 		this.betragZeichnen(zeile, kasten, engagement, "reisekosten", "Reise");
 
+		this.rollenZeichnen(kasten, engagement);
 		this.bewertungZeichnen(kasten, engagement);
 
 		if (karte.gesamt > 0 && karte.erledigt > 0) {
@@ -281,6 +284,42 @@ export class Statustafel {
 				cls: "sms-hinweis sms-hinweis-gelb",
 				text: `⏱ ${karte.wochenOhneAntwort} Wochen ohne Antwort`,
 			});
+		}
+	}
+
+	/**
+	 * Die Rollen als Schalter. Sie stehen auch dann da, wenn keine gesetzt ist —
+	 * blass, aber sichtbar. Ein Schalter, den man nur sieht, wenn er schon an
+	 * ist, findet niemand; genau das ist hier schon dreimal passiert.
+	 */
+	private rollenZeichnen(kasten: HTMLElement, engagement: Engagement): void {
+		// Eine Zeile ohne gesetzte Rolle nimmt keinen Platz ein — sonst stünde auf
+		// jeder Karte eine leere Zeile für etwas, das eine einzige Karte braucht.
+		const leer = !ROLLEN.some((rolle) => hatRolle(engagement, rolle));
+		const zeile = kasten.createDiv({ cls: leer ? "sms-rollen is-leer" : "sms-rollen" });
+		for (const rolle of ROLLEN) {
+			const an = hatRolle(engagement, rolle);
+			const chip = zeile.createSpan({
+				cls: an ? "sms-rolle-chip is-an" : "sms-rolle-chip",
+				text: ROLLEN_TITEL[rolle] ?? rolle,
+				attr: {
+					title: an
+						? `${ROLLEN_TITEL[rolle]} — führt durch den Tag, belegt keinen Slot. Klicken zum Entfernen.`
+						: `Als ${ROLLEN_TITEL[rolle]} eintragen — dann wird kein Beitrag im Raster erwartet.`,
+				},
+			});
+			chip.addEventListener("click", (ereignis) => {
+				ereignis.stopPropagation();
+				void this.rolleUmschalten(engagement, rolle);
+			});
+		}
+	}
+
+	private async rolleUmschalten(engagement: Engagement, rolle: string): Promise<void> {
+		try {
+			await this.schreiber.rolleUmschalten(engagement.datei, rolle);
+		} catch (fehler) {
+			new Notice(`Die Rolle ließ sich nicht schreiben: ${String(fehler)}`);
 		}
 	}
 

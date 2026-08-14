@@ -11,6 +11,7 @@ geantwortet_am: 2026-03-20
 rechnung_am: 2026-08-02
 bezahlt_am:
 bewertung:
+rollen: []
 ---
 ## Zu klären
 - [x] Bio erhalten

@@ -67,6 +67,7 @@ export class Datenzugriff {
 				konferenz: linkName(fm.konferenz) ?? "",
 				speaker: linkName(fm.speaker) ?? "",
 				status: text(fm.status) ?? "gemerkt",
+				rollen: liste(fm.rollen),
 				position: zahl(fm.position) ?? 0,
 				honorar: zahl(fm.honorar),
 				reisekosten: zahl(fm.reisekosten),

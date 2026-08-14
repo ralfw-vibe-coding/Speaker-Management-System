@@ -5,13 +5,41 @@ import type { TFile } from "obsidian";
  * eines Speakers und das `format` eines Beitrags — sonst greift der Filter
  * „wer kann diesen Slot füllen?" ins Leere.
  */
-export const FORMATE = ["keynote", "vortrag", "workshop", "panel", "moderation"] as const;
+export const FORMATE = [
+	"keynote",
+	"vortrag",
+	"workshop",
+	"panel",
+	"moderation",
+	"rahmenprogramm",
+] as const;
 
 export const FORMAT_TITEL: Record<string, string> = {
 	keynote: "Keynote",
 	vortrag: "Vortrag",
 	workshop: "Workshop",
 	panel: "Panel",
+	moderation: "Moderation",
+	rahmenprogramm: "Rahmenprogramm",
+};
+
+/**
+ * Was jemand tut, ohne dafür einen Slot zu belegen. Die durchgehende
+ * Moderation führt durch den ganzen Tag und steht damit **über** dem Raster,
+ * nicht darin: Als Beitrag eingetragen liefe sie über alle Blöcke und machte
+ * jeden Vortragsslot doppelt belegt.
+ *
+ * Die Rolle hängt am Engagement, weil dort auch das Honorar hängt — verhandelt
+ * wird das Paket. Wer moderiert *und* einen Vortrag hält, hat beides an einem
+ * Engagement: die Rolle hier, den Vortrag als Beitrag im Slot.
+ *
+ * Die **Eröffnung** ist etwas anderes und bleibt ein Beitrag: Sie hat eine
+ * eigene Zeit im Programm und gehört in einen plenaren Block, mit
+ * `format: moderation`.
+ */
+export const ROLLEN = ["moderation"] as const;
+
+export const ROLLEN_TITEL: Record<string, string> = {
 	moderation: "Moderation",
 };
 
@@ -115,6 +143,8 @@ export interface Engagement {
 	/** Name der Speakernotiz, aus dem Wikilink gelöst. */
 	speaker: string;
 	status: string;
+	/** Aufgaben ohne eigenen Slot — siehe `ROLLEN`. */
+	rollen: string[];
 	position: number;
 	/** Das vereinbarte oder angebotene Honorar für das ganze Paket. */
 	honorar?: number;
