@@ -936,3 +936,25 @@
 	font-size: 0.82em;
 	color: var(--text-muted);
 }
+
+/* Beträge auf der Statustafel-Karte lassen sich anklicken und ändern. */
+.sms-betrag {
+	cursor: text;
+	border-bottom: 1px dashed var(--background-modifier-border-hover);
+}
+
+.sms-betrag:hover {
+	color: var(--text-normal);
+	border-bottom-color: var(--interactive-accent);
+}
+
+.sms-betrag.is-offen {
+	color: var(--text-faint);
+}
+
+.sms-betragfeld {
+	width: 90px;
+	height: auto;
+	padding: 0 4px;
+	font-size: 1em;
+}

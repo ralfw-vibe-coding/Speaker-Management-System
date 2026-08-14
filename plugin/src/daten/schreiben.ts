@@ -118,6 +118,23 @@ export class Datenschreiber {
 	}
 
 	/**
+	 * Setzt einen Betrag am Engagement — Honorar oder Reisekosten. Ohne Wert
+	 * verschwindet das Feld: Leer heißt „noch nicht vereinbart", und ein
+	 * gelöschter Schlüssel sagt das deutlicher als eine Null, die wie ein
+	 * vereinbarter Betrag von 0 € aussähe.
+	 */
+	async betragSetzen(
+		datei: TFile,
+		feld: "honorar" | "reisekosten",
+		wert: number | undefined,
+	): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			if (wert === undefined) delete fm[feld];
+			else fm[feld] = wert;
+		});
+	}
+
+	/**
 	 * Setzt den Status einer Konferenz. Er entscheidet über mehr als eine
 	 * Beschriftung: Bei `gelaufen` und `abgesagt` ist die Agenda Archiv, und
 	 * ohne diesen Weg käme eine Konferenz nie dorthin, ohne dass jemand ins

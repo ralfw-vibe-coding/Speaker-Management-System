@@ -236,15 +236,16 @@ export class Statustafel {
 			kasten.createDiv({ cls: "sms-rolle", text: speaker.themen.slice(0, 2).join(" & ") });
 		}
 
-		const teile: string[] = [];
+		const zeile = kasten.createDiv({ cls: "sms-zeile" });
 		if (karte.beitraege.length > 0) {
-			teile.push(karte.beitraege.length === 1 ? "1 Beitrag" : `${karte.beitraege.length} Beiträge`);
+			zeile.createSpan({
+				text: karte.beitraege.length === 1 ? "1 Beitrag" : `${karte.beitraege.length} Beiträge`,
+			});
 		}
-		if (engagement.honorar !== undefined) teile.push(euro(engagement.honorar));
-		if (engagement.reisekosten !== undefined) {
-			teile.push(`${euro(engagement.reisekosten)} Reise`);
-		}
-		if (teile.length > 0) kasten.createDiv({ cls: "sms-zeile", text: teile.join(" · ") });
+		// Zahlen, die man beim Telefonieren ändert, gehören dorthin, wo man
+		// hinschaut. Alles Ausführlichere steht weiterhin in der Notiz.
+		this.betragZeichnen(zeile, kasten, engagement, "honorar", "Honorar");
+		this.betragZeichnen(zeile, kasten, engagement, "reisekosten", "Reise");
 
 		if (karte.gesamt > 0 && karte.erledigt > 0) {
 			const balken = kasten.createDiv({ cls: "sms-balken" });
@@ -277,6 +278,73 @@ export class Statustafel {
 				cls: "sms-hinweis sms-hinweis-gelb",
 				text: `⏱ ${karte.wochenOhneAntwort} Wochen ohne Antwort`,
 			});
+		}
+	}
+
+	/**
+	 * Ein Betrag zum Anklicken. Der Klick öffnet ein Zahlenfeld statt der
+	 * Notiz; Enter oder das Verlassen schreibt, Escape verwirft. Leer gelassen
+	 * heißt „noch nicht vereinbart" — dann verschwindet das Feld wieder.
+	 */
+	private betragZeichnen(
+		zeile: HTMLElement,
+		kasten: HTMLElement,
+		engagement: Engagement,
+		feld: "honorar" | "reisekosten",
+		titel: string,
+	): void {
+		const wert = engagement[feld];
+		const anzeige = zeile.createSpan({
+			cls: wert === undefined ? "sms-betrag is-offen" : "sms-betrag",
+			text: wert === undefined ? `${titel} —` : `${titel} ${euro(wert)}`,
+			attr: { title: `${titel} ändern` },
+		});
+
+		anzeige.addEventListener("click", (ereignis) => {
+			ereignis.stopPropagation();
+
+			const feldEl = zeile.createEl("input", { cls: "sms-betragfeld" });
+			feldEl.type = "number";
+			feldEl.value = wert === undefined ? "" : String(wert);
+			anzeige.replaceWith(feldEl);
+
+			// Innerhalb eines ziehbaren Elements ließe sich sonst nichts markieren.
+			kasten.draggable = false;
+			feldEl.focus();
+			feldEl.select();
+
+			let fertig = false;
+			const beenden = (schreiben: boolean) => {
+				if (fertig) return;
+				fertig = true;
+				kasten.draggable = true;
+				if (!schreiben) {
+					feldEl.replaceWith(anzeige);
+					return;
+				}
+				const zahl = feldEl.value.trim() === "" ? undefined : Number(feldEl.value);
+				void this.betragSchreiben(engagement, feld, Number.isFinite(zahl) ? zahl : undefined);
+			};
+
+			feldEl.addEventListener("keydown", (taste) => {
+				if (taste.key === "Enter") beenden(true);
+				if (taste.key === "Escape") beenden(false);
+			});
+			feldEl.addEventListener("blur", () => beenden(true));
+			feldEl.addEventListener("click", (eigenes) => eigenes.stopPropagation());
+		});
+	}
+
+	private async betragSchreiben(
+		engagement: Engagement,
+		feld: "honorar" | "reisekosten",
+		wert: number | undefined,
+	): Promise<void> {
+		if (engagement[feld] === wert) return;
+		try {
+			await this.schreiber.betragSetzen(engagement.datei, feld, wert);
+		} catch (fehler) {
+			new Notice(`Der Betrag ließ sich nicht schreiben: ${String(fehler)}`);
 		}
 	}
 
