@@ -12,7 +12,11 @@ Speaker Management System Test Vault/.obsidian/community-plugins.json
 Speaker Management System Test Vault/.obsidian/workspace.json
 Speaker Management System Test Vault/.obsidian/workspace-mobile.json
 Speaker Management System Test Vault/.obsidian/cache/
-Speaker Management System Test Vault/.obsidian/plugins/*/data.json
+# Fremde Plugins im Test-Vault sind lokal installiert (Claudian etwa) und gehören
+# nicht ins Repo. Eingecheckt bleibt allein der Symlink auf unser eigenes Plugin;
+# was hinter ihm liegt, verfolgt Git ohnehin nicht — auch nicht dessen data.json.
+Speaker Management System Test Vault/.obsidian/plugins/*
+!Speaker Management System Test Vault/.obsidian/plugins/speaker-management-system
 Speaker Management System Test Vault/.trash/
 
 # Claudian-Sitzungen: Gesprächsverläufe aus dem Vault, nichts fürs Repo
