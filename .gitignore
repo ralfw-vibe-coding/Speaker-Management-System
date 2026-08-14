@@ -24,3 +24,6 @@ Speaker Management System Test Vault/.claudian/
 
 # macOS
 .DS_Store
+
+# Lokaler Einstellungszustand des eigenen Plugins (Ordnernamen, Doku-Version)
+plugin/data.json
