@@ -94,7 +94,7 @@ export class SmsView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return "Speaker Management";
+		return "SpeaCon";
 	}
 
 	getIcon(): string {
@@ -130,7 +130,7 @@ export class SmsView extends ItemView {
 		// ob der eigene Build schon der neue ist. Sie ist beim Bauen ins Bundle
 		// eingesetzt — siehe globals.d.ts.
 		const titelzeile = kopf.createDiv({ cls: "sms-titelzeile" });
-		titelzeile.createEl("h2", { text: "Speaker Management System", cls: "sms-titel" });
+		titelzeile.createEl("h2", { text: "SpeaCon", cls: "sms-titel" });
 		titelzeile.createEl("span", { text: `v${__SMS_VERSION__}`, cls: "sms-version" });
 
 		const auswahl = titelzeile.createEl("select", { cls: "sms-konferenzwahl dropdown" });

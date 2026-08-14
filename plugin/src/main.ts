@@ -11,7 +11,7 @@ export default class SmsPlugin extends Plugin {
 
 		this.registerView(VIEW_TYPE_SMS, (leaf) => new SmsView(leaf, this));
 
-		this.addRibbonIcon("users", "Speaker Management System", () => {
+		this.addRibbonIcon("users", "SpeaCon", () => {
 			void this.arbeitsplatzOeffnen();
 		});
 
