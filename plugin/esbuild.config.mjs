@@ -31,6 +31,9 @@ const context = await esbuild.context({
     "@lezer/lr",
     ...builtins,
   ],
+  loader: {
+    ".md": "text",
+  },
   define: {
     __SMS_VERSION__: JSON.stringify(version),
   },

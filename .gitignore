@@ -15,5 +15,8 @@ Speaker Management System Test Vault/.obsidian/cache/
 Speaker Management System Test Vault/.obsidian/plugins/*/data.json
 Speaker Management System Test Vault/.trash/
 
+# Claudian-Sitzungen: Gesprächsverläufe aus dem Vault, nichts fürs Repo
+Speaker Management System Test Vault/.claudian/
+
 # macOS
 .DS_Store

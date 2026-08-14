@@ -8,3 +8,9 @@
  * die Anzeige ja verraten.
  */
 declare const __SMS_VERSION__: string;
+
+/** Markdown wird von esbuild als Text eingebunden (loader: { ".md": "text" }). */
+declare module "*.md" {
+	const inhalt: string;
+	export default inhalt;
+}

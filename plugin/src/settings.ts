@@ -8,6 +8,11 @@ export interface SmsSettings {
 	veranstalterOrdner: string;
 	/** Ordner, unter dem je Konferenz ein Unterordner liegt. */
 	konferenzenOrdner: string;
+	/**
+	 * Plugin-Version, deren Claude-Dokumentation zuletzt in den Vault
+	 * geschrieben wurde. Leer heißt: noch nie.
+	 */
+	dokuVersion?: string;
 }
 
 export const DEFAULT_SETTINGS: SmsSettings = {

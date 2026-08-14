@@ -26,6 +26,42 @@ mehreren Beiträgen, Checklisten in jedem Reifegrad, ein zweiter Tag mit anderem
 Beim Bauen einer Sicht ist er Testdatensatz und Sollbild zugleich; die Kennzahlen dort
 (18.400 €, 21 Slots, 15 belegt) müssen herauskommen.
 
+Um Aussagen über einen Vault unabhängig von der Plugin-Fachlogik gegenzuprüfen (z.B.
+Frontmatter-Felder, Backlinks, Checklisten-Status), eignet sich die native
+Obsidian-CLI (`obsidian --help`) — Details und Beispiele stehen im Skill
+`obsidian-cli`, dessen Quelle unter
+[plugin/src/vaultdoku/obsidian-cli.md](plugin/src/vaultdoku/obsidian-cli.md) liegt.
+Voraussetzung: Obsidian läuft und hat den jeweiligen Vault offen.
+
+## Was das Plugin in den Vault schreibt
+
+Eine Claude-Session läuft (über Claudian) **im Vault**, nicht in diesem Repo — sie sieht
+also nur, was im Vault liegt. Damit auch ein frisch über BRAT bestückter, sonst leerer
+Vault sofort Bescheid weiß, liefert das Plugin drei Dateien mit:
+
+```
+CLAUDE.md                                  Zweck des Vaults, die fünf Notiztypen, vier harte Regeln
+.claude/skills/sms-datenmodell/SKILL.md    vollständige Feldreferenz samt Raster-Kodierung
+.claude/skills/obsidian-cli/SKILL.md       Obsidians eingebaute Kommandozeile
+```
+
+Die Quellen liegen unter [plugin/src/vaultdoku/](plugin/src/vaultdoku/) und werden beim
+Bauen als Text ins Bundle eingesetzt (`loader: { ".md": "text" }`). Geschrieben wird
+beim ersten Start nach einer neuen Version und über den Befehl *Claude-Dokumentation in
+diesen Vault schreiben*.
+
+Die beiden Skills gehören dem Plugin und werden überschrieben. **`CLAUDE.md` gehört dem
+Nutzer** und wird nur angelegt, wenn es keine gibt — nur der Befehl von Hand überschreibt
+sie.
+
+Im Test-Vault liegen die drei Dateien mit im Git, damit er nach einem Clone vollständig
+ist, bevor das Plugin je gelaufen ist. Sie sind dort Kopien, keine Quelle: Wer den Text
+ändert, ändert ihn unter `plugin/src/vaultdoku/`, baut, und lässt den Befehl laufen.
+
+**Diese Doku beschreibt Datenstrukturen — sie muss stimmen.** Ändert sich ein
+Frontmatter-Feld, ein Statuswert oder die Kodierung des Rasters, gehört
+`sms-datenmodell.md` im selben Commit nachgezogen.
+
 ## Aufbau
 
 ```
