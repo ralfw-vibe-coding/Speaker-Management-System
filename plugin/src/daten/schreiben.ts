@@ -385,6 +385,7 @@ export class Datenschreiber {
 			"status: gemerkt",
 			`position: ${position}`,
 			"honorar:",
+			"reisekosten:",
 			"angefragt_am:",
 			"geantwortet_am:",
 			"rechnung_am:",

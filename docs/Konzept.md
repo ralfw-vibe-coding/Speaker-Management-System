@@ -356,6 +356,7 @@ speaker: "[[Ralf Westphal]]"
 status: zugesagt
 position: 1
 honorar: 3000
+reisekosten: 400
 angefragt_am: 2026-03-01
 geantwortet_am: 2026-03-04
 rechnung_am:
@@ -388,6 +389,13 @@ lustlosen Vortrag kommen. Am Speaker steht dazu nichts — im Katalog erscheint 
 Bewertung als Teil seiner Historie, gerechnet aus den Engagements, die auf ihn zeigen.
 Erst damit wird der Katalog das Langzeitkapital, als das er gemeint ist: Man sieht nicht
 nur, *dass* jemand dabei war, sondern *wie es war*.
+
+**Die Reisekosten stehen daneben, nicht darin.** Ein eigener Betrag, weil der
+Veranstalter sie gesondert erstattet — meist nach Beleg bis zu einer Obergrenze, die in
+seinen Konditionen steht. Sie laufen deshalb **nicht** gegen das `honorarbudget`: Die
+Sichten zeigen zwei Zahlen nebeneinander, „Honorar 18.400 € von 25.000 € · Reisekosten
+1.510 €". Sie zu addieren würde eine Grenze überschreiten lassen, die für sie gar nicht
+gilt.
 
 **Das Honorar gehört ebenfalls hierher, nicht an den Beitrag.** Verhandelt wird mit dem
 Menschen, und zwar über das Paket: Wer zwei Beiträge liefert und 3.000 € vereinbart, für
@@ -717,7 +725,6 @@ benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zäh
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?
-- **Reisekosten** — eigenes Feld am Engagement oder Teil des Honorars?
 - **Wiederverwendung, weitergedacht** — Der Vorschlag zeigt, was jemand früher gehalten
   hat. Soll man einen alten Beitrag auch **übernehmen** können, also Titel und Abstract
   in den neuen kopieren? Das wäre der erste Fall, in dem das Plugin Prosa schreibt.

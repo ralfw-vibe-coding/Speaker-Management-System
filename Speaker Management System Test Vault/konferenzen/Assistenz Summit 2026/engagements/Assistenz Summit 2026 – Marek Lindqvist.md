@@ -5,6 +5,7 @@ speaker: "[[Marek Lindqvist]]"
 status: zugesagt
 position: 0
 honorar: 2400
+reisekosten: 0
 angefragt_am: 2026-04-14
 geantwortet_am: 2026-04-16
 ---

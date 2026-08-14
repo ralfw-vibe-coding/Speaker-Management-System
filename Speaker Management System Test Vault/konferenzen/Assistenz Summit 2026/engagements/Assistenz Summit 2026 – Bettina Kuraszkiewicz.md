@@ -5,6 +5,7 @@ speaker: "[[Bettina Kuraszkiewicz]]"
 status: zugesagt
 position: 3
 honorar: 2900
+reisekosten: 400
 angefragt_am: 2026-05-06
 geantwortet_am: 2026-05-19
 ---

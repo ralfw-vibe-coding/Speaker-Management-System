@@ -109,6 +109,12 @@ export interface Engagement {
 	position: number;
 	/** Das vereinbarte oder angebotene Honorar für das ganze Paket. */
 	honorar?: number;
+	/**
+	 * Die vereinbarten Reisekosten — ein eigener Betrag, nicht Teil des
+	 * Honorars. Der Veranstalter erstattet sie meist nach Beleg bis zu einer
+	 * Obergrenze; sie laufen deshalb nicht gegen das Honorarbudget.
+	 */
+	reisekosten?: number;
 	bewertung?: number;
 	angefragtAm?: string;
 	geantwortetAm?: string;

@@ -5,6 +5,7 @@ speaker: "[[Petra Vahlbruch]]"
 status: rechnung
 position: 0
 honorar: 3400
+reisekosten: 320
 angefragt_am: 2026-03-18
 geantwortet_am: 2026-03-20
 rechnung_am: 2026-08-02

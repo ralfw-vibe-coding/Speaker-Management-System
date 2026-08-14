@@ -5,6 +5,7 @@ speaker: "[[Yannick Sobotta]]"
 status: zugesagt
 position: 2
 honorar: 3000
+reisekosten: 180
 angefragt_am: 2026-04-20
 geantwortet_am: 2026-04-22
 ---

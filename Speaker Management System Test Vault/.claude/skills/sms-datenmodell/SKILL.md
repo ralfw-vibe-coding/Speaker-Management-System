@@ -216,6 +216,7 @@ Die Beziehung Speaker × Konferenz. Trägt den Funnel und das Honorar.
 | `konferenz`, `speaker` | Wikilink | |
 | `status` | siehe unten | die Spalte auf der Statustafel |
 | `position` | Zahl ab 0 | die Zeile innerhalb dieser Spalte |
+| `reisekosten` | Zahl | eigener Betrag; läuft **nicht** gegen das Honorarbudget |
 | `honorar` | Zahl | für **das ganze Paket**, nicht je Beitrag |
 | `bewertung` | Zahl | Sterne, nach der Konferenz vergeben |
 | `angefragt_am`, `geantwortet_am` | Datum | |

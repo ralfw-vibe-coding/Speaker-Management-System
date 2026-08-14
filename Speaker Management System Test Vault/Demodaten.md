@@ -70,6 +70,9 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 - Honorarsumme **18.400 €** von 25.000 € Budget — aus sechs Engagements: 4.000 €,
   3.400 €, 3.000 €, 2.900 €, 2.700 €, 2.400 €. Die übrigen sieben tragen keinen Betrag,
   darunter Sonja Ehrlich, mit der noch verhandelt wird.
+- Reisekosten **1.510 €** aus sechs Engagements — eine eigene Zahl, die nicht gegen das
+  Honorarbudget läuft. Lindqvist wohnt in Hamburg und steht mit 0 € da; das ist etwas
+  anderes als „noch nicht vereinbart", wo das Feld leer bleibt.
 - 21 Slots, davon 15 belegt und 6 frei
 - 11 aktive Kandidaten, 2 gestrichen
 - 1 von 11 Kandidaten inhaltlich fertig — alle Häkchen im Engagement und in beiden

@@ -18,6 +18,7 @@ interface Karte {
 	kandidaten: number;
 	zugesagt: number;
 	honorar: number;
+	reisekosten: number;
 	slots: number;
 	belegt: number;
 	imPool: number;
@@ -122,6 +123,7 @@ export class Konferenzuebersicht {
 				kandidaten: aktiv.length,
 				zugesagt: eigene.filter((e) => ZUGESAGT_UND_WEITER.includes(e.status)).length,
 				honorar: aktiv.reduce((summe, e) => summe + (e.honorar ?? 0), 0),
+				reisekosten: aktiv.reduce((summe, e) => summe + (e.reisekosten ?? 0), 0),
 				slots,
 				belegt,
 				imPool: eigeneBeitraege.filter((beitrag) => beitrag.bloecke.length === 0).length,
@@ -215,6 +217,10 @@ export class Konferenzuebersicht {
 					? `${euro(karte.honorar)} von ${euro(budget)}`
 					: euro(karte.honorar),
 			});
+		}
+
+		if (karte.reisekosten > 0) {
+			zahlen.createSpan({ text: `${euro(karte.reisekosten)} Reisekosten` });
 		}
 
 		const hinweise = kasten.createDiv({ cls: "sms-hinweise" });

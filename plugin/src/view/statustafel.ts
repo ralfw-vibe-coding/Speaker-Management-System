@@ -139,6 +139,7 @@ export class Statustafel {
 		const zugesagt = karten.filter((k) => ZUGESAGT_UND_WEITER.includes(k.engagement.status));
 		const gestrichen = karten.filter((k) => k.engagement.status === "gestrichen");
 		const honorar = aktiv.reduce((summe, k) => summe + (k.engagement.honorar ?? 0), 0);
+		const reise = aktiv.reduce((summe, k) => summe + (k.engagement.reisekosten ?? 0), 0);
 
 		const kopf = buehne.createDiv({ cls: "sms-tafel-kopf" });
 
@@ -168,6 +169,10 @@ export class Statustafel {
 				? `Honorar ${euro(honorar)} von ${euro(budget)}`
 				: `Honorar ${euro(honorar)}`,
 		});
+		// Reisekosten laufen nicht gegen das Honorarbudget: Der Veranstalter
+		// erstattet sie gesondert. Deshalb eine eigene Zahl, keine Addition.
+		if (reise > 0) zeile.createSpan({ text: ` · Reisekosten ${euro(reise)}` });
+
 		if (konferenz.deadlineProgramm) {
 			zeile.createSpan({ text: ` · Deadline Programm ${kurzesDatum(konferenz.deadlineProgramm)}` });
 		}
@@ -236,6 +241,9 @@ export class Statustafel {
 			teile.push(karte.beitraege.length === 1 ? "1 Beitrag" : `${karte.beitraege.length} Beiträge`);
 		}
 		if (engagement.honorar !== undefined) teile.push(euro(engagement.honorar));
+		if (engagement.reisekosten !== undefined) {
+			teile.push(`${euro(engagement.reisekosten)} Reise`);
+		}
 		if (teile.length > 0) kasten.createDiv({ cls: "sms-zeile", text: teile.join(" · ") });
 
 		if (karte.gesamt > 0 && karte.erledigt > 0) {

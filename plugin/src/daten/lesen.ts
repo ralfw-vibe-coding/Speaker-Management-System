@@ -66,6 +66,7 @@ export class Datenzugriff {
 				status: text(fm.status) ?? "gemerkt",
 				position: zahl(fm.position) ?? 0,
 				honorar: zahl(fm.honorar),
+				reisekosten: zahl(fm.reisekosten),
 				bewertung: zahl(fm.bewertung),
 				angefragtAm: text(fm.angefragt_am),
 				geantwortetAm: text(fm.geantwortet_am),

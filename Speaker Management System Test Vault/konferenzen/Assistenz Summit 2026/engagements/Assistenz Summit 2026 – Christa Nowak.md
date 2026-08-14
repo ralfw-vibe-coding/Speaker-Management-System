@@ -5,6 +5,7 @@ speaker: "[[Christa Nowak]]"
 status: geantwortet
 position: 1
 honorar: 2700
+reisekosten: 210
 angefragt_am: 2026-06-12
 ---
 ## Zu klären
