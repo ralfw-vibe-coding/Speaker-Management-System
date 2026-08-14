@@ -5,6 +5,7 @@ speaker: "[[Dr. Antje Rohleder]]"
 status: gemerkt
 position: 0
 honorar:
+reisekosten:
 angefragt_am:
 geantwortet_am:
 rechnung_am:

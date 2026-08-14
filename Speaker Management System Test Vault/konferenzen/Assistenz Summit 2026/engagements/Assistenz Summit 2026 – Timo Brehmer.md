@@ -5,6 +5,7 @@ speaker: "[[Timo Brehmer]]"
 status: geantwortet
 position: 0
 honorar:
+reisekosten:
 angefragt_am: 2026-06-05
 geantwortet_am: 2026-06-28
 ---

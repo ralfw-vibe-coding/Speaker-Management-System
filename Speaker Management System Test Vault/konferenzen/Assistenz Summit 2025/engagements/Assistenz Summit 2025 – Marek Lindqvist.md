@@ -5,6 +5,7 @@ speaker: "[[Marek Lindqvist]]"
 status: bezahlt
 position: 1
 honorar: 2200
+reisekosten:
 angefragt_am: 2025-04-22
 geantwortet_am: 2025-04-24
 rechnung_am: 2025-11-10

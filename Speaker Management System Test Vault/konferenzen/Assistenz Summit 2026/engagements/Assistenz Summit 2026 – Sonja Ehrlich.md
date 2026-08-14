@@ -5,6 +5,7 @@ speaker: "[[Sonja Ehrlich]]"
 status: verhandlung
 position: 0
 honorar:
+reisekosten:
 angefragt_am: 2026-05-20
 geantwortet_am: 2026-05-25
 ---

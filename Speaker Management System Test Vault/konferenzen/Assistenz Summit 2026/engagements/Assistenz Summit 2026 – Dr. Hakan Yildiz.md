@@ -5,6 +5,7 @@ speaker: "[[Dr. Hakan Yildiz]]"
 status: gemerkt
 position: 1
 honorar:
+reisekosten:
 ---
 ## Zu klären
 - [ ] Bio erhalten

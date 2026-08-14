@@ -5,6 +5,7 @@ speaker: "[[Marlene Ostrowski]]"
 status: gemerkt
 position: 2
 honorar:
+reisekosten:
 ---
 ## Zu klären
 - [ ] Bio erhalten

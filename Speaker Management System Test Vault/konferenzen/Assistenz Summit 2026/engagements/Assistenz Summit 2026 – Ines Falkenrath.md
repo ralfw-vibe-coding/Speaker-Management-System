@@ -5,6 +5,7 @@ speaker: "[[Ines Falkenrath]]"
 status: gemerkt
 position: 0
 honorar:
+reisekosten:
 ---
 ## Zu klären
 - [ ] Bio erhalten

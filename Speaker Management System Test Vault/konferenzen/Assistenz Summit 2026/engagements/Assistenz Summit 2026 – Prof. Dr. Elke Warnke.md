@@ -5,6 +5,7 @@ speaker: "[[Prof. Dr. Elke Warnke]]"
 status: gestrichen
 position: 0
 honorar:
+reisekosten:
 angefragt_am: 2026-02-10
 geantwortet_am: 2026-02-24
 ---

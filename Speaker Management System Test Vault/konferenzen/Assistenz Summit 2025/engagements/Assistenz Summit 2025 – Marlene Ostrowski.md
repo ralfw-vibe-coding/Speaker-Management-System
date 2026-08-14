@@ -5,6 +5,7 @@ speaker: "[[Marlene Ostrowski]]"
 status: bezahlt
 position: 2
 honorar: 1800
+reisekosten:
 angefragt_am: 2025-05-12
 geantwortet_am: 2025-05-15
 rechnung_am: 2025-11-08

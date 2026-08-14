@@ -5,6 +5,7 @@ speaker: "[[Christa Nowak]]"
 status: angefragt
 position: 0
 honorar:
+reisekosten:
 angefragt_am:
 geantwortet_am:
 rechnung_am:

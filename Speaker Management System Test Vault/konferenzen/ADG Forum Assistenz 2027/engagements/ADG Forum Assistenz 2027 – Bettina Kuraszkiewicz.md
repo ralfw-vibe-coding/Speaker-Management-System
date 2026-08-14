@@ -5,6 +5,7 @@ speaker: "[[Bettina Kuraszkiewicz]]"
 status: geantwortet
 position: 0
 honorar:
+reisekosten:
 angefragt_am:
 geantwortet_am:
 rechnung_am:

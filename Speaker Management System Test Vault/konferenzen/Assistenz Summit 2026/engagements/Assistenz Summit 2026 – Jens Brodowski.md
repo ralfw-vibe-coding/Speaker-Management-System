@@ -5,6 +5,7 @@ speaker: "[[Jens Brodowski]]"
 status: gestrichen
 position: 1
 honorar:
+reisekosten:
 angefragt_am: 2026-04-02
 geantwortet_am: 2026-04-08
 ---

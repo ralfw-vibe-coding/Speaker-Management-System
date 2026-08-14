@@ -5,6 +5,7 @@ speaker: "[[Sonja Ehrlich]]"
 status: gestrichen
 position: 0
 honorar:
+reisekosten:
 angefragt_am: 2025-05-20
 geantwortet_am: 2025-05-28
 bewertung:

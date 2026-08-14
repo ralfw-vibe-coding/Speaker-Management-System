@@ -5,6 +5,7 @@ speaker: "[[Christa Nowak]]"
 status: bezahlt
 position: 3
 honorar: 1400
+reisekosten:
 angefragt_am: 2025-04-15
 geantwortet_am: 2025-06-02
 rechnung_am: 2025-11-20
