@@ -78,6 +78,10 @@ export interface Speaker {
 	/** Der Dateiname ohne Endung — er ist die Identität, Wikilinks zeigen darauf. */
 	name: string;
 	rolle?: string;
+	/** Wie im Frontmatter angegeben — Wikilink, Pfad oder Adresse. */
+	foto?: string;
+	/** Daraus aufgelöst, direkt anzeigbar. Fehlt, wenn die Datei nicht da ist. */
+	fotoQuelle?: string;
 	email?: string;
 	telefon?: string;
 	web?: string;
@@ -97,6 +101,11 @@ export interface Speaker {
 	honorarrahmen?: number;
 	/** Erste Zeile unter „## Notizen", als Vorschau auf der Karte. */
 	notiz?: string;
+	/**
+	 * Erste Zeile unter „## Bio" — der Text, den der Speaker selbst liefert und
+	 * der nach außen darf. Anders als `## Profil`, wo interne Eindrücke stehen.
+	 */
+	bio?: string;
 }
 
 export interface Engagement {

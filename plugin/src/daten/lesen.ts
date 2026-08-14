@@ -38,6 +38,8 @@ export class Datenzugriff {
 					datei,
 					name: datei.basename,
 					rolle: text(fm.rolle),
+					foto: text(fm.foto),
+					fotoQuelle: this.bildQuelle(text(fm.foto), datei),
 					email: text(fm.email),
 					telefon: text(fm.telefon),
 					web: text(fm.web),
@@ -49,6 +51,7 @@ export class Datenzugriff {
 					ort: text(fm.ort),
 					honorarrahmen: zahl(fm.honorarrahmen),
 					notiz: await this.ersteZeileUnter(datei, "Notizen"),
+					bio: await this.ersteZeileUnter(datei, "Bio"),
 				};
 			}),
 		);
@@ -173,6 +176,21 @@ export class Datenzugriff {
 				return undefined;
 			})
 			.filter((eintrag): eintrag is { datei: TFile; text: string } => eintrag !== undefined);
+	}
+
+	/**
+	 * Löst die Angabe im Feld `foto` zu etwas auf, das sich anzeigen lässt:
+	 * einen Wikilink, einen Pfad im Vault oder eine Adresse im Netz. Findet
+	 * sich die Datei nicht, bleibt es leer — ein totes Bild ist schlimmer als
+	 * keines.
+	 */
+	private bildQuelle(angabe: string | undefined, quelle: TFile): string | undefined {
+		if (!angabe) return undefined;
+		if (/^https?:\/\//.test(angabe)) return angabe;
+
+		const pfad = angabe.replace(/^!?\[\[/, "").replace(/\]\]$/, "").split("|")[0].trim();
+		const datei = this.app.metadataCache.getFirstLinkpathDest(pfad, quelle.path);
+		return datei ? this.app.vault.getResourcePath(datei) : undefined;
 	}
 
 	/**

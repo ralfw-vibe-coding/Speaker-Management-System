@@ -75,6 +75,7 @@ Konferenzübergreifend, das Langzeitkapital. Dateiname ist der blanke Personenna
 |---|---|---|
 | `type` | `speaker` | |
 | `rolle` | Text | Funktion oder Firma, erscheint auf der Katalogkarte |
+| `foto` | Wikilink, Pfad oder URL | Bild im Vault; erscheint auf der Katalogkarte |
 | `email`, `telefon`, `web` | Text | Kontakt |
 | `zielgruppe` | Liste | für wen der Mensch passt; im Katalog ein Filter |
 | `themen` | Liste Text | Freies Vokabular, keine feste Liste |
@@ -101,12 +102,19 @@ sprachen: [de, en]
 ort: Zürich
 honorarrahmen: 2500
 ---
+## Bio
+Der Text des Speakers. **Darf nach außen** — Programmheft, Website, Einseiter.
+
 ## Profil
-Freitext.
+Eigene Eindrücke. Bleibt im Haus.
 
 ## Notizen
 Die erste Zeile hier erscheint als Vorschau auf der Katalogkarte.
 ```
+
+`## Bio` und `## Profil` sind nicht dasselbe: Was unter `Bio` steht, ist für den
+Veranstalter bestimmt; `Profil` und `Notizen` sind interne Einschätzungen und dürfen
+nicht in etwas landen, das verschickt wird.
 
 ## veranstalter
 

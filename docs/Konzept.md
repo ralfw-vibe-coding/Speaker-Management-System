@@ -195,6 +195,7 @@ Sonst wäre der Vorteil von Markdown wieder verspielt.
 ---
 type: speaker
 rolle: Berater, ehem. Entwicklungsleiter
+foto: "[[Ralf Westphal.jpg]]"
 email: ralf@example.com
 telefon: +49 …
 web: https://…
@@ -208,12 +209,29 @@ sprachen: [de, en]
 ort: Hamburg
 honorarrahmen: 2500
 ---
+## Bio
+Was der Speaker selbst liefert. Darf nach außen.
+
 ## Profil
-Bio, Eindrücke, „gut im Dialog, braucht langen Vorlauf".
+Eigene Eindrücke: „gut im Dialog, braucht langen Vorlauf".
 
 ## Notizen
 „Antwortet erst nach mehrfachem Nachfassen."
 ```
+
+**Drei Abschnitte, eine Trennlinie.** `## Bio` ist der Text des Speakers und für den
+Veranstalter bestimmt; `## Profil` und `## Notizen` sind eigene Einschätzungen und
+bleiben im Haus. Die Trennung ist keine Ordnungsliebe: Sobald ein Einseiter aus diesen
+Daten entsteht und verschickt wird, entscheidet sie darüber, ob „2025 am Honorar
+gescheitert" beim Auftraggeber landet.
+
+Das `foto` zeigt auf einen Anhang im Vault — Wikilink, Pfad oder Adresse, tolerant
+gelesen. Im Vault statt im Netz, weil ein Link irgendwann tot ist und das Bild, das
+jemand per Mail schickt, ohnehin nirgends im Web steht. Findet sich die Datei nicht,
+bleibt die Karte ohne Bild: Ein totes Bild ist schlimmer als keines.
+
+Bio und Foto sind nicht zufällig die beiden Punkte, die auf jeder Engagement-Checkliste
+stehen. Es sind die zwei Dinge, die man von jedem Speaker einsammeln muss.
 
 Gesetzt wird sie im Katalog: Ein Klick auf den Themen-Chip schaltet zwischen erster,
 zweiter, dritter Wahl und „nicht eingeschätzt" weiter. Sie ist das Einzige am Speaker,
@@ -725,6 +743,18 @@ benannt — sie ist oft gewollt —, eine Überschneidung rot, und der Kopf zäh
 - **Raum wechselt über den Tag** — die Kaskade nimmt an, dass ein Track seinen Raum
   behält. Zieht ein Track mittags um, braucht es je betroffenem Slot einen Eintrag.
   Reicht das, oder gehören Raum und Kapazität doch an den Block?
+- **Profil-Einseiter je Speaker** — aus einer Konferenz heraus für jeden Speaker eine
+  Seite erzeugen und dem Veranstalter schicken: Foto, Name, Rolle, Bio, dazu seine
+  Beiträge dieser Konferenz mit Titel, Abstract und Zeit. Alles davon steht schon in den
+  Notizen; deshalb sind `foto` und `## Bio` jetzt da, bevor die Funktion kommt — sonst
+  müsste man die Prosa hinterher auseinandersortieren.
+
+  Zu entscheiden ist dann: **eine Notiz je Speaker oder eine Sammelseite**, wohin sie
+  gehört (ein Ordner `einseiter/` in der Konferenz?), und was mit ihr geschieht, wenn
+  sich die Bio danach ändert — neu erzeugen oder von Hand nachziehen. **Verschicken
+  gehört nicht ins Plugin**: Es erzeugt eine Datei, das Versenden macht dein Mailprogramm.
+  Was das Plugin dagegen leisten muss, ist die Zusicherung, dass **nichts Internes**
+  darin landet.
 - **Wiederverwendung, weitergedacht** — Der Vorschlag zeigt, was jemand früher gehalten
   hat. Soll man einen alten Beitrag auch **übernehmen** können, also Titel und Abstract
   in den neuen kopieren? Das wäre der erste Fall, in dem das Plugin Prosa schreibt.

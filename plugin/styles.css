@@ -907,3 +907,32 @@
 .sms-hinweis-gelb {
 	color: var(--color-orange);
 }
+
+/* ------------------------------------------------------------ Speakerfoto */
+
+.sms-speakerzeile {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+}
+
+.sms-speakerangaben {
+	flex: 1;
+	min-width: 0;
+}
+
+.sms-foto {
+	width: 52px;
+	height: 52px;
+	flex: none;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* Die Bio ist das, was nach außen darf — im Gegensatz zu den Notizen. */
+.sms-bio {
+	margin-top: 4px;
+	font-size: 0.82em;
+	color: var(--text-muted);
+}

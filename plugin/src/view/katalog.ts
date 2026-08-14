@@ -125,6 +125,7 @@ export class Speakerkatalog {
 				speaker.rolle ?? "",
 				speaker.ort ?? "",
 				speaker.notiz ?? "",
+				speaker.bio ?? "",
 				...speaker.themen,
 				...speaker.zielgruppen,
 			]
@@ -300,11 +301,24 @@ export class Speakerkatalog {
 		const karte = liste.createDiv({ cls: "sms-karte" });
 		karte.addEventListener("click", () => this.notizOeffnen(speaker.datei));
 
-		const kopf = karte.createDiv({ cls: "sms-karte-kopf" });
+		// Ein Gesicht findet man schneller als einen Namen. Wo keines hinterlegt
+		// ist, bleibt die Zeile ohne Platzhalter — leer sagt mehr als eine
+		// graue Silhouette.
+		const oben = karte.createDiv({ cls: "sms-speakerzeile" });
+		if (speaker.fotoQuelle) {
+			oben.createEl("img", {
+				cls: "sms-foto",
+				attr: { src: speaker.fotoQuelle, alt: speaker.name },
+			});
+		}
+
+		const angaben = oben.createDiv({ cls: "sms-speakerangaben" });
+		const kopf = angaben.createDiv({ cls: "sms-karte-kopf" });
 		kopf.createSpan({ cls: "sms-name", text: speaker.name });
 		if (speaker.ort) kopf.createSpan({ cls: "sms-ort", text: speaker.ort });
 
-		if (speaker.rolle) karte.createDiv({ cls: "sms-rolle", text: speaker.rolle });
+		if (speaker.rolle) angaben.createDiv({ cls: "sms-rolle", text: speaker.rolle });
+		if (speaker.bio) angaben.createDiv({ cls: "sms-bio", text: speaker.bio });
 
 		if (speaker.themen.length > 0 || speaker.wahl.size > 0) {
 			const themen = karte.createDiv({ cls: "sms-themen" });
