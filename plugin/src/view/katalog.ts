@@ -1,6 +1,7 @@
 import { Notice, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
+import { historienbild } from "../daten/projektion";
 import {
 	FORMATE,
 	FORMAT_TITEL,
@@ -42,6 +43,10 @@ export class Speakerkatalog {
 	private konferenz: Konferenz | undefined;
 	private engagements: Engagement[] = [];
 
+	/** Speaker, deren frühere Auftritte gerade ausgeklappt sind. */
+	private aufgeklappt = new Set<string>();
+	private buehne: HTMLElement | undefined;
+
 	constructor(
 		private daten: Datenzugriff,
 		private schreiber: Datenschreiber,
@@ -50,6 +55,7 @@ export class Speakerkatalog {
 	) {}
 
 	async zeichnen(buehne: HTMLElement, konferenz?: Konferenz): Promise<void> {
+		this.buehne = buehne;
 		this.konferenz = konferenz;
 		const eintraege = await this.lesen();
 
@@ -79,6 +85,15 @@ export class Speakerkatalog {
 		for (const eintrag of gefiltert) this.karteZeichnen(liste, eintrag);
 	}
 
+	/**
+	 * Neu zeichnen und dabei die ausgewählte Konferenz behalten. `zeichnen`
+	 * ohne zweites Argument setzte sie auf „keine" — dann verschwände das
+	 * „merken" von allen Karten, sobald man etwas anderes anklickt.
+	 */
+	private neuZeichnen(): void {
+		if (this.buehne) void this.zeichnen(this.buehne, this.konferenz);
+	}
+
 	// ---------------------------------------------------------------- Daten
 
 	private async lesen(): Promise<Eintrag[]> {
@@ -86,6 +101,22 @@ export class Speakerkatalog {
 		const engagements = this.daten.engagements();
 		const konferenzen = new Map(this.daten.konferenzen().map((k) => [k.name, k]));
 		this.engagements = engagements;
+
+		// Womit jemand wo aufgetreten ist — nach Speaker und Konferenz abgelegt,
+		// damit die Zuordnung unten nicht über alle Beiträge laufen muss. Der
+		// senkrechte Strich trennt sicher: In Dateinamen ist er verboten, kann
+		// also in keinem der beiden Namen vorkommen.
+		const themen = new Map<string, { titel: string; datei: TFile }[]>();
+		for (const beitrag of this.daten.beitraege()) {
+			if (!beitrag.titel) continue;
+			for (const name of beitrag.speaker) {
+				const schluessel = `${name}|${beitrag.konferenz}`;
+				const eintrag = { titel: beitrag.titel, datei: beitrag.datei };
+				const bisher = themen.get(schluessel);
+				if (bisher) bisher.push(eintrag);
+				else themen.set(schluessel, [eintrag]);
+			}
+		}
 
 		const historien = new Map<string, Auftritt[]>();
 		for (const engagement of engagements) {
@@ -96,6 +127,8 @@ export class Speakerkatalog {
 				konferenzDatei: konferenz?.datei,
 				datum: konferenz?.tage[0]?.datum,
 				status: engagement.status,
+				konferenzstatus: konferenz?.status,
+				themen: themen.get(`${engagement.speaker}|${engagement.konferenz}`) ?? [],
 				bewertung: engagement.bewertung,
 			};
 			const bisher = historien.get(engagement.speaker);
@@ -163,7 +196,7 @@ export class Speakerkatalog {
 		suchfeld.value = this.suche;
 		suchfeld.addEventListener("input", () => {
 			this.suche = suchfeld.value.trim().toLowerCase();
-			void this.zeichnen(buehne).then(() => {
+			void this.zeichnen(buehne, this.konferenz).then(() => {
 				// Nach dem Neuzeichnen steht der Cursor sonst nicht mehr im Suchfeld.
 				const neu = buehne.querySelector<HTMLInputElement>(".sms-suche");
 				neu?.focus();
@@ -218,7 +251,7 @@ export class Speakerkatalog {
 			knopf.addEventListener("click", () => {
 				if (aktiv) this.wahlstufen.delete(stufe);
 				else this.wahlstufen.add(stufe);
-				void this.zeichnen(buehne);
+				this.neuZeichnen();
 			});
 		}
 	}
@@ -244,7 +277,7 @@ export class Speakerkatalog {
 			knopf.addEventListener("click", () => {
 				if (aktiv) gewaehlt.delete(wert);
 				else gewaehlt.add(wert);
-				void this.zeichnen(buehne);
+				this.neuZeichnen();
 			});
 		}
 	}
@@ -347,43 +380,120 @@ export class Speakerkatalog {
 			}
 		}
 
-		if (speaker.zielgruppen.length > 0) {
-			const fuer = karte.createDiv({ cls: "sms-themen" });
-			for (const zielgruppe of speaker.zielgruppen) {
-				fuer.createSpan({ cls: "sms-thema sms-zielgruppe", text: `für ${zielgruppe}` });
-			}
-		}
+		// Die Zielgruppen stehen bewusst nicht auf der Karte: Sie sind ein Filter,
+		// keine Anzeige. Ist er gesetzt, tragen alle sichtbaren Karten dieselben
+		// Chips und sagen nichts; ist er es nicht, fragt gerade niemand danach.
 
-		const zeile = karte.createDiv({ cls: "sms-zeile" });
-		if (speaker.formate.length > 0) {
-			zeile.createSpan({
-				text: speaker.formate.map((f) => FORMAT_TITEL[f] ?? f).join(" · "),
-			});
-		}
-		if (speaker.sprachen.length > 0) zeile.createSpan({ text: speaker.sprachen.join("/") });
+		// Formate und Sprachen stehen wie die Zielgruppen nur noch in der
+		// Filterleiste. Was der Filter beantwortet, muss die Karte nicht wiederholen.
 		if (speaker.honorarrahmen !== undefined) {
+			const zeile = karte.createDiv({ cls: "sms-zeile" });
 			zeile.createSpan({ text: `ab ${speaker.honorarrahmen.toLocaleString("de-DE")} €` });
 		}
 
-		if (speaker.notiz) karte.createDiv({ cls: "sms-notiz", text: `„${speaker.notiz}"` });
+		// Die erste Notizzeile stand hier früher als Vorschau. Sie war die längste
+		// Zeile der Karte, machte jede Karte unterschiedlich hoch — und half bei
+		// der einen Frage nicht, die man beim Blättern stellt: Wer passt hier?
+		// Sie steht in der Notiz, die ein Klick auf die Karte öffnet.
 
 		this.merkenAnbieten(karte, speaker, historie);
 
-		if (historie.length > 0) {
-			const spur = karte.createDiv({ cls: "sms-historie" });
-			for (const auftritt of historie) {
-				const auftrittZeile = spur.createDiv({ cls: "sms-auftritt" });
-				auftrittZeile.createSpan({ cls: "sms-auftritt-name", text: auftritt.konferenz });
-				auftrittZeile.createSpan({
-					cls: `sms-status sms-status-${auftritt.status}`,
-					text: FUNNEL_TITEL[auftritt.status] ?? auftritt.status,
+		this.historieZeichnen(karte, historie, speaker.name);
+	}
+
+	/**
+	 * Die Historie: was läuft, steht einzeln mit seinem Status — dort wartet
+	 * etwas. Was gelaufen ist, wird zu einer Zeile gezählt; sein Funnel-Status
+	 * ist immer derselbe, interessant ist die Bewertung. So wächst die Karte
+	 * nur mit dem, was offen ist, und nicht mit den Jahren.
+	 */
+	private historieZeichnen(karte: HTMLElement, historie: Auftritt[], name: string): void {
+		if (historie.length === 0) return;
+
+		const bild = historienbild(historie);
+		const spur = karte.createDiv({ cls: "sms-historie" });
+
+		for (const auftritt of bild.laufend) {
+			const zeile = spur.createDiv({ cls: "sms-auftritt" });
+			zeile.createSpan({ cls: "sms-auftritt-name", text: auftritt.konferenz });
+			zeile.createSpan({
+				cls: `sms-status sms-status-${auftritt.status}`,
+				text: FUNNEL_TITEL[auftritt.status] ?? auftritt.status,
+			});
+			if (auftritt.bewertung !== undefined) {
+				zeile.createSpan({
+					cls: "sms-sterne",
+					text: "★".repeat(auftritt.bewertung) + "☆".repeat(Math.max(0, 5 - auftritt.bewertung)),
 				});
-				if (auftritt.bewertung !== undefined) {
-					auftrittZeile.createSpan({
-						cls: "sms-sterne",
-						text: "★".repeat(auftritt.bewertung) + "☆".repeat(Math.max(0, 5 - auftritt.bewertung)),
-					});
-				}
+			}
+		}
+
+		if (bild.frueher.length === 0) return;
+
+		const offen = this.aufgeklappt.has(name);
+		const zeile = spur.createDiv({ cls: "sms-frueher" });
+		zeile.createSpan({ cls: "sms-pfeil", text: offen ? "▾" : "▸" });
+		zeile.createSpan({
+			text: bild.frueher.length === 1 ? "1 früher" : `${bild.frueher.length} früher`,
+		});
+
+		if (bild.schnitt !== undefined) {
+			const volle = Math.round(bild.schnitt);
+			zeile.createSpan({
+				cls: "sms-sterne",
+				text: "★".repeat(volle) + "☆".repeat(Math.max(0, 5 - volle)),
+				attr: { title: `${bild.schnitt.toFixed(1)} von 5 im Mittel` },
+			});
+		}
+
+		// Der Klick klappt auf, statt die Notiz zu öffnen — die Karte selbst tut
+		// das ja schon.
+		zeile.addEventListener("click", (ereignis) => {
+			ereignis.stopPropagation();
+			if (offen) this.aufgeklappt.delete(name);
+			else this.aufgeklappt.add(name);
+			this.neuZeichnen();
+		});
+
+		if (!offen) return;
+
+		// Womit jemand da war, ist der Grund, warum der Katalog über die Jahre
+		// geht: Man bucht niemanden zweimal mit demselben Thema. Deshalb steht
+		// der Titel in einer eigenen Zeile und wird nicht abgeschnitten —
+		// abgeschnitten wäre er genau die Angabe, wegen der man aufklappt.
+		for (const auftritt of bild.frueher) {
+			const eintrag = spur.createDiv({ cls: "sms-frueher-eintrag" });
+
+			const kopf = eintrag.createDiv({ cls: "sms-frueher-kopf" });
+			const konferenzname = kopf.createSpan({ cls: "sms-auftritt-name", text: auftritt.konferenz });
+			if (auftritt.konferenzDatei) {
+				const datei = auftritt.konferenzDatei;
+				konferenzname.addClass("is-anklickbar");
+				konferenzname.addEventListener("click", (ereignis) => {
+					ereignis.stopPropagation();
+					this.notizOeffnen(datei);
+				});
+			}
+			if (auftritt.bewertung !== undefined) {
+				kopf.createSpan({
+					cls: "sms-sterne",
+					text: "★".repeat(auftritt.bewertung) + "☆".repeat(Math.max(0, 5 - auftritt.bewertung)),
+				});
+			}
+
+			if (auftritt.themen.length === 0) {
+				eintrag.createDiv({ cls: "sms-frueher-thema is-leer", text: "ohne Thema" });
+				continue;
+			}
+
+			for (const thema of auftritt.themen) {
+				const zeile = eintrag.createDiv({ cls: "sms-frueher-thema", text: thema.titel });
+				// Der Klick öffnet den Beitrag von damals, nicht den Speaker — den
+				// hat man ja gerade vor sich. Ohne das Anhalten übernähme die Karte.
+				zeile.addEventListener("click", (ereignis) => {
+					ereignis.stopPropagation();
+					this.notizOeffnen(thema.datei);
+				});
 			}
 		}
 	}

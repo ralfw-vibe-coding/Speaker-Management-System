@@ -294,5 +294,14 @@ export interface Auftritt {
 	/** Frühester Tag der Konferenz, zum Sortieren. Fehlt bei Konferenzen ohne Tage. */
 	datum?: string;
 	status: string;
+	/**
+	 * Der Status der **Konferenz**, nicht des Engagements. Er entscheidet, ob ein
+	 * Auftritt im Katalog einzeln dasteht oder nur mitgezählt wird: Bei einer
+	 * gelaufenen Konferenz ist der Funnel-Status immer derselbe und sagt nichts
+	 * mehr — interessant ist dann die Bewertung.
+	 */
+	konferenzstatus?: string;
+	/** Womit der Speaker dort auftrat, mit der Notiz dahinter. Leer, solange kein Thema steht. */
+	themen: { titel: string; datei: TFile }[];
 	bewertung?: number;
 }

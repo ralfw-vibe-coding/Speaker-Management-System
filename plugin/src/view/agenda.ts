@@ -25,6 +25,7 @@ import {
 import {
 	FORMAT_TITEL,
 	FUNNEL_TITEL,
+	ROLLEN_TITEL,
 	ZUGESAGT_UND_WEITER,
 	istArchiv,
 	raumFuer,
@@ -576,26 +577,34 @@ export class Agenda {
 		const mitBeitrag = new Set(beitraege.flatMap((beitrag) => beitrag.speaker));
 		const ohneBeitrag = [...engagements.values()].filter(
 			(engagement) =>
-				engagement.status !== "gestrichen" &&
-				!mitBeitrag.has(engagement.speaker) &&
-				// Wer durch den Tag führt, wartet auf keinen Slot.
-				erwartetBeitrag(engagement),
+				engagement.status !== "gestrichen" && !mitBeitrag.has(engagement.speaker),
 		);
 
 		if (ohneBeitrag.length === 0) return;
 
+		// Wer eine Rolle trägt, **wartet** auf keinen Slot — er zählt deshalb nicht
+		// als Rückstand. Ziehbar bleibt er trotzdem: Die Moderatorin, die auch
+		// einen Vortrag hält, käme sonst gar nicht ins Raster.
+		const wartend = ohneBeitrag.filter((engagement) => erwartetBeitrag(engagement));
+		const mitRolle = ohneBeitrag.filter((engagement) => !erwartetBeitrag(engagement));
+
 		const zweiter = pool.createDiv({ cls: "sms-spalte-kopf" });
 		zweiter.createSpan({ cls: "sms-spalte-titel", text: "Kandidaten ohne Beitrag" });
-		zweiter.createSpan({ cls: "sms-spalte-zahl", text: String(ohneBeitrag.length) });
+		zweiter.createSpan({ cls: "sms-spalte-zahl", text: String(wartend.length) });
 
-		for (const engagement of ohneBeitrag) {
-			const zeile = pool.createDiv({ cls: "sms-kandidat" });
+		for (const engagement of [...wartend, ...mitRolle]) {
+			const rolle = !erwartetBeitrag(engagement);
+			const zeile = pool.createDiv({ cls: rolle ? "sms-kandidat is-rolle" : "sms-kandidat" });
 			zeile.addEventListener("click", () => this.notizOeffnen(engagement.datei));
 			this.alsZiehbar(zeile, { art: "kandidat", engagement });
 			zeile.createSpan({ text: engagement.speaker });
 			zeile.createSpan({
-				cls: `sms-abzeichen sms-abzeichen-${engagement.status}`,
-				text: FUNNEL_TITEL[engagement.status] ?? engagement.status,
+				cls: rolle
+					? "sms-abzeichen sms-abzeichen-rolle"
+					: `sms-abzeichen sms-abzeichen-${engagement.status}`,
+				text: rolle
+					? engagement.rollen.map((eigene) => ROLLEN_TITEL[eigene] ?? eigene).join(" · ")
+					: (FUNNEL_TITEL[engagement.status] ?? engagement.status),
 			});
 		}
 

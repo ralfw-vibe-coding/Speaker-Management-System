@@ -159,11 +159,14 @@ export class SmsView extends ItemView {
 		});
 		neu.addEventListener("click", () => this.konferenzAnlegen(konferenzen.map((k) => k.name)));
 
+		// Jeder Bereich trägt seine eigene Farbe. Die Klasse steht am Reiter *und*
+		// an der Bühne, damit das Stylesheet die Farbe auch in der Ansicht
+		// aufnehmen kann — und zwar über einen Namen statt über die Position.
 		const reiter = kopf.createDiv({ cls: "sms-reiter" });
 		for (const { id, titel } of SICHTEN) {
 			const knopf = reiter.createEl("button", {
 				text: titel,
-				cls: id === this.sicht ? "sms-reiter-knopf is-active" : "sms-reiter-knopf",
+				cls: `sms-reiter-knopf sms-bereich-${id}${id === this.sicht ? " is-active" : ""}`,
 			});
 			knopf.addEventListener("click", () => {
 				this.sicht = id;
@@ -171,7 +174,7 @@ export class SmsView extends ItemView {
 			});
 		}
 
-		const buehne = root.createDiv({ cls: "sms-buehne" });
+		const buehne = root.createDiv({ cls: `sms-buehne sms-bereich-${this.sicht}` });
 
 		const konferenz = konferenzen.find((k) => k.name === this.konferenzName);
 

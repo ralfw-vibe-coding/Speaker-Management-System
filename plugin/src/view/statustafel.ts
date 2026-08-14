@@ -60,6 +60,10 @@ export class Statustafel {
 	private marke: HTMLElement | null = null;
 	private zielIndex = 0;
 
+	/** Karten, deren Beiträge gerade ausgeklappt sind — je Engagement-Pfad. */
+	private aufgeklappt = new Set<string>();
+	private buehne: HTMLElement | undefined;
+
 	constructor(
 		private app: App,
 		private daten: Datenzugriff,
@@ -70,6 +74,7 @@ export class Statustafel {
 	async zeichnen(buehne: HTMLElement, konferenz: Konferenz | undefined): Promise<void> {
 		buehne.empty();
 		buehne.addClass("sms-tafel");
+		this.buehne = buehne;
 		this.konferenz = konferenz;
 
 		if (!konferenz) {
@@ -213,7 +218,7 @@ export class Statustafel {
 	}
 
 	private karteZeichnen(spalte: HTMLElement, karte: Karte): void {
-		const { engagement, speaker } = karte;
+		const { engagement } = karte;
 
 		const kasten = spalte.createDiv({ cls: "sms-karte sms-tafel-karte" });
 		if (karte.gesamt > 0 && karte.erledigt === karte.gesamt) kasten.addClass("is-vollstaendig");
@@ -235,16 +240,12 @@ export class Statustafel {
 
 		kasten.createDiv({ cls: "sms-name", text: engagement.speaker });
 
-		if (speaker && speaker.themen.length > 0) {
-			kasten.createDiv({ cls: "sms-rolle", text: speaker.themen.slice(0, 2).join(" & ") });
-		}
+		// Unter dem Namen standen früher die ersten beiden Themen des Speakers als
+		// grobe Zusammenfassung. Seit die Beiträge aufklappbar sind, steht dort
+		// genauer, worum es geht — zweimal ungefähr dasselbe braucht die Karte nicht.
 
 		const zeile = kasten.createDiv({ cls: "sms-zeile" });
-		if (karte.beitraege.length > 0) {
-			zeile.createSpan({
-				text: karte.beitraege.length === 1 ? "1 Beitrag" : `${karte.beitraege.length} Beiträge`,
-			});
-		}
+		if (karte.beitraege.length > 0) this.beitraegeZeichnen(zeile, karte);
 		// Zahlen, die man beim Telefonieren ändert, gehören dorthin, wo man
 		// hinschaut. Alles Ausführlichere steht weiterhin in der Notiz.
 		this.betragZeichnen(zeile, kasten, engagement, "honorar", "Honorar");
@@ -285,6 +286,58 @@ export class Statustafel {
 				text: `⏱ ${karte.wochenOhneAntwort} Wochen ohne Antwort`,
 			});
 		}
+	}
+
+	/**
+	 * Die Beiträge: erst nur ihre Zahl, auf Klick ihre Titel. Wörtlich zu sehen,
+	 * womit jemand kommt, ist auf der Tafel die häufigste Frage nach dem Honorar —
+	 * und dafür sollte man die Notiz nicht öffnen müssen.
+	 *
+	 * Aufgeklappt statt nur als Tooltip, weil man zwei Karten vergleichen will:
+	 * Ein Hinweis, der beim Wegfahren verschwindet, taugt dafür nicht. Den
+	 * Tooltip gibt es zusätzlich, er kostet nichts.
+	 */
+	private beitraegeZeichnen(zeile: HTMLElement, karte: Karte): void {
+		const schluessel = karte.engagement.datei.path;
+		const offen = this.aufgeklappt.has(schluessel);
+		const titel = karte.beitraege.map((beitrag) => beitrag.titel || "ohne Thema");
+
+		const schalter = zeile.createSpan({
+			cls: "sms-beitragszahl",
+			attr: { title: titel.join("\n") },
+		});
+		schalter.createSpan({ cls: "sms-pfeil", text: offen ? "▾ " : "▸ " });
+		schalter.createSpan({
+			text: karte.beitraege.length === 1 ? "1 Beitrag" : `${karte.beitraege.length} Beiträge`,
+		});
+
+		schalter.addEventListener("click", (ereignis) => {
+			// Sonst öffnet die Karte darunter ihre Notiz.
+			ereignis.stopPropagation();
+			if (offen) this.aufgeklappt.delete(schluessel);
+			else this.aufgeklappt.add(schluessel);
+			if (this.buehne) void this.zeichnen(this.buehne, this.konferenz);
+		});
+
+		if (!offen) return;
+
+		const liste = zeile.createDiv({ cls: "sms-beitragsliste" });
+		karte.beitraege.forEach((beitrag, index) => {
+			const eintrag = liste.createDiv({
+				cls: beitrag.titel ? "sms-beitragszeile" : "sms-beitragszeile is-ohne-thema",
+			});
+			// Eine Nummer statt eines Punktes: Sie korrespondiert mit der Zahl
+			// darüber, und bei einem umbrechenden Titel sieht man, wo der nächste
+			// anfängt.
+			eintrag.createSpan({ cls: "sms-beitragsnummer", text: `${index + 1}.` });
+			eintrag.createSpan({ text: beitrag.titel || "ohne Thema" });
+			// Der Klick führt zum Beitrag, nicht zum Engagement — dorthin kommt man
+			// über die Karte selbst.
+			eintrag.addEventListener("click", (ereignis) => {
+				ereignis.stopPropagation();
+				this.notizOeffnen(beitrag.datei);
+			});
+		});
 	}
 
 	/**

@@ -261,8 +261,8 @@ darin liegt ihr Zweck.
 
 Der Body trägt die Prosa: Profil und Notizen. Beides gehört nicht ins Frontmatter —
 mehrzeiliger Text ist dort weder zu schreiben noch zu lesen, und Wikilinks
-funktionieren nicht. Im Katalog erscheint die erste Zeile unter `## Notizen` als
-Vorschau auf der Karte, alles Weitere in der Notiz.
+funktionieren nicht. Der Text unter `## Notizen` steht nicht auf der
+Karte, wird aber durchsucht.
 
 #### Formate
 
@@ -635,9 +635,54 @@ Slots, Kandidaten und Honorar gegen das Budget. Ein Klick wählt sie aus und fü
 ihre Statustafel; von hier entstehen auch neue Konferenzen.
 
 **Speakerkatalog** — konferenzübergreifend. Suchen und filtern nach Thema, Format,
-Sprache, Wahl und Historie. Je Speaker die Stammdaten, eine Vorschau seiner Notizen und
-seine Auftritte über die Jahre mit Ausgang und Sternen. Aktion: „als Kandidat für
-⟨Konferenz⟩ merken".
+Sprache, Zielgruppe, Wahl und Historie. Aktion: „als Kandidat für ⟨Konferenz⟩ merken".
+
+Die Karte beantwortet **eine** Frage: Wer passt hier? Deshalb steht darauf nur, was
+diese Frage beantwortet — Name, Ort, Rolle, die Themen mit ihrer Wahl, der Honorarrahmen
+und die Historie.
+
+Die **Historie** zeigt, was läuft, und zählt, was war:
+
+```
+ADG Forum Assistenz 2027              angefragt
+Assistenz Summit 2026               geantwortet
+1 früher · ★★☆☆☆
+```
+
+Bei einer laufenden Konferenz will man den Funnel-Status wissen — da steht etwas offen,
+man wartet auf Antwort. Bei einer gelaufenen ist er immer derselbe und sagt nichts mehr;
+dort interessiert die Bewertung. Ohne diese Trennung wüchse die Karte mit jedem Jahr, in
+dem jemand wieder gebucht wird, und zwei Speaker nebeneinander wären verschieden hoch.
+So wächst sie nur mit dem, was **offen** ist, und das sind selten mehr als zwei oder drei
+Konferenzen gleichzeitig.
+
+Die Grenze zieht der **Konferenzstatus** (`gelaufen`, `abgesagt`), nicht das Datum: Er
+wird ohnehin gepflegt und ist die verbindliche Aussage darüber, ob etwas vorbei ist. Eine
+Konferenz ohne Status gilt als laufend — stillschweigend ins Archiv zu schieben, was man
+nicht weiß, wäre die falsche Richtung. Der Mittelwert rechnet nur die bewerteten.
+
+Ein Klick auf „1 früher" **klappt auf**, womit jemand wo war:
+
+```
+▾ 3 früher · ★★★★☆
+   Assistenz Summit 2025    Vertraulichkeit als Handwerk    ★★★★★
+   Office Day 2024          Kalender-Triage                 ★★★☆☆
+   Assistenz Summit 2023    ohne Thema
+```
+
+Das ist der eigentliche Grund, warum der Katalog über die Jahre geht: **Man bucht
+niemanden zweimal mit demselben Thema.** Die Titel kommen aus den Beitragsnotizen der
+jeweiligen Konferenz; wer damals ohne Thema geführt wurde, steht auch so da. Aufgeklappt
+bleibt es, bis man es wieder zuklappt — auch über das Filtern hinweg, aber nicht über
+einen Neustart.
+
+**Was der Filter beantwortet, wiederholt die Karte nicht.** Format, Sprache und
+Zielgruppe stehen deshalb nur in der Filterleiste: Ist gefiltert, tragen alle sichtbaren
+Karten dasselbe und sagen nichts; ist es nicht gefiltert, fragt gerade niemand danach.
+Aus demselben Grund ist die Vorschau der Notizen entfallen — sie war die längste Zeile
+und machte jede Karte unterschiedlich hoch, und ein Katalog wird überflogen. Gesucht
+wird weiterhin **auch** im Notiztext; man findet also jemanden über ein Detail, das man
+nicht sehen will.
 
 **Statustafel** — je Konferenz. Kandidaten als Karten im Funnel, per Drag & Drop
 zwischen den Spalten. Zeigt je Karte die Beiträge und den Checklisten-Fortschritt.

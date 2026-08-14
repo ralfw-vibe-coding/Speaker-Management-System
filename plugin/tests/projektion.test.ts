@@ -7,6 +7,7 @@ import {
 	frueherGehalten,
 	hatRolle,
 	heimatlos,
+	historienbild,
 	parallelStehende,
 	plaetzeEinesBlocks,
 	plaetzeEinesSlots,
@@ -392,5 +393,58 @@ describe("Rollen", () => {
 
 	it("wer keine Rolle hat, wird als Kandidat erwartet", () => {
 		assert.equal(erwartetBeitrag(engagement()), true);
+	});
+});
+
+describe("historienbild", () => {
+	const laufend = (jahr: string, status = "angefragt") => ({
+		konferenz: `Konferenz ${jahr}`,
+		datum: `${jahr}-11-04`,
+		status,
+		konferenzstatus: "planung",
+		themen: [],
+		bewertung: undefined,
+	});
+	const vorbei = (jahr: string, bewertung?: number) => ({
+		konferenz: `Konferenz ${jahr}`,
+		datum: `${jahr}-11-04`,
+		status: "bezahlt",
+		konferenzstatus: "gelaufen",
+		themen: [],
+		bewertung,
+	});
+
+	it("trennt, was läuft, von dem, was war", () => {
+		const bild = historienbild([laufend("2027"), laufend("2026"), vorbei("2025", 2)]);
+		assert.equal(bild.laufend.length, 2);
+		assert.equal(bild.frueher.length, 1);
+	});
+
+	it("eine abgesagte Konferenz ist auch vorbei", () => {
+		const abgesagt = { ...vorbei("2024"), konferenzstatus: "abgesagt" };
+		assert.equal(historienbild([abgesagt]).frueher.length, 1);
+	});
+
+	it("ohne Konferenzstatus gilt eine Konferenz als laufend — nicht stillschweigend als Archiv", () => {
+		const ohne = { konferenz: "Irgendwas", status: "gemerkt", themen: [], bewertung: undefined };
+		assert.equal(historienbild([ohne]).laufend.length, 1);
+		assert.equal(historienbild([ohne]).frueher.length, 0);
+	});
+
+	it("mittelt die Noten der früheren", () => {
+		assert.equal(historienbild([vorbei("2024", 4), vorbei("2025", 5)]).schnitt, 4.5);
+	});
+
+	it("mittelt nur die bewerteten — eine fehlende Note ist keine null", () => {
+		assert.equal(historienbild([vorbei("2024", 5), vorbei("2025")]).schnitt, 5);
+	});
+
+	it("ohne jede Bewertung bleibt der Schnitt unbekannt", () => {
+		assert.equal(historienbild([vorbei("2025")]).schnitt, undefined);
+	});
+
+	it("eine Note an einer laufenden Konferenz zieht den Schnitt der früheren nicht", () => {
+		const bewertetLaufend = { ...laufend("2026"), bewertung: 1 };
+		assert.equal(historienbild([bewertetLaufend, vorbei("2025", 5)]).schnitt, 5);
 	});
 });

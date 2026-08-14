@@ -1,4 +1,4 @@
-import { ZUGESAGT_UND_WEITER, type Beitrag, type Block, type Engagement, type Konferenz, type Tag } from "./modell";
+import { ZUGESAGT_UND_WEITER, type Auftritt, type Beitrag, type Block, type Engagement, type Konferenz, type Tag } from "./modell";
 
 /**
  * Die Regeln, nach denen die Sichten rechnen — ohne Obsidian und ohne DOM,
@@ -17,6 +17,47 @@ export function slotZustand(
 	if (!beitrag.titel || beitrag.speaker.length === 0) return "halb";
 	if (engagement && ZUGESAGT_UND_WEITER.includes(engagement.status)) return "gruen";
 	return "verdacht";
+}
+
+/** Die Historie eines Speakers, geteilt in das, was läuft, und das, was war. */
+export interface Historienbild {
+	/** Konferenzen, an denen noch etwas offen ist — einzeln zu zeigen. */
+	laufend: Auftritt[];
+	/** Abgeschlossene Konferenzen — nur zu zählen. */
+	frueher: Auftritt[];
+	/** Mittel über die **bewerteten** früheren — unbewertete zählen nicht als null. */
+	schnitt?: number;
+}
+
+/**
+ * Teilt die Auftritte eines Speakers in laufende und frühere.
+ *
+ * Bei einer laufenden Konferenz will man den Funnel-Status wissen: Da steht
+ * etwas offen, man wartet auf Antwort. Bei einer gelaufenen ist er immer
+ * derselbe und sagt nichts mehr — dort interessiert die Bewertung. Deshalb
+ * stehen die einen einzeln und werden die anderen gezählt; sonst wüchse die
+ * Karte mit jedem Jahr, in dem jemand wieder gebucht wird.
+ *
+ * Die Grenze zieht der **Konferenzstatus**, nicht das Datum: Er wird ohnehin
+ * gepflegt und ist die verbindliche Aussage darüber, ob etwas vorbei ist.
+ */
+export function historienbild(auftritte: Auftritt[]): Historienbild {
+	const vorbei = (auftritt: Auftritt) =>
+		auftritt.konferenzstatus === "gelaufen" || auftritt.konferenzstatus === "abgesagt";
+
+	const frueher = auftritte.filter(vorbei);
+
+	// Ein fehlender Wert ist hier „unbekannt", nicht null: Wer nie bewertet
+	// wurde, zöge einen Schnitt sonst nach unten, ohne dass etwas passiert ist.
+	const noten = frueher
+		.map((auftritt) => auftritt.bewertung)
+		.filter((note): note is number => note !== undefined);
+
+	return {
+		laufend: auftritte.filter((auftritt) => !vorbei(auftritt)),
+		frueher,
+		schnitt: noten.length > 0 ? noten.reduce((a, b) => a + b, 0) / noten.length : undefined,
+	};
 }
 
 /**

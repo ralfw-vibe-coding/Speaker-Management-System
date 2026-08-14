@@ -1,13 +1,14 @@
 ---
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
-speaker: []
-titel: "Automatisierung der Reiseplanung"
+speaker:
+  - "[[Sabine Sonders]]"
+titel: Automatisierung der Reiseplanung
 format: vortrag
-block: b5
-track: t2
 dauer:
 max_teilnehmer:
+block: b5
+track: t2
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

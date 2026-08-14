@@ -1,15 +1,109 @@
+/*
+ * ------------------------------------------------------------- Die Palette
+ *
+ * Fünf Farben, an einer Stelle. Vier davon gehören je einem Bereich — sie
+ * unterscheiden sich im *Farbton*, nicht in der Helligkeit, und sind deshalb
+ * auseinanderzuhalten. Die fünfte ist Vintage Lavender abgedunkelt: das
+ * Einzige, worauf weiße Schrift sicher sitzt (9,05:1). Auf allen anderen ist
+ * der Text dunkel, deshalb steht er hier als eigener Wert und wird nicht dem
+ * Theme überlassen.
+ *
+ * Nicht angefasst werden die **Signalfarben**: Grün für erledigt, Rot für
+ * heimatlos, das Rosa der gestrichenen Spalte, die Ampel der Slots. Die sagen
+ * etwas und dürfen nicht zur Deko werden.
+ */
+.sms-view {
+	--sms-lavendel: #966B9D;
+	--sms-rose: #C98686;
+	--sms-caramel: #F2B880;
+	--sms-petal: #E7CFBC;
+	--sms-tief: #5E3F65;
+
+	/*
+	 * Die Flächen tragen die Farben voll — nur Lavendel um ein Zehntel
+	 * aufgehellt, damit auch kleiner dunkler Text darauf 4,96:1 erreicht.
+	 * Ungemischt käme er auf 4,15:1 und wäre für die Unterzeilen zu knapp.
+	 */
+	--sms-lavendel-flaeche: #A07AA7;
+	--sms-rose-flaeche: #C98686;
+	--sms-caramel-flaeche: #F2B880;
+	--sms-petal-flaeche: #E7CFBC;
+
+	/* Für große ruhige Flächen, hinter denen viel steht: Spalten, Pool, Raster. */
+	--sms-lavendel-zart: #F3EDF4;
+	--sms-rose-zart: #F9EEEE;
+	--sms-caramel-zart: #FDF2E6;
+	--sms-petal-zart: #FAF2EC;
+
+	/*
+	 * Die Neutralen. Obsidians eigene sind **kühl** — `background-secondary` ist
+	 * ein bläuliches #f2f3f5 —, und eine warme Palette darauf wirkt trüb statt
+	 * satt. Deshalb bekommt der View seine eigenen, aus derselben Familie: ein
+	 * Beige, das die Farben trägt statt gegen sie zu arbeiten.
+	 */
+	--sms-rand: #E6DAD2;
+	--sms-grund: #FAF6F3;
+	--sms-grund-tief: #F3ECE6;
+
+	/* Text auf einer Palettenfläche. Sehr dunkel, weil keine der vier Weiß trägt. */
+	--sms-auf-farbe: #1C1520;
+
+	/*
+	 * Das Grün ist ein **Signal** — „erledigt", „zugesagt", ein gefüllter Slot —
+	 * und bleibt deshalb erkennbar grün. Nur der Ton ist an die Palette
+	 * angeglichen: entsättigtes Salbei statt des kräftigen Themegrüns. Zwei
+	 * Werte, weil eine pastellige Fläche keine Schrift tragen kann: `flaeche`
+	 * mit 9,10:1 für dunklen Text, `schrift` mit 5,37:1 auf hellem Grund.
+	 */
+	--sms-gruen-flaeche: #A8C0A0;
+	--sms-gruen-schrift: #52734B;
+
+	/* Der Bereich, in dem man gerade ist. Wird je Reiter überschrieben. */
+	--sms-bereich: var(--sms-lavendel);
+	--sms-bereich-flaeche: var(--sms-lavendel-flaeche);
+	--sms-bereich-zart: var(--sms-lavendel-zart);
+}
+
+.sms-bereich-konferenzen {
+	--sms-bereich: var(--sms-lavendel);
+	--sms-bereich-flaeche: var(--sms-lavendel-flaeche);
+	--sms-bereich-zart: var(--sms-lavendel-zart);
+}
+
+.sms-bereich-katalog {
+	--sms-bereich: var(--sms-rose);
+	--sms-bereich-flaeche: var(--sms-rose-flaeche);
+	--sms-bereich-zart: var(--sms-rose-zart);
+}
+
+.sms-bereich-statustafel {
+	--sms-bereich: var(--sms-caramel);
+	--sms-bereich-flaeche: var(--sms-caramel-flaeche);
+	--sms-bereich-zart: var(--sms-caramel-zart);
+}
+
+.sms-bereich-agenda {
+	--sms-bereich: var(--sms-petal);
+	--sms-bereich-flaeche: var(--sms-petal-flaeche);
+	--sms-bereich-zart: var(--sms-petal-zart);
+}
+
 .sms-view {
 	padding: 0;
 	overflow: auto;
 }
 
+/*
+ * Die Kopfleiste liegt auf dem warmen Grund, nicht auf Weiß — sonst schweben
+ * die Reiter im Nichts und ihre Farben verlieren den Halt.
+ */
 .sms-kopf {
 	position: sticky;
 	top: 0;
 	z-index: 1;
 	padding: 16px 20px 0;
-	background: var(--background-primary);
-	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--sms-grund);
+	border-bottom: 1px solid var(--sms-rand);
 }
 
 .sms-titelzeile {
@@ -36,8 +130,13 @@
 	gap: 8px;
 }
 
+/*
+ * Zwei Aussagen, zwei Mittel: Der Streifen oben sagt, **welcher** Bereich das
+ * ist — auch bei den inaktiven. Die gefüllte Fläche sagt, **wo man ist**.
+ */
 .sms-reiter-knopf {
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
+	border-top: 4px solid var(--sms-bereich);
 	background: var(--background-primary);
 	border-radius: 8px 8px 0 0;
 	border-bottom: none;
@@ -46,9 +145,16 @@
 	color: var(--text-muted);
 }
 
+.sms-reiter-knopf:hover {
+	background: var(--sms-bereich-zart);
+	color: var(--sms-auf-farbe);
+}
+
 .sms-reiter-knopf.is-active {
-	background: var(--background-modifier-hover);
-	color: var(--text-accent);
+	background: var(--sms-bereich);
+	border-color: var(--sms-bereich);
+	border-top-color: var(--sms-tief);
+	color: var(--sms-auf-farbe);
 	font-weight: 600;
 }
 
@@ -104,7 +210,7 @@
 	padding: 2px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
 	background: var(--background-primary);
 	color: var(--text-muted);
 	cursor: pointer;
@@ -112,9 +218,10 @@
 }
 
 .sms-chip.is-aktiv {
-	background: var(--interactive-accent);
-	border-color: var(--interactive-accent);
-	color: var(--text-on-accent);
+	background: var(--sms-bereich);
+	border-color: var(--sms-bereich);
+	color: var(--sms-auf-farbe);
+	font-weight: 600;
 }
 
 .sms-karten {
@@ -124,7 +231,7 @@
 }
 
 .sms-karte {
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
 	border-radius: 10px;
 	padding: 12px 14px;
 	cursor: pointer;
@@ -132,7 +239,7 @@
 }
 
 .sms-karte:hover {
-	background: var(--background-modifier-hover);
+	background: var(--sms-grund-tief);
 }
 
 .sms-karte-kopf {
@@ -170,15 +277,15 @@
 	padding: 2px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
-	border: 1px solid var(--background-modifier-border-hover);
-	background: var(--background-secondary);
+	border: 1px solid var(--sms-rand);
+	background: var(--sms-grund);
 	color: var(--text-normal);
 	cursor: pointer;
 }
 
 .sms-thema:hover {
-	border-color: var(--interactive-accent);
-	color: var(--text-accent);
+	border-color: var(--sms-tief);
+	color: var(--sms-tief);
 }
 
 .sms-wahl {
@@ -186,23 +293,28 @@
 	font-size: 0.9em;
 }
 
-/* Erste Wahl sticht hervor, dritte tritt zurück. */
+/*
+ * Erste Wahl sticht hervor, dritte tritt zurück. Aus der Palette und nicht mehr
+ * aus Grün und Gelb: Das waren Signalfarben für etwas anderes — Grün heißt hier
+ * sonst „erledigt".
+ */
 .sms-thema.sms-wahl-1 {
-	background: var(--color-green);
-	border-color: var(--color-green);
-	color: var(--text-on-accent);
+	background: var(--sms-lavendel);
+	border-color: var(--sms-lavendel);
+	color: var(--sms-auf-farbe);
+	font-weight: 600;
 }
 
 .sms-thema.sms-wahl-2 {
-	background: var(--color-yellow);
-	border-color: var(--color-yellow);
-	color: var(--text-on-accent);
+	background: var(--sms-rose);
+	border-color: var(--sms-rose);
+	color: var(--sms-auf-farbe);
 }
 
 .sms-thema.sms-wahl-3 {
-	background: var(--background-modifier-border);
-	border-color: var(--background-modifier-border);
-	color: var(--text-faint);
+	background: var(--sms-petal);
+	border-color: var(--sms-petal);
+	color: var(--sms-auf-farbe);
 }
 
 .sms-thema.sms-warnung {
@@ -218,15 +330,56 @@
 	font-size: 0.82em;
 }
 
-.sms-notiz {
-	margin-top: 8px;
-	color: var(--text-faint);
-	font-size: 0.82em;
-	font-style: italic;
-}
-
 .sms-merken {
 	margin-top: 8px;
+}
+
+/*
+ * Die Beitragszahl ist ein Schalter: Ein Klick zeigt, womit jemand kommt.
+ * Die Liste bricht in der Flex-Zeile auf volle Breite um, statt neben Honorar
+ * und Reisekosten zu drängeln.
+ */
+.sms-beitragszahl {
+	cursor: pointer;
+}
+
+.sms-beitragszahl:hover {
+	color: var(--sms-tief);
+}
+
+.sms-beitragsliste {
+	flex-basis: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-top: 3px;
+}
+
+.sms-beitragszeile {
+	display: flex;
+	gap: 5px;
+	font-style: italic;
+	color: var(--text-normal);
+	cursor: pointer;
+}
+
+/* Die Nummer bleibt stehen, wenn der Titel umbricht — dafür der feste Platz. */
+.sms-beitragsnummer {
+	flex: none;
+	min-width: 14px;
+	font-style: normal;
+	color: var(--text-faint);
+}
+
+.sms-beitragszeile:hover {
+	color: var(--sms-tief);
+	text-decoration: underline;
+}
+
+/* Ein Beitrag ohne Titel ist kein Titel — er sieht auch nicht so aus. */
+.sms-beitragszeile.is-ohne-thema {
+	font-style: normal;
+	color: var(--text-faint);
 }
 
 /* ------------------------------------------------------- Konferenzübersicht */
@@ -266,7 +419,7 @@
 	gap: 8px;
 	margin-top: 12px;
 	padding-top: 10px;
-	border-top: 1px solid var(--background-modifier-border);
+	border-top: 1px solid var(--sms-rand);
 }
 
 .sms-statustitel {
@@ -279,7 +432,7 @@
 	padding: 4px 26px 4px 10px;
 	font-size: 0.8em;
 	border-radius: 6px;
-	border: 1px solid var(--background-modifier-border-hover);
+	border: 1px solid var(--sms-rand);
 	cursor: pointer;
 }
 
@@ -289,7 +442,7 @@
 }
 
 .sms-status-idee {
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 }
 
 .sms-status-planung {
@@ -298,12 +451,12 @@
 }
 
 .sms-status-programm-steht {
-	background: var(--color-green);
-	color: var(--text-on-accent);
+	background: var(--sms-gruen-flaeche);
+	color: var(--sms-auf-farbe);
 }
 
 .sms-status-gelaufen {
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 	color: var(--text-muted);
 }
 
@@ -315,10 +468,90 @@
 .sms-historie {
 	margin-top: 10px;
 	padding-top: 8px;
-	border-top: 1px solid var(--background-modifier-border);
+	border-top: 1px solid var(--sms-rand);
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
+}
+
+/*
+ * Ein Kandidat, der eine Rolle trägt: ziehbar wie die anderen, aber kein
+ * Rückstand — er wartet auf keinen Slot, er kann nur zusätzlich einen füllen.
+ */
+.sms-kandidat.is-rolle {
+	opacity: 0.75;
+}
+
+.sms-abzeichen-rolle {
+	background: var(--sms-tief);
+	color: #fff;
+}
+
+/* Die abgeschlossenen Konferenzen, gezählt statt aufgezählt — ein Klick zeigt sie. */
+.sms-frueher {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	font-size: 0.8em;
+	color: var(--text-faint);
+	cursor: pointer;
+}
+
+.sms-frueher:hover {
+	color: var(--text-accent);
+}
+
+.sms-pfeil {
+	font-size: 0.9em;
+}
+
+.sms-frueher-eintrag {
+	padding: 2px 0 2px 14px;
+	font-size: 0.8em;
+	color: var(--text-muted);
+}
+
+.sms-frueher-kopf {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+/* Im aufgeklappten Bereich führt jede Zeile woandershin — und keine zum Speaker. */
+.sms-auftritt-name.is-anklickbar {
+	cursor: pointer;
+}
+
+.sms-auftritt-name.is-anklickbar:hover {
+	color: var(--text-accent);
+}
+
+/*
+ * Womit jemand da war — der eigentliche Grund, warum der Katalog über Jahre
+ * geht. Deshalb eine eigene Zeile mit Umbruch: Abgeschnitten wäre genau die
+ * Angabe verstümmelt, wegen der man aufklappt.
+ */
+.sms-frueher-thema {
+	font-style: italic;
+	color: var(--text-normal);
+	cursor: pointer;
+}
+
+.sms-frueher-thema:hover {
+	color: var(--text-accent);
+	text-decoration: underline;
+}
+
+.sms-frueher-thema.is-leer {
+	font-style: normal;
+	color: var(--text-faint);
+	cursor: default;
+}
+
+.sms-frueher-thema.is-leer:hover {
+	color: var(--text-faint);
+	text-decoration: none;
 }
 
 .sms-auftritt {
@@ -343,7 +576,7 @@
 .sms-status-zugesagt,
 .sms-status-rechnung,
 .sms-status-bezahlt {
-	color: var(--color-green);
+	color: var(--sms-gruen-schrift);
 }
 
 .sms-status-verhandlung,
@@ -363,6 +596,16 @@
 
 .sms-leer {
 	color: var(--text-muted);
+}
+
+/* Weiße Schrift: geht nur auf der tiefen Farbe (9,05:1). */
+.sms-anlegen.mod-cta {
+	background: var(--sms-tief);
+	color: #fff;
+}
+
+.sms-anlegen.mod-cta:hover {
+	background: #4C3352;
 }
 
 .sms-anlegen {
@@ -415,7 +658,7 @@
 .sms-konferenzwahl:hover,
 .sms-konferenzwahl:focus {
 	border-color: var(--color-pink, #d33c8f);
-	box-shadow: 0 0 0 2px var(--background-modifier-border);
+	box-shadow: 0 0 0 2px var(--sms-rand);
 }
 
 .sms-neue-konferenz {
@@ -429,6 +672,7 @@
 
 /* ------------------------------------------------------------- Statustafel */
 
+/* Der Kopf nimmt die Farbe des Bereichs auf, in dem man gerade steht. */
 .sms-tafel-kopf {
 	display: flex;
 	align-items: flex-start;
@@ -436,6 +680,35 @@
 	flex-wrap: wrap;
 	gap: 12px;
 	margin-bottom: 16px;
+	padding: 12px 16px;
+	border-radius: 8px;
+	background: var(--sms-bereich-flaeche);
+	color: var(--sms-auf-farbe);
+}
+
+/*
+ * Auf der hellen Palettenfläche stimmt das Grau des Themes nicht mehr — und
+ * die neutrale Marke ginge im Hintergrund unter, weil sie dieselbe Helligkeit
+ * hat. Beide bekommen deshalb hier eigene Werte.
+ */
+.sms-tafel-kopf .sms-konferenz-zeile,
+.sms-tafel-kopf .sms-kennzahlen {
+	color: var(--sms-auf-farbe);
+	opacity: 0.8;
+}
+
+.sms-tafel-kopf .sms-marke {
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	color: #6E6169;
+}
+
+/* Dieselbe Fläche über den Karten der Übersicht und des Katalogs. */
+.sms-abschnittskopf {
+	padding: 7px 14px;
+	border-radius: 6px;
+	background: var(--sms-bereich-flaeche);
+	color: var(--sms-auf-farbe);
 }
 
 .sms-konferenz {
@@ -463,17 +736,17 @@
 	padding: 2px 10px;
 	font-size: 0.78em;
 	border-radius: 999px;
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 	color: var(--text-muted);
 }
 
 .sms-marke-gruen {
 	background: var(--background-modifier-success);
-	color: var(--color-green);
+	color: var(--sms-gruen-schrift);
 }
 
 .sms-marke-archiv {
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 	color: var(--text-normal);
 	font-weight: 600;
 }
@@ -491,7 +764,7 @@
 }
 
 .sms-spalte {
-	background: var(--background-secondary);
+	background: var(--sms-grund);
 	border-radius: 10px;
 	padding: 10px;
 	min-height: 160px;
@@ -537,7 +810,7 @@
 .sms-punkt-zugesagt,
 .sms-punkt-rechnung,
 .sms-punkt-bezahlt {
-	background: var(--color-green);
+	background: var(--sms-gruen-flaeche);
 }
 
 .sms-punkt-angefragt,
@@ -551,7 +824,7 @@
 }
 
 .sms-tafel-karte.is-vollstaendig {
-	border-color: var(--color-green);
+	border-color: var(--sms-gruen-flaeche);
 }
 
 .sms-tafel-karte {
@@ -563,14 +836,14 @@
 }
 
 .sms-spalte.is-ziel {
-	outline: 2px dashed var(--interactive-accent);
+	outline: 2px dashed var(--sms-tief);
 	outline-offset: -2px;
 }
 
 .sms-einfuegemarke {
 	height: 3px;
 	border-radius: 2px;
-	background: var(--interactive-accent);
+	background: var(--sms-tief);
 	margin: -3px 0;
 }
 
@@ -593,7 +866,7 @@
 	font-size: 0.75em;
 	line-height: 1.5;
 	border-radius: 6px;
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
 	background: var(--background-primary);
 	color: var(--text-muted);
 	cursor: pointer;
@@ -642,7 +915,7 @@
 	flex-direction: column;
 	padding: 6px 10px;
 	border-radius: 8px;
-	background: var(--background-secondary);
+	background: var(--sms-grund);
 }
 
 .sms-trackname {
@@ -673,7 +946,7 @@
 }
 
 .sms-fixblock {
-	background: var(--background-secondary);
+	background: var(--sms-grund);
 	border-radius: 6px;
 	padding: 5px 10px;
 	color: var(--text-muted);
@@ -686,8 +959,8 @@
 	font-size: 0.72em;
 	color: var(--text-faint);
 	text-align: center;
-	border-top: 1px dashed var(--background-modifier-border);
-	border-bottom: 1px dashed var(--background-modifier-border);
+	border-top: 1px dashed var(--sms-rand);
+	border-bottom: 1px dashed var(--sms-rand);
 }
 
 .sms-zwischenraum.sms-ueberschneidung {
@@ -697,7 +970,7 @@
 }
 
 .sms-slot {
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
 	border-left-width: 3px;
 	border-radius: 8px;
 	padding: 8px 10px;
@@ -710,7 +983,7 @@
 }
 
 .sms-slot-leer {
-	border: 1px dashed var(--background-modifier-border);
+	border: 1px dashed var(--sms-rand);
 	color: var(--text-faint);
 	font-size: 0.8em;
 	display: flex;
@@ -721,7 +994,7 @@
 
 /* Grün erst, wenn gefüllt und zugesagt; orange, wenn auf Verdacht platziert. */
 .sms-slot-gruen {
-	border-color: var(--color-green);
+	border-color: var(--sms-gruen-flaeche);
 	background: var(--background-modifier-success);
 }
 
@@ -761,15 +1034,15 @@
 	padding: 1px 7px;
 	border-radius: 999px;
 	font-size: 0.72em;
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 	color: var(--text-muted);
 }
 
 .sms-abzeichen-zugesagt,
 .sms-abzeichen-rechnung,
 .sms-abzeichen-bezahlt {
-	background: var(--color-green);
-	color: var(--text-on-accent);
+	background: var(--sms-gruen-flaeche);
+	color: var(--sms-auf-farbe);
 }
 
 .sms-abzeichen-angefragt,
@@ -793,7 +1066,7 @@
 .sms-pool {
 	width: 300px;
 	flex: none;
-	background: var(--background-secondary);
+	background: var(--sms-grund);
 	border-radius: 10px;
 	padding: 10px;
 	display: flex;
@@ -817,7 +1090,7 @@
 }
 
 .sms-kandidat:hover {
-	background: var(--background-modifier-hover);
+	background: var(--sms-grund-tief);
 }
 
 .is-ziehbar {
@@ -831,7 +1104,7 @@
 .sms-frueher {
 	margin-top: 8px;
 	padding-top: 6px;
-	border-top: 1px dashed var(--background-modifier-border);
+	border-top: 1px dashed var(--sms-rand);
 	font-size: 0.75em;
 }
 
@@ -858,7 +1131,7 @@
 
 .sms-slot.is-ziel,
 .sms-pool.is-ziel {
-	outline: 2px dashed var(--interactive-accent);
+	outline: 2px dashed var(--sms-tief);
 	outline-offset: -2px;
 }
 
@@ -869,14 +1142,14 @@
 .sms-balken {
 	height: 5px;
 	border-radius: 3px;
-	background: var(--background-modifier-border);
+	background: var(--sms-rand);
 	margin: 8px 0 4px;
 	overflow: hidden;
 }
 
 .sms-balken-fuellung {
 	height: 100%;
-	background: var(--color-green);
+	background: var(--sms-gruen-flaeche);
 }
 
 .sms-balken-text {
@@ -897,7 +1170,7 @@
 }
 
 .sms-hinweis-gruen {
-	color: var(--color-green);
+	color: var(--sms-gruen-schrift);
 }
 
 .sms-hinweis-rot {
@@ -927,7 +1200,7 @@
 	flex: none;
 	border-radius: 50%;
 	object-fit: cover;
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--sms-rand);
 }
 
 /* Die Bio ist das, was nach außen darf — im Gegensatz zu den Notizen. */
@@ -940,12 +1213,12 @@
 /* Beträge auf der Statustafel-Karte lassen sich anklicken und ändern. */
 .sms-betrag {
 	cursor: text;
-	border-bottom: 1px dashed var(--background-modifier-border-hover);
+	border-bottom: 1px dashed var(--sms-rand);
 }
 
 .sms-betrag:hover {
 	color: var(--text-normal);
-	border-bottom-color: var(--interactive-accent);
+	border-bottom-color: var(--sms-tief);
 }
 
 .sms-betrag.is-offen {
@@ -984,7 +1257,7 @@
 	padding: 1px 8px;
 	font-size: 0.75em;
 	border-radius: 999px;
-	border: 1px dashed var(--background-modifier-border);
+	border: 1px dashed var(--sms-rand);
 	color: var(--text-faint);
 	cursor: pointer;
 }
@@ -999,16 +1272,16 @@
 }
 
 .sms-rolle-chip:hover {
-	border-color: var(--interactive-accent);
-	color: var(--text-accent);
+	border-color: var(--sms-tief);
+	color: var(--sms-tief);
 }
 
 .sms-rolle-chip.is-an {
 	visibility: visible;
 	border-style: solid;
-	border-color: var(--interactive-accent);
-	background: var(--interactive-accent);
-	color: var(--text-on-accent);
+	border-color: var(--sms-tief);
+	background: var(--sms-tief);
+	color: #fff;
 }
 
 /*
@@ -1021,9 +1294,9 @@
 	gap: 10px;
 	margin: 0 0 8px;
 	padding: 6px 12px;
-	border-left: 3px solid var(--interactive-accent);
+	border-left: 3px solid var(--sms-tief);
 	border-radius: 4px;
-	background: var(--background-secondary);
+	background: var(--sms-bereich-zart);
 }
 
 .sms-moderation-titel {
@@ -1031,7 +1304,7 @@
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: var(--text-accent);
+	color: var(--sms-tief);
 }
 
 .sms-moderation-zusatz {
@@ -1077,9 +1350,9 @@
 .sms-nachtrag {
 	margin-bottom: 16px;
 	padding: 10px 14px;
-	border: 1px solid var(--background-modifier-border-hover);
+	border: 1px solid var(--sms-rand);
 	border-radius: 8px;
-	background: var(--background-secondary);
+	background: var(--sms-grund);
 	font-size: 0.85em;
 }
 
@@ -1090,4 +1363,15 @@
 
 .sms-nachtrag .sms-chip {
 	margin-top: 8px;
+}
+
+/*
+ * In einem dunklen Theme wären helles Beige und dunkler Text auf heller Fläche
+ * falsch herum. Dort gibt der View seine Neutralen an das Theme zurück; die vier
+ * Bereichsfarben bleiben, sie sind dann helle Inseln mit dunklem Text.
+ */
+body.theme-dark .sms-view {
+	--sms-rand: var(--background-modifier-border);
+	--sms-grund: var(--background-secondary);
+	--sms-grund-tief: var(--background-modifier-hover);
 }

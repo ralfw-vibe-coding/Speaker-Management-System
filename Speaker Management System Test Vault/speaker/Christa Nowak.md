@@ -4,15 +4,20 @@ rolle: Gremienbetreuung in einer Bank
 foto:
 email: nowak@example.com
 telefon: +49 69 555 4417
-themen: [board-reporting, karriere, gremienarbeit]
+themen:
+  - board-reporting
+  - karriere
+  - gremienarbeit
 zielgruppe:
   - vorstandsassistenz
   - erfahrene
 wahl:
-  board-reporting: 2
   karriere: 2
-formate: [vortrag, workshop]
-sprachen: [de]
+formate:
+  - vortrag
+  - workshop
+sprachen:
+  - de
 ort: Frankfurt
 honorarrahmen: 1200
 web:
