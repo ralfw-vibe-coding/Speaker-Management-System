@@ -5,6 +5,9 @@ email: rohleder@example.com
 telefon: +41 44 555 6612
 web: https://rohleder-beratung.example.com
 themen: [chief-of-staff, führung, macht-in-organisationen]
+zielgruppe:
+  - vorstandsassistenz
+  - führungskräfte
 wahl:
   chief-of-staff: 1
   macht-in-organisationen: 1

@@ -85,6 +85,8 @@ Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
 - Filter **Format**: 11 halten Vorträge, 6 machen Workshops, 3 Keynotes, 2 sitzen auf
   Panels, 1 moderiert
 - 10 Speaker haben einen `honorarrahmen`, 10 eine Telefonnummer, alle 13 eine `rolle`
+- Filter **Zielgruppe**: 7 für Vorstandsassistenz, 5 für Teamassistenz, 5 für
+  Führungskräfte, 5 für Erfahrene, je 3 für Office-Management und Einsteiger
 - Filter **Sprache**: 13 deutsch, 5 englisch, je einer polnisch und türkisch
 - Filter **Thema `ki`**: zwei Treffer — Sobotta als erste, Ostrowski als zweite Wahl
 - **Historie**: 5 Speaker haben einen Auftritt 2025, 4 davon mit Sternen

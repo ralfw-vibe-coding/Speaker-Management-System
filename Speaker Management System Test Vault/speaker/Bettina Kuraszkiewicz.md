@@ -4,6 +4,9 @@ rolle: Trainerin für Gesprächsführung
 email: b.kuraszkiewicz@example.com
 telefon: +43 1 555 2280
 themen: [gesprächsführung, konflikte, netzwerken]
+zielgruppe:
+  - vorstandsassistenz
+  - erfahrene
 wahl:
   gesprächsführung: 1
   konflikte: 1

@@ -82,6 +82,12 @@ export interface Speaker {
 	telefon?: string;
 	web?: string;
 	themen: string[];
+	/**
+	 * Für wen dieser Mensch passt: erfahrene Assistenzen, Einsteiger,
+	 * Führungskräfte. Eine Liste, damit sich danach filtern lässt — das Feld
+	 * heißt im Frontmatter `zielgruppe` und verträgt auch einen einzelnen Wert.
+	 */
+	zielgruppen: string[];
 	/** Themen, zu denen eine Wahl getroffen ist. Fehlt ein Thema, ist es nicht eingeschätzt. */
 	wahl: Map<string, number>;
 	formate: string[];

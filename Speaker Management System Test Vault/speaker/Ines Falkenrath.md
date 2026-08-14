@@ -6,6 +6,9 @@ themen:
   - new-work
   - führung
   - hybrides-arbeiten
+zielgruppe:
+  - teamassistenz
+  - office-management
 formate:
   - vortrag
 sprachen:

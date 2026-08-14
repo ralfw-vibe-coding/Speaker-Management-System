@@ -5,6 +5,10 @@ email: marek@lindqvist.example.com
 telefon: +49 40 555 7734
 web: https://lindqvist.example.com
 themen: [prozesse, automatisierung, kalender]
+zielgruppe:
+  - teamassistenz
+  - office-management
+  - einsteiger
 wahl:
   prozesse: 1
   kalender: 1

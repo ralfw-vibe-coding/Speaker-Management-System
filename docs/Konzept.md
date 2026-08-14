@@ -199,6 +199,7 @@ email: ralf@example.com
 telefon: +49 …
 web: https://…
 themen: [softwarearchitektur, clean-code, tdd]
+zielgruppe: [erfahrene, architekten]
 wahl:
   softwarearchitektur: 1
   tdd: 2
@@ -223,6 +224,12 @@ Führung dritte sein — eine einzelne Zahl am Menschen träfe das nicht. Deshal
 `wahl` die Themen einzeln; ein Thema, das dort fehlt, ist noch nicht eingeschätzt und
 gilt nicht als dritte Wahl. `themen` bleibt daneben die flache Liste, nach der gefiltert
 und gesucht wird.
+
+Die `zielgruppe` sagt, **für wen** dieser Mensch passt — erfahrene Assistenzen,
+Einsteiger, Führungskräfte. Sie ist eine Liste wie `themen`, damit im Katalog danach
+gefiltert werden kann; ein einzelner Wert wird ebenso gelesen. Wer nur beschreiben will,
+für wen jemand gut ist, schreibt das ins Profil: Das Feld ist zum Filtern da, nicht zum
+Erzählen.
 
 Die `rolle` ist ein Einzeiler, der die Frage „wer ist das?" beantwortet, ohne dass man
 die Notiz öffnet — im Katalog steht sie unter dem Namen. Alles Ausführlichere gehört

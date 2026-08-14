@@ -4,6 +4,9 @@ rolle: Kommunikationsberaterin
 email: se@ehrlich-kommunikation.example.com
 telefon: +49 221 555 8856
 themen: [aufmerksamkeit, resilienz, gatekeeping]
+zielgruppe:
+  - vorstandsassistenz
+  - teamassistenz
 wahl:
   aufmerksamkeit: 1
   gatekeeping: 1

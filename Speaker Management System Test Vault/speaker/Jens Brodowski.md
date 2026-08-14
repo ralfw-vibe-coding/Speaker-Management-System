@@ -4,6 +4,9 @@ rolle: Verhandlungstrainer
 email: brodowski@example.com
 telefon: +49 511 555 3390
 themen: [verhandlung, gehalt, selbstbehauptung]
+zielgruppe:
+  - erfahrene
+  - führungskräfte
 wahl:
   verhandlung: 3
   gehalt: 3

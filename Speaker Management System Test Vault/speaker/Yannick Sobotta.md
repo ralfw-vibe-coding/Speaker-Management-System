@@ -5,6 +5,10 @@ email: y.sobotta@example.com
 telefon: +49 30 555 2298
 web: https://sobotta-ki.example.com
 themen: [ki, prompting, werkzeuge]
+zielgruppe:
+  - vorstandsassistenz
+  - teamassistenz
+  - einsteiger
 wahl:
   ki: 1
   prompting: 1

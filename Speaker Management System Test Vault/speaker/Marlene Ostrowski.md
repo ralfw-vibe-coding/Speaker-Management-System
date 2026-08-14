@@ -5,6 +5,9 @@ email: m.ostrowski@example.com
 telefon: +49 421 555 1145
 web: https://assistenz-automatisieren.example.com
 themen: [automatisierung, werkzeuge, ki]
+zielgruppe:
+  - teamassistenz
+  - einsteiger
 wahl:
   werkzeuge: 1
   automatisierung: 1

@@ -76,6 +76,7 @@ Konferenzübergreifend, das Langzeitkapital. Dateiname ist der blanke Personenna
 | `type` | `speaker` | |
 | `rolle` | Text | Funktion oder Firma, erscheint auf der Katalogkarte |
 | `email`, `telefon`, `web` | Text | Kontakt |
+| `zielgruppe` | Liste | für wen der Mensch passt; im Katalog ein Filter |
 | `themen` | Liste Text | Freies Vokabular, keine feste Liste |
 | `wahl` | Zuordnung Thema → Zahl | Erste/zweite/dritte Wahl **je Thema** (1, 2, 3) |
 | `formate` | Liste | aus `keynote`, `vortrag`, `workshop`, `panel`, `moderation` |
@@ -91,6 +92,7 @@ Person. Themen ohne Eintrag sind schlicht nicht eingeschätzt.
 type: speaker
 rolle: Beraterin
 themen: [chief-of-staff, führung]
+zielgruppe: [vorstandsassistenz, führungskräfte]
 wahl:
   chief-of-staff: 1
   führung: 2

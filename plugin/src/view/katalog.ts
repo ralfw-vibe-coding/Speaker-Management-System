@@ -35,6 +35,7 @@ export class Speakerkatalog {
 	private suche = "";
 	private formate = new Set<string>();
 	private sprachen = new Set<string>();
+	private zielgruppen = new Set<string>();
 	private wahlstufen = new Set<number>();
 
 	/** Die Konferenz, für die gemerkt wird — dieselbe wie in den anderen Sichten. */
@@ -125,6 +126,7 @@ export class Speakerkatalog {
 				speaker.ort ?? "",
 				speaker.notiz ?? "",
 				...speaker.themen,
+				...speaker.zielgruppen,
 			]
 				.join(" ")
 				.toLowerCase();
@@ -134,6 +136,12 @@ export class Speakerkatalog {
 		// Mehrere Häkchen in einer Zeile sind ein Oder, zwischen den Zeilen ein Und.
 		if (this.formate.size > 0 && !speaker.formate.some((f) => this.formate.has(f))) return false;
 		if (this.sprachen.size > 0 && !speaker.sprachen.some((s) => this.sprachen.has(s))) return false;
+		if (
+			this.zielgruppen.size > 0 &&
+			!speaker.zielgruppen.some((z) => this.zielgruppen.has(z))
+		) {
+			return false;
+		}
 		if (this.wahlstufen.size > 0) {
 			const stufen = [...speaker.wahl.values()];
 			if (!stufen.some((stufe) => this.wahlstufen.has(stufe))) return false;
@@ -186,6 +194,15 @@ export class Speakerkatalog {
 			"Sprache",
 			sprachen.map((s) => ({ wert: s, titel: s })),
 			this.sprachen,
+			buehne,
+		);
+
+		const zielgruppen = [...new Set(alle.flatMap((e) => e.speaker.zielgruppen))].sort();
+		this.filterzeile(
+			filter,
+			"Zielgruppe",
+			zielgruppen.map((z) => ({ wert: z, titel: z })),
+			this.zielgruppen,
 			buehne,
 		);
 
@@ -313,6 +330,13 @@ export class Speakerkatalog {
 			for (const thema of speaker.wahl.keys()) {
 				if (speaker.themen.includes(thema)) continue;
 				themen.createSpan({ cls: "sms-thema sms-warnung", text: `⚠ ${thema} fehlt in themen` });
+			}
+		}
+
+		if (speaker.zielgruppen.length > 0) {
+			const fuer = karte.createDiv({ cls: "sms-themen" });
+			for (const zielgruppe of speaker.zielgruppen) {
+				fuer.createSpan({ cls: "sms-thema sms-zielgruppe", text: `für ${zielgruppe}` });
 			}
 		}
 

@@ -3,6 +3,9 @@ type: speaker
 rolle: Professorin für Organisationssoziologie
 email: warnke@uni-example.de
 themen: [organisationssoziologie, macht, informelle-strukturen]
+zielgruppe:
+  - führungskräfte
+  - erfahrene
 wahl:
   macht: 1
   organisationssoziologie: 1

@@ -54,6 +54,7 @@ export class Datenschreiber {
 			"telefon:",
 			"web:",
 			"themen: []",
+			"zielgruppe: []",
 			"formate: []",
 			"sprachen: []",
 			"ort:",

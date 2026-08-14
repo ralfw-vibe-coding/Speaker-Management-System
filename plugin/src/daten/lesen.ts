@@ -42,6 +42,7 @@ export class Datenzugriff {
 					telefon: text(fm.telefon),
 					web: text(fm.web),
 					themen: liste(fm.themen),
+					zielgruppen: liste(fm.zielgruppe),
 					wahl: zuordnung(fm.wahl),
 					formate: liste(fm.formate),
 					sprachen: liste(fm.sprachen),
