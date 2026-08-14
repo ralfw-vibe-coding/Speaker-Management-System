@@ -2,38 +2,40 @@
  * ------------------------------------------------------------- Die Palette
  *
  * Fünf Farben, an einer Stelle. Vier davon gehören je einem Bereich — sie
- * unterscheiden sich im *Farbton*, nicht in der Helligkeit, und sind deshalb
- * auseinanderzuhalten. Die fünfte ist Vintage Lavender abgedunkelt: das
- * Einzige, worauf weiße Schrift sicher sitzt (9,05:1). Auf allen anderen ist
- * der Text dunkel, deshalb steht er hier als eigener Wert und wird nicht dem
- * Theme überlassen.
+ * unterscheiden sich im *Farbton* und sind deshalb auseinanderzuhalten. Das
+ * Türkis ist kein Ausreißer, sondern Absicht: Eine Palette aus lauter warmen
+ * Tönen wird monoton, und der kühle Gegenpol hält die Agenda ausserdem von den
+ * warmen Warnfarben fern.
+ *
+ * Die fünfte Farbe ist eine tiefe Beere — das Einzige, worauf weiße Schrift
+ * sicher sitzt (7,39:1). Auf allen vier anderen ist der Text dunkel, deshalb
+ * steht er hier als eigener Wert und wird nicht dem Theme überlassen.
  *
  * Nicht angefasst werden die **Signalfarben**: Grün für erledigt, Rot für
  * heimatlos, das Rosa der gestrichenen Spalte, die Ampel der Slots. Die sagen
  * etwas und dürfen nicht zur Deko werden.
  */
 .sms-view {
-	--sms-lavendel: #966B9D;
-	--sms-rose: #C98686;
-	--sms-caramel: #F2B880;
-	--sms-petal: #E7CFBC;
-	--sms-tief: #5E3F65;
+	--sms-koralle: #E9765B;
+	--sms-honig: #F2B33D;
+	--sms-altrosa: #D98BA0;
+	--sms-tuerkis: #5AA6A0;
+	--sms-tief: #8C3A52;
 
 	/*
-	 * Die Flächen tragen die Farben voll — nur Lavendel um ein Zehntel
-	 * aufgehellt, damit auch kleiner dunkler Text darauf 4,96:1 erreicht.
-	 * Ungemischt käme er auf 4,15:1 und wäre für die Unterzeilen zu knapp.
+	 * Die Flächen tragen die Farben voll — jede von ihnen hält dunklen Text mit
+	 * über 6:1, deshalb muss hier keine aufgehellt werden.
 	 */
-	--sms-lavendel-flaeche: #A07AA7;
-	--sms-rose-flaeche: #C98686;
-	--sms-caramel-flaeche: #F2B880;
-	--sms-petal-flaeche: #E7CFBC;
+	--sms-koralle-flaeche: var(--sms-koralle);
+	--sms-honig-flaeche: var(--sms-honig);
+	--sms-altrosa-flaeche: var(--sms-altrosa);
+	--sms-tuerkis-flaeche: var(--sms-tuerkis);
 
 	/* Für große ruhige Flächen, hinter denen viel steht: Spalten, Pool, Raster. */
-	--sms-lavendel-zart: #F3EDF4;
-	--sms-rose-zart: #F9EEEE;
-	--sms-caramel-zart: #FDF2E6;
-	--sms-petal-zart: #FAF2EC;
+	--sms-koralle-zart: #FDEEEA;
+	--sms-honig-zart: #FEF5E4;
+	--sms-altrosa-zart: #FBEFF2;
+	--sms-tuerkis-zart: #E9F4F3;
 
 	/*
 	 * Die Neutralen. Obsidians eigene sind **kühl** — `background-secondary` ist
@@ -59,33 +61,33 @@
 	--sms-gruen-schrift: #52734B;
 
 	/* Der Bereich, in dem man gerade ist. Wird je Reiter überschrieben. */
-	--sms-bereich: var(--sms-lavendel);
-	--sms-bereich-flaeche: var(--sms-lavendel-flaeche);
-	--sms-bereich-zart: var(--sms-lavendel-zart);
+	--sms-bereich: var(--sms-koralle);
+	--sms-bereich-flaeche: var(--sms-koralle-flaeche);
+	--sms-bereich-zart: var(--sms-koralle-zart);
 }
 
 .sms-bereich-konferenzen {
-	--sms-bereich: var(--sms-lavendel);
-	--sms-bereich-flaeche: var(--sms-lavendel-flaeche);
-	--sms-bereich-zart: var(--sms-lavendel-zart);
+	--sms-bereich: var(--sms-koralle);
+	--sms-bereich-flaeche: var(--sms-koralle-flaeche);
+	--sms-bereich-zart: var(--sms-koralle-zart);
 }
 
 .sms-bereich-katalog {
-	--sms-bereich: var(--sms-rose);
-	--sms-bereich-flaeche: var(--sms-rose-flaeche);
-	--sms-bereich-zart: var(--sms-rose-zart);
+	--sms-bereich: var(--sms-honig);
+	--sms-bereich-flaeche: var(--sms-honig-flaeche);
+	--sms-bereich-zart: var(--sms-honig-zart);
 }
 
 .sms-bereich-statustafel {
-	--sms-bereich: var(--sms-caramel);
-	--sms-bereich-flaeche: var(--sms-caramel-flaeche);
-	--sms-bereich-zart: var(--sms-caramel-zart);
+	--sms-bereich: var(--sms-altrosa);
+	--sms-bereich-flaeche: var(--sms-altrosa-flaeche);
+	--sms-bereich-zart: var(--sms-altrosa-zart);
 }
 
 .sms-bereich-agenda {
-	--sms-bereich: var(--sms-petal);
-	--sms-bereich-flaeche: var(--sms-petal-flaeche);
-	--sms-bereich-zart: var(--sms-petal-zart);
+	--sms-bereich: var(--sms-tuerkis);
+	--sms-bereich-flaeche: var(--sms-tuerkis-flaeche);
+	--sms-bereich-zart: var(--sms-tuerkis-zart);
 }
 
 .sms-view {
@@ -299,21 +301,22 @@
  * sonst „erledigt".
  */
 .sms-thema.sms-wahl-1 {
-	background: var(--sms-lavendel);
-	border-color: var(--sms-lavendel);
+	background: var(--sms-koralle);
+	border-color: var(--sms-koralle);
 	color: var(--sms-auf-farbe);
 	font-weight: 600;
 }
 
 .sms-thema.sms-wahl-2 {
-	background: var(--sms-rose);
-	border-color: var(--sms-rose);
+	background: var(--sms-honig);
+	border-color: var(--sms-honig);
 	color: var(--sms-auf-farbe);
 }
 
+/* Die dritte Wahl tritt zurück: nur ein Rand, keine Fläche. */
 .sms-thema.sms-wahl-3 {
-	background: var(--sms-petal);
-	border-color: var(--sms-petal);
+	background: var(--sms-altrosa-zart);
+	border-color: var(--sms-altrosa);
 	color: var(--sms-auf-farbe);
 }
 
