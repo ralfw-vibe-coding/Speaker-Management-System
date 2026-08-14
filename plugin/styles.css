@@ -51,14 +51,24 @@
 	--sms-auf-farbe: #1C1520;
 
 	/*
-	 * Das Grün ist ein **Signal** — „erledigt", „zugesagt", ein gefüllter Slot —
-	 * und bleibt deshalb erkennbar grün. Nur der Ton ist an die Palette
-	 * angeglichen: entsättigtes Salbei statt des kräftigen Themegrüns. Zwei
-	 * Werte, weil eine pastellige Fläche keine Schrift tragen kann: `flaeche`
-	 * mit 9,10:1 für dunklen Text, `schrift` mit 5,37:1 auf hellem Grund.
+	 * **Zwei Grüns, weil es zwei verschiedene Aussagen sind.** Ein belegter Slot
+	 * ist der Normalfall in einer Agenda, die aufgeht — er kommt oft vor und
+	 * bekommt deshalb das ruhige Salbei; ein Raster voll Signalgrün wäre nicht
+	 * zu ertragen. „Zugesagt" und „erledigt" dagegen sind Meldungen, die
+	 * auffallen sollen, und bekommen ein kräftiges Grün (5,05:1 mit weisser
+	 * Schrift).
 	 */
-	--sms-gruen-flaeche: #A8C0A0;
-	--sms-gruen-schrift: #52734B;
+	--sms-salbei: #A8C0A0;
+	--sms-gruen: #2E7D4F;
+
+	/*
+	 * Die Wahl ist eine **Rangfolge**, kein Nebeneinander — deshalb eine Farbe in
+	 * drei Helligkeiten und nicht drei Farben. Aus der Beere-Familie und nicht
+	 * aus den Bereichsfarben: Ein Chip in Koralle sagte sonst „Konferenzen".
+	 */
+	--sms-wahl-1: #C4667F;
+	--sms-wahl-2: #E3AABA;
+	--sms-wahl-3: #F6E4E9;
 
 	/* Der Bereich, in dem man gerade ist. Wird je Reiter überschrieben. */
 	--sms-bereich: var(--sms-koralle);
@@ -300,23 +310,27 @@
  * aus Grün und Gelb: Das waren Signalfarben für etwas anderes — Grün heißt hier
  * sonst „erledigt".
  */
+/*
+ * Erste Wahl sticht hervor, dritte tritt zurück — eine Farbe in drei
+ * Helligkeiten, weil die Wahl eine Rangfolge ist. Nicht aus den
+ * Bereichsfarben: Ein Chip in Koralle sagte sonst „Konferenzen".
+ */
 .sms-thema.sms-wahl-1 {
-	background: var(--sms-koralle);
-	border-color: var(--sms-koralle);
+	background: var(--sms-wahl-1);
+	border-color: var(--sms-wahl-1);
 	color: var(--sms-auf-farbe);
 	font-weight: 600;
 }
 
 .sms-thema.sms-wahl-2 {
-	background: var(--sms-honig);
-	border-color: var(--sms-honig);
+	background: var(--sms-wahl-2);
+	border-color: var(--sms-wahl-2);
 	color: var(--sms-auf-farbe);
 }
 
-/* Die dritte Wahl tritt zurück: nur ein Rand, keine Fläche. */
 .sms-thema.sms-wahl-3 {
-	background: var(--sms-altrosa-zart);
-	border-color: var(--sms-altrosa);
+	background: var(--sms-wahl-3);
+	border-color: var(--sms-wahl-2);
 	color: var(--sms-auf-farbe);
 }
 
@@ -454,8 +468,8 @@
 }
 
 .sms-status-programm-steht {
-	background: var(--sms-gruen-flaeche);
-	color: var(--sms-auf-farbe);
+	background: var(--sms-gruen);
+	color: #fff;
 }
 
 .sms-status-gelaufen {
@@ -579,7 +593,7 @@
 .sms-status-zugesagt,
 .sms-status-rechnung,
 .sms-status-bezahlt {
-	color: var(--sms-gruen-schrift);
+	color: var(--sms-gruen);
 }
 
 .sms-status-verhandlung,
@@ -744,8 +758,8 @@
 }
 
 .sms-marke-gruen {
-	background: var(--background-modifier-success);
-	color: var(--sms-gruen-schrift);
+	background: #E4EFE7;
+	color: var(--sms-gruen);
 }
 
 .sms-marke-archiv {
@@ -813,7 +827,7 @@
 .sms-punkt-zugesagt,
 .sms-punkt-rechnung,
 .sms-punkt-bezahlt {
-	background: var(--sms-gruen-flaeche);
+	background: var(--sms-gruen);
 }
 
 .sms-punkt-angefragt,
@@ -827,7 +841,7 @@
 }
 
 .sms-tafel-karte.is-vollstaendig {
-	border-color: var(--sms-gruen-flaeche);
+	border-color: var(--sms-gruen);
 }
 
 .sms-tafel-karte {
@@ -995,10 +1009,17 @@
 	cursor: default;
 }
 
-/* Grün erst, wenn gefüllt und zugesagt; orange, wenn auf Verdacht platziert. */
+/*
+ * Der Reifegrad eines Slots: Salbei, wenn gefüllt und zugesagt; orange, wenn
+ * auf Verdacht platziert; blau, wenn erst halb.
+ *
+ * Salbei und nicht das Signalgrün, weil ein belegter Slot der Normalfall einer
+ * Agenda ist, die aufgeht — ein Raster voll Signalgrün wäre nicht zu ertragen,
+ * und was ständig dasteht, muss nicht rufen.
+ */
 .sms-slot-gruen {
-	border-color: var(--sms-gruen-flaeche);
-	background: var(--background-modifier-success);
+	border-color: var(--sms-salbei);
+	background: #F0F5EE;
 }
 
 .sms-slot-verdacht {
@@ -1044,8 +1065,8 @@
 .sms-abzeichen-zugesagt,
 .sms-abzeichen-rechnung,
 .sms-abzeichen-bezahlt {
-	background: var(--sms-gruen-flaeche);
-	color: var(--sms-auf-farbe);
+	background: var(--sms-gruen);
+	color: #fff;
 }
 
 .sms-abzeichen-angefragt,
@@ -1152,7 +1173,7 @@
 
 .sms-balken-fuellung {
 	height: 100%;
-	background: var(--sms-gruen-flaeche);
+	background: var(--sms-gruen);
 }
 
 .sms-balken-text {
@@ -1173,7 +1194,7 @@
 }
 
 .sms-hinweis-gruen {
-	color: var(--sms-gruen-schrift);
+	color: var(--sms-gruen);
 }
 
 .sms-hinweis-rot {
