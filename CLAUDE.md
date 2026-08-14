@@ -67,6 +67,22 @@ was Obsidian in seiner Plugin-Liste zeigt.
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
 auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
 
+## Veröffentlichen
+
+Ein Release entsteht durch einen Tag mit der blanken Version, ohne `v` davor:
+
+```bash
+git tag 0.10.0 && git push origin 0.10.0
+```
+
+`.github/workflows/release.yml` baut daraufhin, lässt die Tests laufen und hängt
+`main.js`, `manifest.json` und `styles.css` an ein GitHub-Release. Der Workflow bricht
+ab, wenn der Tag nicht genau der Version in `manifest.json` und `package.json`
+entspricht — Obsidian und BRAT finden ein Release sonst nicht.
+
+In anderen Vaults installiert man das Plugin über BRAT mit
+`ralfw-vibe-coding/Speaker-Management-System`.
+
 ## Tests
 
 Geprüft wird die **Fachlogik**, nicht die Oberfläche: `felder.ts`, `namen.ts`,

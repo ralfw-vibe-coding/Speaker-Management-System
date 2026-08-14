@@ -1,0 +1,65 @@
+name: Release
+
+# Springt auf einen Versions-Tag an, baut das Plugin und hängt die drei Dateien
+# an ein GitHub-Release, die Obsidian in einem Plugin-Ordner erwartet.
+#
+# Der Tag trägt die blanke Version ohne "v" davor — so erwartet es Obsidian,
+# und BRAT findet das Release nur, wenn der Tag genau der Version in
+# manifest.json entspricht.
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: plugin/package-lock.json
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      # Der Tag ist die eine Angabe, die von Hand kommt. Läuft er gegen
+      # manifest.json auseinander, installiert Obsidian das Release nicht —
+      # deshalb bricht der Lauf hier ab statt ein unbrauchbares Release zu bauen.
+      - name: Tag gegen manifest.json prüfen
+        run: |
+          MANIFEST=$(node -p "require('./manifest.json').version")
+          PAKET=$(node -p "require('./package.json').version")
+          if [ "$MANIFEST" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME, aber manifest.json sagt $MANIFEST." >&2
+            exit 1
+          fi
+          if [ "$PAKET" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME, aber package.json sagt $PAKET." >&2
+            exit 1
+          fi
+
+      - name: Tests
+        run: npm test
+
+      - name: Bauen
+        run: npm run build
+
+      - name: Release veröffentlichen
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            main.js manifest.json styles.css
