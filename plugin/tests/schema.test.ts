@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 import { geruest, namen, SCHEMATA, schemaFuer, SCHEMA_VERSION } from "../src/daten/schema";
-import { fehlendeAbschnitte, fehlendeFelder } from "../src/daten/migration";
+import { ergaenzen, fehlendeAbschnitte, fehlendeFelder } from "../src/daten/migration";
 import datenmodell from "../src/vaultdoku/sms-datenmodell.md";
 
 /**
@@ -112,5 +112,40 @@ describe("Die ausgelieferte Doku", () => {
 				);
 			}
 		}
+	});
+});
+
+describe("ergaenzen", () => {
+	const notiz = ["---", "type: speaker", "themen: [ki, prompting]", "---", "## Profil", "Ein Satz.", ""].join(
+		"\n",
+	);
+
+	it("schiebt die Feldzeilen vor das schließende ---", () => {
+		const neu = ergaenzen(notiz, ["foto:", "zielgruppe: []"], []);
+		assert.equal(
+			neu.split("\n").slice(0, 6).join("\n"),
+			["---", "type: speaker", "themen: [ki, prompting]", "foto:", "zielgruppe: []", "---"].join("\n"),
+		);
+	});
+
+	it("lässt vorhandene Zeilen Zeichen für Zeichen, wie sie sind", () => {
+		// Das ist der ganze Grund für den Texteinschub: Über Obsidians API
+		// würde aus der Flow-Liste eine mehrzeilige.
+		assert.ok(ergaenzen(notiz, ["foto:"], []).includes("themen: [ki, prompting]"));
+	});
+
+	it("hängt fehlende Abschnitte hinten an, samt ihrer Punkte", () => {
+		const neu = ergaenzen(notiz, [], [{ titel: "Zu klären", zeilen: ["- [ ] Bio erhalten"] }]);
+		assert.ok(neu.includes("## Zu klären\n- [ ] Bio erhalten"));
+		assert.ok(neu.indexOf("## Profil") < neu.indexOf("## Zu klären"));
+	});
+
+	it("ändert nichts, wenn nichts fehlt", () => {
+		assert.equal(ergaenzen(notiz, [], []), notiz);
+	});
+
+	it("lässt eine Notiz ohne Frontmatter in Ruhe", () => {
+		const ohne = "# Nur Text\n";
+		assert.equal(ergaenzen(ohne, ["foto:"], []), ohne);
 	});
 });

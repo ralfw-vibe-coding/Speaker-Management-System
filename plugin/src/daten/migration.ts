@@ -48,34 +48,31 @@ export class Nachtragen {
 		return { datei, schema, felder, abschnitte };
 	}
 
+	/**
+	 * Trägt nach — **als Texteinschub, nicht über `processFrontMatter`.** Die
+	 * API gibt das Frontmatter geparst zurück und schreibt anschließend den
+	 * ganzen Block neu, mit ihrem eigenen YAML-Stil; aus `themen: [a, b]` würde
+	 * eine mehrzeilige Liste. Beim Ändern eines Wertes nehmen wir das in Kauf,
+	 * weil YAML von Hand zu erzeugen die fragilere Wahl wäre. Hier aber wird nur
+	 * angefügt, nie geändert — und dafür genügt eine eingeschobene Zeile, die
+	 * alles andere unangetastet lässt.
+	 */
 	async nachtragen(nachtrag: Nachtrag): Promise<void> {
-		if (nachtrag.felder.length > 0) {
-			await this.app.fileManager.processFrontMatter(nachtrag.datei, (fm) => {
-				for (const name of nachtrag.felder) {
-					const feld = nachtrag.schema.felder.find((eigenes) => eigenes.name === name);
-					if (!feld) continue;
-					// Listen als leere Liste, alles andere als leerer Wert — so
-					// zeigt Obsidian die Eigenschaft an, ohne etwas zu behaupten.
-					fm[name] = feld.art === "liste" || feld.art === "linkliste" ? [] : null;
-				}
-			});
-		}
+		const zeilen = nachtrag.felder
+			.map((name) => nachtrag.schema.felder.find((feld) => feld.name === name))
+			.filter((feld): feld is NonNullable<typeof feld> => feld !== undefined)
+			.map((feld) => geruestzeile(feld));
 
-		if (nachtrag.abschnitte.length === 0) return;
-
-		// Abschnitte hängen hinten an: Wo im Body sie hingehören, weiß nur der
-		// Mensch — und die vorhandene Prosa anzufassen wäre der einzige Weg,
-		// dabei etwas kaputt zu machen.
-		const angehaengt = nachtrag.abschnitte
-			.map((titel) => {
-				const abschnitt = nachtrag.schema.abschnitte.find((eigener) => eigener.titel === titel);
-				return [`## ${titel}`, ...(abschnitt?.zeilen ?? []), "", ""].join("\n");
-			})
-			.join("");
+		const abschnitte = nachtrag.abschnitte.map((titel) => {
+			const abschnitt = nachtrag.schema.abschnitte.find((eigener) => eigener.titel === titel);
+			return { titel, zeilen: abschnitt?.zeilen ?? [] };
+		});
 
 		const inhalt = await this.app.vault.read(nachtrag.datei);
-		const getrennt = inhalt.endsWith("\n") ? "" : "\n";
-		await this.app.vault.modify(nachtrag.datei, `${inhalt}${getrennt}\n${angehaengt}`);
+		const ergaenzt = ergaenzen(inhalt, zeilen, abschnitte);
+		if (ergaenzt === inhalt) return;
+
+		await this.app.vault.modify(nachtrag.datei, ergaenzt);
 	}
 
 	/** Meldet, wie viele Notizen tatsächlich angefasst wurden. */
@@ -87,6 +84,35 @@ export class Nachtragen {
 		}
 		return gezaehlt;
 	}
+}
+
+/**
+ * Schiebt Feldzeilen vor das schließende `---` und hängt fehlende Abschnitte
+ * hinten an. Reiner Text, keine Zeile wird angefasst, die schon dasteht.
+ *
+ * Abschnitte kommen ans Ende, weil nur der Mensch weiß, wo im Body sie
+ * hingehören — die vorhandene Prosa umzusortieren wäre der einzige Weg, dabei
+ * etwas kaputt zu machen.
+ */
+export function ergaenzen(
+	inhalt: string,
+	feldzeilen: string[],
+	abschnitte: { titel: string; zeilen: string[] }[],
+): string {
+	let zeilen = inhalt.split("\n");
+
+	if (feldzeilen.length > 0 && zeilen[0] === "---") {
+		const ende = zeilen.indexOf("---", 1);
+		if (ende > 0) zeilen = [...zeilen.slice(0, ende), ...feldzeilen, ...zeilen.slice(ende)];
+	}
+
+	let text = zeilen.join("\n");
+
+	for (const abschnitt of abschnitte) {
+		const getrennt = text.endsWith("\n") ? "" : "\n";
+		text += `${getrennt}\n## ${abschnitt.titel}\n${abschnitt.zeilen.map((z) => `${z}\n`).join("")}\n`;
+	}
+	return text;
 }
 
 /**

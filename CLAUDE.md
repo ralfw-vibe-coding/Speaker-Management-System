@@ -150,6 +150,13 @@ das Gerüst neuer Notizen, das Ergänzen alter, und der Test, der die ausgeliefe
 dagegenhält. Zu tun bleibt: der Typ in `modell.ts`, das Lesen in `lesen.ts`, die
 Bedeutung in `sms-datenmodell.md`.
 
+**Das Nachtragen schreibt als Texteinschub**, nicht über `processFrontMatter`. Die API
+gibt das Frontmatter geparst zurück und schreibt anschließend den ganzen Block neu, in
+Obsidians eigenem YAML-Stil — aus `themen: [a, b]` würde eine mehrzeilige Liste. Beim
+Ändern eines Wertes nehmen wir das in Kauf, weil YAML von Hand zu erzeugen die fragilere
+Wahl wäre. Beim Nachtragen wird aber nur angefügt, nie geändert, und dafür genügt eine
+eingeschobene Zeile.
+
 **Bestehende Notizen kennen das Feld nicht.** Das ist kein Fehler — gelesen wird
 tolerant —, aber Obsidian zeigt eine Eigenschaft nicht an, die in der Datei fehlt.
 Deshalb weist die Konferenzübersicht darauf hin und bietet „Felder ergänzen" an; denselben
