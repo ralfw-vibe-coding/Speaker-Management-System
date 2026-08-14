@@ -1,7 +1,7 @@
 {
   "name": "speaker-management-system",
-  "version": "0.17.0",
-  "description": "Obsidian-Plugin f\u00fcr das Content Management von Konferenzen.",
+  "version": "0.17.1",
+  "description": "Obsidian-Plugin für das Content Management von Konferenzen.",
   "main": "main.js",
   "private": true,
   "scripts": {

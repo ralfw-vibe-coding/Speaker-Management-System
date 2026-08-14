@@ -96,9 +96,20 @@ Auf einem zweiten Rechner gilt nach jedem Pull dieselbe Reihenfolge: `npm run bu
 Die Version im Kopf des Views kommt aus `package.json` und wird beim Bauen ins Bundle
 eingesetzt — nicht aus `plugin.manifest`, den Obsidian beim Start liest und danach
 festhält. Sie ändert sich damit genau dann, wenn sich `main.js` ändert, und verrät
-zuverlässig, ob der eigene Build der neue ist. **Bei jeder Änderung die Version in
-`package.json` und `manifest.json` gemeinsam hochziehen** — `manifest.json` ist das,
-was Obsidian in seiner Plugin-Liste zeigt.
+zuverlässig, ob der eigene Build der neue ist.
+
+**Die Version wird an drei Stellen hochgezogen, und zwar so:**
+
+```bash
+cd plugin && npm version 0.18.0 --no-git-tag-version
+```
+
+Das ändert `package.json` **und** `package-lock.json`; `manifest.json` zieht man
+danach von Hand nach. Wer nur die beiden JSON-Dateien anfasst und die Sperrdatei
+vergisst, bricht den Release-Workflow: Er beginnt mit `npm ci`, und das verweigert den
+Dienst, sobald `package.json` und `package-lock.json` verschiedene Versionen nennen.
+Der Tag liegt dann sauber auf GitHub, aber es entsteht nie ein Release — von 0.11.0
+bis 0.17.0 ist genau das passiert.
 
 Entwickelt wird nur auf macOS — der eingecheckte Symlink ist relativ und funktioniert
 auf jedem Mac, auf Windows aber nicht ohne `core.symlinks=true`.
