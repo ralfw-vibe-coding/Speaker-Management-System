@@ -7,6 +7,7 @@ format: workshop
 max_teilnehmer: 40
 block: b11
 track: t3
+dauer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -15,3 +16,6 @@ track: t3
 
 ## Abstract
 Mitschreiben, strukturieren, freigeben — an einem echten Mitschnitt geübt.
+
+## Für den Speaker
+

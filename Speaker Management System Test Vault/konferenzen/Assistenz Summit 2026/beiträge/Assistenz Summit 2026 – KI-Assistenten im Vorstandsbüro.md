@@ -6,6 +6,8 @@ titel: "KI-Assistenten im Vorstandsbüro"
 format: vortrag
 block: b3
 track: t2
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht

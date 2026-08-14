@@ -6,6 +6,8 @@ titel: "Was Automatisierung wirklich spart"
 format: vortrag
 block: b5
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -14,3 +16,6 @@ track: t1
 
 ## Abstract
 Gemessen statt geschätzt: vier Prozesse, vorher und nachher.
+
+## Für den Speaker
+

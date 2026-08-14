@@ -7,6 +7,8 @@ titel: Macht ohne Titel
 format: vortrag
 block: b7
 track: t2
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -16,3 +18,6 @@ track: t2
 ## Abstract
 Einfluss entsteht aus Zugang und Information, nicht aus der Position im
 Organigramm. Über informelle Macht und den verantwortlichen Umgang damit.
+
+## Für den Speaker
+

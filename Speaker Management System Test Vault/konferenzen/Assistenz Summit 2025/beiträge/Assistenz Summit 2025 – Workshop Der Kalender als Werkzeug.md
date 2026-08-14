@@ -7,6 +7,7 @@ format: workshop
 max_teilnehmer: 25
 block: b7
 track: t2
+dauer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -19,3 +20,6 @@ Stoff und doppelt so vielen Teilnehmenden.
 
 ## Rückblick
 Mit 35 Leuten überfüllt — daraus wurde für 2026 die Obergrenze.
+
+## Für den Speaker
+

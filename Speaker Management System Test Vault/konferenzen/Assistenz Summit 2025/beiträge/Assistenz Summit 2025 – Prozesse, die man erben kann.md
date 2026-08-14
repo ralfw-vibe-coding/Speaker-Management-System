@@ -6,6 +6,8 @@ titel: "Prozesse, die man erben kann"
 format: vortrag
 block: b3
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -15,3 +17,6 @@ track: t1
 ## Abstract
 Was man beim Wechsel in eine neue Assistenz vorfindet — und wie man
 daraus etwas macht, das ohne einen selbst weiterläuft.
+
+## Für den Speaker
+

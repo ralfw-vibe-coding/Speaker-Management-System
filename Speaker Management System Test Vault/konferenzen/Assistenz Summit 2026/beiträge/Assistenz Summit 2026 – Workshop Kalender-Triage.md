@@ -17,3 +17,6 @@ track: t3
 ## Abstract
 Ein Vorstandskalender in 45 Minuten: was gestrichen, was delegiert,
 was verschoben wird — und wie man das begründet.
+
+## Für den Speaker
+

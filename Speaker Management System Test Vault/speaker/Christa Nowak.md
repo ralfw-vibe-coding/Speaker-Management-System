@@ -15,6 +15,7 @@ formate: [vortrag, workshop]
 sprachen: [de]
 ort: Frankfurt
 honorarrahmen: 1200
+web:
 ---
 ## Bio
 

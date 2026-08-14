@@ -8,6 +8,9 @@ honorar:
 reisekosten:
 angefragt_am: 2026-04-02
 geantwortet_am: 2026-04-08
+rechnung_am:
+bezahlt_am:
+bewertung:
 ---
 ## Zu klären
 - [ ] Bio erhalten

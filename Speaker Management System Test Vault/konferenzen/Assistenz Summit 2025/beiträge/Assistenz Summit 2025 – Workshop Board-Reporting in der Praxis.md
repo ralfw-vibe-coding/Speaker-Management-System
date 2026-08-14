@@ -7,6 +7,7 @@ format: workshop
 max_teilnehmer: 20
 block: b5
 track: t2
+dauer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -18,3 +19,6 @@ An echten Vorlagen geübt, mit ehrlicher Kritik.
 
 ## Rückblick
 Folien kamen am Vorabend — inhaltlich trotzdem in Ordnung.
+
+## Für den Speaker
+

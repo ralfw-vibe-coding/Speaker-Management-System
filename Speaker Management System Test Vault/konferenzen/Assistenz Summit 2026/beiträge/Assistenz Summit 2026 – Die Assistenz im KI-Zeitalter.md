@@ -6,6 +6,8 @@ titel: Die Assistenz im KI-Zeitalter
 format: vortrag
 block: b13
 track: t3
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -18,3 +20,6 @@ einordnet, statt Werkzeuge zu zeigen.
 
 ## Notizen
 Liegt im Pool. Weder Person noch Platz.
+
+## Für den Speaker
+

@@ -6,6 +6,8 @@ titel: "Panel: Vorstand trifft Assistenz"
 format: panel
 block: b13
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -18,3 +20,6 @@ Zum Abschluss des Tages: ein Vorstand, zwei Assistenzen, moderiert.
 ## Notizen
 Titel und Format stehen, es fehlen noch alle drei Personen.
 Der Vorstand soll über den Veranstalter kommen.
+
+## Für den Speaker
+

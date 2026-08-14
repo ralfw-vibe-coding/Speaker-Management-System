@@ -31,6 +31,7 @@ tage:
       - { id: b20, von: "09:00", bis: "12:00" }
 slots:
   - { block: b1, raum: "Saal Hanse", kapazitaet: 350 }
+deadline_programm:
 ---
 ## Ausrichtung
 Der Vorgänger des Summits 2026, zwei Tage, dieselbe Zielgruppe.
@@ -43,3 +44,10 @@ Die Workshops waren überbucht — für 2026 größere Räume einplanen.
 Das Programm bleibt vollständig stehen. Wer 2027 wissen will, was
 Lindqvist 2025 gehalten hat, findet es hier — und auf seiner
 Speakernotiz als Backlink.
+
+## Mit dem Veranstalter zu klären
+- [ ] Honorarbudget bestätigt
+- [ ] Anzahl Tracks und Slots final
+- [ ] Reisekosten-Regelung
+- [ ] Wer schließt die Verträge?
+

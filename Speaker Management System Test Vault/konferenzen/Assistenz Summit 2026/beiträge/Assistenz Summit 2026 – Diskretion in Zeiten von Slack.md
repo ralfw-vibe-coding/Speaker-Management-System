@@ -6,6 +6,8 @@ titel: "Diskretion in Zeiten von Slack"
 format: vortrag
 block: b5
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -15,3 +17,6 @@ track: t1
 ## Abstract
 Vertraulichkeit war früher eine Frage verschlossener Türen. Heute ist
 sie eine Frage von Kanälen, Berechtigungen und Gewohnheiten.
+
+## Für den Speaker
+

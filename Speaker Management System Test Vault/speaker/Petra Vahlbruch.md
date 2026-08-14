@@ -15,6 +15,7 @@ formate: [vortrag, workshop]
 sprachen: [de]
 ort: München
 honorarrahmen: 1700
+web:
 ---
 ## Bio
 

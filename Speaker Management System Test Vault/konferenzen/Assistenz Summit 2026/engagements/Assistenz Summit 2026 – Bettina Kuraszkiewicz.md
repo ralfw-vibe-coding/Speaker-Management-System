@@ -8,6 +8,9 @@ honorar: 2900
 reisekosten: 400
 angefragt_am: 2026-05-06
 geantwortet_am: 2026-05-19
+rechnung_am:
+bezahlt_am:
+bewertung:
 ---
 ## Zu klären
 - [x] Bio erhalten

@@ -6,6 +6,8 @@ titel: "Die Assistenz als Chief of Staff"
 format: keynote
 block: b1
 track:
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht

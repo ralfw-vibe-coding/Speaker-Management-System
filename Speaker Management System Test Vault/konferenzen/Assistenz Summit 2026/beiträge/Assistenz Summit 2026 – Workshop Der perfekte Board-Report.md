@@ -20,3 +20,6 @@ gelesen ist. Teilnehmende bringen ein eigenes Beispiel mit.
 
 ## Notizen
 Auf Verdacht platziert — Christa Nowak hat noch nicht zugesagt.
+
+## Für den Speaker
+

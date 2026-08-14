@@ -7,6 +7,7 @@ format: workshop
 max_teilnehmer: 20
 block: b3
 track: t2
+dauer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -16,3 +17,6 @@ track: t2
 ## Abstract
 Zehn Werkzeuge, drei davon bleiben hängen. Mitgebracht wird der eigene
 Rechner.
+
+## Für den Speaker
+

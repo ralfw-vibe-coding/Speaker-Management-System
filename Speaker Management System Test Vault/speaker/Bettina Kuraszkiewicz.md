@@ -15,6 +15,7 @@ formate: [workshop]
 sprachen: [de, pl]
 ort: Wien
 honorarrahmen: 1400
+web:
 ---
 ## Bio
 

@@ -16,6 +16,7 @@ formate: [keynote, vortrag, panel, moderation]
 sprachen: [de, en]
 ort: Köln
 honorarrahmen: 2400
+web:
 ---
 ## Bio
 

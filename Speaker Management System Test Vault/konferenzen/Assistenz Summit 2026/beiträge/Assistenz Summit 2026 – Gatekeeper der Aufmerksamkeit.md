@@ -6,6 +6,8 @@ titel: "Gatekeeper der Aufmerksamkeit"
 format: vortrag
 block: b9
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -18,3 +20,6 @@ mit, worüber das Unternehmen nachdenkt.
 
 ## Notizen
 Auf Verdacht platziert — das Honorar ist noch in Verhandlung.
+
+## Für den Speaker
+

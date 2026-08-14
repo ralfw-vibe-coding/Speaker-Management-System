@@ -15,6 +15,7 @@ formate: [vortrag, workshop]
 sprachen: [de]
 ort: Hannover
 honorarrahmen: 3500
+web:
 ---
 ## Bio
 

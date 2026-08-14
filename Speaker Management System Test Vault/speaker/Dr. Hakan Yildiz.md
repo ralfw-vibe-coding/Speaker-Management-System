@@ -12,6 +12,9 @@ wahl:
 formate: [vortrag]
 sprachen: [de, en, tr]
 ort: Düsseldorf
+telefon:
+web:
+honorarrahmen:
 ---
 ## Bio
 
@@ -19,3 +22,6 @@ ort: Düsseldorf
 ## Profil
 Empfehlung von Maria Kern. Juristischer Hintergrund.
 Noch kein Kontakt aufgenommen.
+
+## Notizen
+

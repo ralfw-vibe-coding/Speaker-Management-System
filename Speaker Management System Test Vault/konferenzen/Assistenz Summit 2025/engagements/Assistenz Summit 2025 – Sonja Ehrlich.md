@@ -9,6 +9,8 @@ reisekosten:
 angefragt_am: 2025-05-20
 geantwortet_am: 2025-05-28
 bewertung:
+rechnung_am:
+bezahlt_am:
 ---
 ## Zu klären
 - [ ] Bio erhalten

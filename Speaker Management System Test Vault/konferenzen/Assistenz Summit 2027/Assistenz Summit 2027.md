@@ -5,6 +5,7 @@ veranstalter: "[[Acme Events]]"
 status: idee
 honorarbudget:
 deadline_programm:
+teilnehmer:
 ---
 ## Ausrichtung
 Noch nichts entschieden. Acme Events hat angedeutet, dass es weitergeht;

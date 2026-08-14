@@ -7,6 +7,7 @@ format: workshop
 max_teilnehmer: 20
 block: b9
 track: t3
+dauer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht

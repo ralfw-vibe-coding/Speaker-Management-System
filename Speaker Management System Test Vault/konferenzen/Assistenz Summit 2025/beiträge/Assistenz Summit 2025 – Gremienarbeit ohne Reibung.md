@@ -6,6 +6,8 @@ titel: "Gremienarbeit ohne Reibung"
 format: vortrag
 block: b7
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -15,3 +17,6 @@ track: t1
 ## Abstract
 Fristen, Vorlagen, Zuarbeiten — wie ein Gremienjahr läuft, ohne dass es
 in jeder Sitzung eskaliert.
+
+## Für den Speaker
+

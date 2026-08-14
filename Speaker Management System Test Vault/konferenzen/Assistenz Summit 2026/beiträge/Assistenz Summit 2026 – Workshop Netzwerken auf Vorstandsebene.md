@@ -22,3 +22,6 @@ ohne aufdringlich zu werden.
 ## Notizen
 Heimatlos: Track D (t4) ist im Juli gestrichen worden, den Slot gibt es
 nicht mehr. Braucht einen neuen Platz, am ehesten an Tag 2.
+
+## Für den Speaker
+

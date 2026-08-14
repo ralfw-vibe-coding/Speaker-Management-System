@@ -7,6 +7,8 @@ titel: Karrierepfade jenseits der Assistenz
 format: vortrag
 block: b7
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -19,3 +21,6 @@ kurzfristig festlegen. Deadline ist der 30.09.
 
 ## Notizen
 Sobald ein Titel feststeht, wird diese Notiz umbenannt.
+
+## Für den Speaker
+

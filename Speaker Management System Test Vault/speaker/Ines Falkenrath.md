@@ -15,6 +15,9 @@ formate:
 sprachen:
   - de
 ort: Leipzig
+telefon:
+web:
+honorarrahmen:
 ---
 ## Bio
 
@@ -22,3 +25,6 @@ ort: Leipzig
 ## Profil
 Auf der ACO 2025 gesehen, hat dort einen guten Vortrag gehalten.
 Noch nie mit uns gearbeitet.
+
+## Notizen
+

@@ -6,6 +6,8 @@ titel: "Karrierepfade jenseits der Assistenz"
 format: vortrag
 block: b11
 track: t1
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -18,3 +20,6 @@ gegangen wurden, mit ihren Voraussetzungen.
 
 ## Notizen
 Auf Verdacht platziert — Christa Nowak hat noch nicht zugesagt.
+
+## Für den Speaker
+

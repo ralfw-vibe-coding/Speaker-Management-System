@@ -6,6 +6,8 @@ titel: "Vertraulichkeit als Handwerk"
 format: keynote
 block: b1
 track:
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [x] Abstract eingereicht
@@ -18,3 +20,6 @@ man lernen und der man beim Arbeiten zusehen kann.
 
 ## Rückblick
 Der bestbewertete Beitrag des Jahres.
+
+## Für den Speaker
+

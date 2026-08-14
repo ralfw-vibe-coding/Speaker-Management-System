@@ -7,6 +7,8 @@ titel: Resilienz im Dauerfeuer
 format: vortrag
 block: b7
 track: t3
+dauer:
+max_teilnehmer:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
@@ -18,3 +20,6 @@ Wie man in einem Beruf, der aus Unterbrechungen besteht, handlungsfähig bleibt.
 
 ## Notizen
 Liegt im Pool. Kommt erst ins Raster, wenn das Honorar geklärt ist.
+
+## Für den Speaker
+

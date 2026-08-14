@@ -14,6 +14,8 @@ formate: [keynote]
 sprachen: [de, en]
 ort: Berlin
 honorarrahmen: 3000
+telefon:
+web:
 ---
 ## Bio
 
