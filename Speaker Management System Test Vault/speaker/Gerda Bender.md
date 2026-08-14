@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle:
+foto:
 email:
 telefon:
 web:
@@ -12,6 +13,9 @@ sprachen: []
 ort:
 honorarrahmen: 2000
 ---
+## Bio
+
+
 ## Profil
 
 

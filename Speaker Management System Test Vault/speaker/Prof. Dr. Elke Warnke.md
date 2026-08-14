@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Professorin für Organisationssoziologie
+foto:
 email: warnke@uni-example.de
 themen: [organisationssoziologie, macht, informelle-strukturen]
 zielgruppe:
@@ -14,6 +15,9 @@ sprachen: [de, en]
 ort: Berlin
 honorarrahmen: 3000
 ---
+## Bio
+
+
 ## Profil
 Wissenschaftlicher Blick auf das Thema, sehr gefragt.
 

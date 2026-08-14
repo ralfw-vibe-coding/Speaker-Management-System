@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Trainerin für interne Kommunikation
+foto:
 email: kontakt@vahlbruch-agentur.example.com
 telefon: +49 89 555 9021
 themen: [diskretion, interne-kommunikation, protokoll]
@@ -15,6 +16,9 @@ sprachen: [de]
 ort: München
 honorarrahmen: 1700
 ---
+## Bio
+
+
 ## Profil
 Wird über ihre Agentur gebucht, die auch die Rechnung stellt.
 Sehr erfahren, seit Jahren dieselbe hohe Qualität.

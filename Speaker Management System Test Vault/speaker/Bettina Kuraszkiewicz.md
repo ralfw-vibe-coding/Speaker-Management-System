@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Trainerin für Gesprächsführung
+foto:
 email: b.kuraszkiewicz@example.com
 telefon: +43 1 555 2280
 themen: [gesprächsführung, konflikte, netzwerken]
@@ -15,6 +16,9 @@ sprachen: [de, pl]
 ort: Wien
 honorarrahmen: 1400
 ---
+## Bio
+
+
 ## Profil
 Macht ausschließlich Workshops, keine Vorträge. Kleine Gruppen, max. 20 Personen.
 

@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Gremienbetreuung in einer Bank
+foto:
 email: nowak@example.com
 telefon: +49 69 555 4417
 themen: [board-reporting, karriere, gremienarbeit]
@@ -15,6 +16,9 @@ sprachen: [de]
 ort: Frankfurt
 honorarrahmen: 1200
 ---
+## Bio
+
+
 ## Profil
 Kommt aus der Gremienbetreuung einer Bank. Sehr strukturiert.
 

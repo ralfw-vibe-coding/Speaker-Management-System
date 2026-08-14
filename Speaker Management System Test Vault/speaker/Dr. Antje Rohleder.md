@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Beraterin, ehem. Vorstandsassistentin im DAX-Konzern
+foto:
 email: rohleder@example.com
 telefon: +41 44 555 6612
 web: https://rohleder-beratung.example.com
@@ -17,6 +18,9 @@ sprachen: [de, en]
 ort: Zürich
 honorarrahmen: 2800
 ---
+## Bio
+
+
 ## Profil
 Ehemalige Vorstandsassistentin eines DAX-Konzerns, heute Beraterin.
 Trägt sehr souverän vor, braucht aber lange Vorlaufzeit.

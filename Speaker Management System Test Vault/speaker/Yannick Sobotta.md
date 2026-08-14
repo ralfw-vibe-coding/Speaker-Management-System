@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Gründer, baut KI-Werkzeuge für Assistenzteams
+foto:
 email: y.sobotta@example.com
 telefon: +49 30 555 2298
 web: https://sobotta-ki.example.com
@@ -18,6 +19,9 @@ sprachen: [de]
 ort: Berlin
 honorarrahmen: 1500
 ---
+## Bio
+
+
 ## Profil
 Baut KI-Werkzeuge für Assistenzteams. Sehr gute Demos, redet schnell.
 

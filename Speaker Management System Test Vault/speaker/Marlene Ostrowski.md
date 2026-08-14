@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Bloggerin über Werkzeuge im Assistenzalltag
+foto:
 email: m.ostrowski@example.com
 telefon: +49 421 555 1145
 web: https://assistenz-automatisieren.example.com
@@ -17,6 +18,9 @@ sprachen: [de]
 ort: Bremen
 honorarrahmen: 1500
 ---
+## Bio
+
+
 ## Profil
 Schreibt einen viel gelesenen Blog über Werkzeuge im Assistenzalltag.
 

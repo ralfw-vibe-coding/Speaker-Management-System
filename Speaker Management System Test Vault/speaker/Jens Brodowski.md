@@ -1,6 +1,7 @@
 ---
 type: speaker
 rolle: Verhandlungstrainer
+foto:
 email: brodowski@example.com
 telefon: +49 511 555 3390
 themen: [verhandlung, gehalt, selbstbehauptung]
@@ -15,6 +16,9 @@ sprachen: [de]
 ort: Hannover
 honorarrahmen: 3500
 ---
+## Bio
+
+
 ## Profil
 Inhaltlich stark, aber Honorarvorstellung deutlich über unserem Rahmen.
 
