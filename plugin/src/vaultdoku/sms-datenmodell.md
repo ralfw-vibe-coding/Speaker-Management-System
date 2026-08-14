@@ -118,8 +118,14 @@ nicht in etwas landen, das verschickt wird.
 
 ## veranstalter
 
-Der Auftraggeber. Das Plugin nutzt bisher nur den Dateinamen; alles Weitere ist
-Freitext im Body und darf frei erweitert werden.
+Der Auftraggeber. Das Plugin nutzt bisher nur den Dateinamen; die Felder sind für
+Menschen da, alles Weitere ist Freitext im Body.
+
+| Feld | Typ | Bedeutung |
+|---|---|---|
+| `type` | `veranstalter` | |
+| `ansprechpartner` | Text | wer dort zuständig ist |
+| `email`, `telefon` | Text | Kontakt |
 
 ```yaml
 ---
@@ -227,7 +233,8 @@ Die Beziehung Speaker × Konferenz. Trägt den Funnel und das Honorar.
 | `reisekosten` | Zahl | eigener Betrag; läuft **nicht** gegen das Honorarbudget |
 | `honorar` | Zahl | für **das ganze Paket**, nicht je Beitrag |
 | `bewertung` | Zahl | Sterne, nach der Konferenz vergeben |
-| `angefragt_am`, `geantwortet_am` | Datum | |
+| `angefragt_am`, `geantwortet_am` | Datum | wann gefragt und wann geantwortet wurde |
+| `rechnung_am`, `bezahlt_am` | Datum | die beiden Schritte nach der Konferenz |
 
 `status` läuft durch: `gemerkt` → `angefragt` → `geantwortet` → `verhandlung` →
 `zugesagt` → `rechnung` → `bezahlt`. Daneben steht `gestrichen` als Ausgang, den man

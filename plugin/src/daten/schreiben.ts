@@ -2,6 +2,7 @@ import { App, normalizePath, TFile, TFolder } from "obsidian";
 import type SmsPlugin from "../main";
 import type { Block, Konferenz, Tag, Track } from "./modell";
 import { HOECHSTENS_TAGE, istPlatzhalterName, ohneVerbotene, tageZwischen, vorlaeufigerName, VERBOTENE_ZEICHEN } from "./namen";
+import { geruest, schemaFuer } from "./schema";
 
 /** Die Unterordner je Konferenz. Stehen so im Konzept und sind nicht konfigurierbar. */
 const BEITRAGSORDNER = "beiträge";
@@ -46,31 +47,7 @@ export class Datenschreiber {
 		await this.ordnerSicherstellen(ordner);
 
 		const pfad = normalizePath(`${ordner}/${name.trim()}.md`);
-		const inhalt = [
-			"---",
-			"type: speaker",
-			"rolle:",
-			"foto:",
-			"email:",
-			"telefon:",
-			"web:",
-			"themen: []",
-			"zielgruppe: []",
-			"formate: []",
-			"sprachen: []",
-			"ort:",
-			"honorarrahmen:",
-			"---",
-			"## Bio",
-			"",
-			"",
-			"## Profil",
-			"",
-			"",
-			"## Notizen",
-			"",
-			"",
-		].join("\n");
+		const inhalt = geruest(schemaFuer("speaker")!);
 
 		return this.app.vault.create(pfad, inhalt);
 	}
@@ -191,34 +168,16 @@ export class Datenschreiber {
 		await this.ordnerSicherstellen(ordner);
 
 		const name = await this.freierName(ordner, vorlaeufigerName(ziel));
-		const pfad = normalizePath(`${ordner}/${name}.md`);
 
-		const zeilen = [
-			"---",
-			"type: beitrag",
-			`konferenz: "[[${ziel.konferenz.name}]]"`,
-			`speaker: ["[[${ziel.speaker}]]"]`,
-			"titel:",
-			"format:",
-			"dauer:",
-			"max_teilnehmer:",
-			`block: ${ziel.block.id}`,
-			ziel.track ? `track: ${ziel.track.id}` : "track:",
-			"---",
-			"## Zu klären",
-			"- [ ] Abstract eingereicht",
-			"- [ ] Folien eingereicht",
-			"- [ ] Technikbedarf geklärt",
-			"",
-			"## Abstract",
-			"",
-			"",
-			"## Für den Speaker",
-			"",
-			"",
-		];
-
-		return this.app.vault.create(pfad, zeilen.join("\n"));
+		return this.app.vault.create(
+			normalizePath(`${ordner}/${name}.md`),
+			geruest(schemaFuer("beitrag")!, {
+				konferenz: `"[[${ziel.konferenz.name}]]"`,
+				speaker: `["[[${ziel.speaker}]]"]`,
+				block: ziel.block.id,
+				...(ziel.track ? { track: ziel.track.id } : {}),
+			}),
+		);
 	}
 
 	/**
@@ -245,25 +204,17 @@ export class Datenschreiber {
 
 		const tage = tageZwischen(angaben.datumVon, angaben.datumBis);
 
-		const zeilen = [
-			"---",
-			"type: konferenz",
-			`untertitel: ${angaben.untertitel ?? ""}`,
-			`veranstalter: "[[${angaben.veranstalter}]]"`,
-			// Ohne Termin ist es noch keine Planung, sondern eine Idee.
-			`status: ${tage.length > 0 ? "planung" : "idee"}`,
-			"deadline_programm:",
-			`honorarbudget: ${angaben.honorarbudget ?? ""}`,
-		];
-
+		// Das Raster steht als verschachteltes YAML unter den flachen Feldern —
+		// deshalb als Zusatz und nicht als Vorgabe.
+		const raster: string[] = [];
 		if (tage.length > 0) {
-			zeilen.push("tracks:", "  - { id: t1, name: Hauptbühne }", "tage:");
+			raster.push("tracks:", "  - { id: t1, name: Hauptbühne }", "tage:");
 
 			// Block-IDs sind konferenzweit eindeutig, also über alle Tage durchgezählt.
 			let naechste = 1;
 			for (const datum of tage) {
-				zeilen.push(`  - datum: ${datum}`, "    tracks: [t1]", "    bloecke:");
-				zeilen.push(
+				raster.push(`  - datum: ${datum}`, "    tracks: [t1]", "    bloecke:");
+				raster.push(
 					`      - { id: b${naechste++}, von: "09:00", bis: "09:45" }`,
 					`      - { id: b${naechste++}, von: "09:45", bis: "10:00", fix: Pause }`,
 					`      - { id: b${naechste++}, von: "10:00", bis: "10:45" }`,
@@ -271,25 +222,19 @@ export class Datenschreiber {
 			}
 		}
 
-		zeilen.push(
-			"---",
-			"## Ausrichtung",
-			"",
-			"",
-			"## Mit dem Veranstalter zu klären",
-			"- [ ] Honorarbudget bestätigt",
-			"- [ ] Anzahl Tracks und Slots final",
-			"- [ ] Reisekosten-Regelung",
-			"- [ ] Wer schließt die Verträge?",
-			"",
-			"## Notizen",
-			"",
-			"",
-		);
-
 		return this.app.vault.create(
 			normalizePath(`${ordner}/${angaben.name}.md`),
-			zeilen.join("\n"),
+			geruest(
+				schemaFuer("konferenz")!,
+				{
+					...(angaben.untertitel ? { untertitel: angaben.untertitel } : {}),
+					veranstalter: `"[[${angaben.veranstalter}]]"`,
+					// Ohne Termin ist es noch keine Planung, sondern eine Idee.
+					status: tage.length > 0 ? "planung" : "idee",
+					...(angaben.honorarbudget ? { honorarbudget: String(angaben.honorarbudget) } : {}),
+				},
+				raster,
+			),
 		);
 	}
 
@@ -297,22 +242,10 @@ export class Datenschreiber {
 		const ordner = this.plugin.settings.veranstalterOrdner;
 		await this.ordnerSicherstellen(ordner);
 
-		const zeilen = [
-			"---",
-			"type: veranstalter",
-			"ansprechpartner:",
-			"email:",
-			"telefon:",
-			"---",
-			"## Konditionen",
-			"",
-			"",
-			"## Notizen",
-			"",
-			"",
-		];
-
-		return this.app.vault.create(normalizePath(`${ordner}/${name}.md`), zeilen.join("\n"));
+		return this.app.vault.create(
+			normalizePath(`${ordner}/${name}.md`),
+			geruest(schemaFuer("veranstalter")!),
+		);
 	}
 
 	/**
@@ -396,35 +329,16 @@ export class Datenschreiber {
 		await this.ordnerSicherstellen(ordner);
 
 		const name = await this.freierName(ordner, ohneVerbotene(`${konferenz.name} – ${speaker}`));
-		const pfad = normalizePath(`${ordner}/${name}.md`);
 
-		const zeilen = [
-			"---",
-			"type: engagement",
-			`konferenz: "[[${konferenz.name}]]"`,
-			`speaker: "[[${speaker}]]"`,
-			"status: gemerkt",
-			`position: ${position}`,
-			"honorar:",
-			"reisekosten:",
-			"angefragt_am:",
-			"geantwortet_am:",
-			"rechnung_am:",
-			"bezahlt_am:",
-			"bewertung:",
-			"---",
-			"## Zu klären",
-			"- [ ] Bio erhalten",
-			"- [ ] Foto erhalten",
-			"- [ ] Vertrag zurück",
-			"- [ ] Reisekosten geklärt",
-			"",
-			"## Gesprächsnotizen",
-			"",
-			"",
-		];
-
-		return this.app.vault.create(pfad, zeilen.join("\n"));
+		return this.app.vault.create(
+			normalizePath(`${ordner}/${name}.md`),
+			geruest(schemaFuer("engagement")!, {
+				konferenz: `"[[${konferenz.name}]]"`,
+				speaker: `"[[${speaker}]]"`,
+				status: "gemerkt",
+				position: String(position),
+			}),
+		);
 	}
 
 	/**

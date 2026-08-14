@@ -991,3 +991,22 @@
 .sms-slot:hover .sms-max.is-offen {
 	display: inline-flex;
 }
+
+/* Fehlende Felder sind kein Fehler, nur eine Lücke — deshalb ruhiger als eine Beanstandung. */
+.sms-nachtrag {
+	margin-bottom: 16px;
+	padding: 10px 14px;
+	border: 1px solid var(--background-modifier-border-hover);
+	border-radius: 8px;
+	background: var(--background-secondary);
+	font-size: 0.85em;
+}
+
+.sms-nachtrag-kopf {
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.sms-nachtrag .sms-chip {
+	margin-top: 8px;
+}

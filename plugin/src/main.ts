@@ -2,6 +2,8 @@ import { Notice, Plugin } from "obsidian";
 import { DEFAULT_SETTINGS, SmsSettingTab, type SmsSettings } from "./settings";
 import { dokuSchreiben } from "./vaultdoku";
 import { SmsView, VIEW_TYPE_SMS } from "./view/SmsView";
+import { Datenzugriff } from "./daten/lesen";
+import { nachAgeordnet, Nachtragen } from "./daten/migration";
 
 export default class SmsPlugin extends Plugin {
 	settings: SmsSettings = DEFAULT_SETTINGS;
@@ -28,6 +30,16 @@ export default class SmsPlugin extends Plugin {
 			name: "Claude-Dokumentation in diesen Vault schreiben",
 			callback: () => {
 				void this.claudeDokuSchreiben();
+			},
+		});
+
+		// Derselbe Vorgang wie das Band in der Übersicht — für den Fall, dass man
+		// ihn sucht, statt ihn angeboten zu bekommen.
+		this.addCommand({
+			id: "felder-ergaenzen",
+			name: "Fehlende Felder in allen Notizen ergänzen",
+			callback: () => {
+				void this.felderErgaenzen();
 			},
 		});
 
@@ -84,6 +96,30 @@ export default class SmsPlugin extends Plugin {
 		const leaf = workspace.getLeaf("tab");
 		await leaf.setViewState({ type: VIEW_TYPE_SMS, active: true });
 		await workspace.revealLeaf(leaf);
+	}
+
+	/**
+	 * Ergänzt in allen verwalteten Notizen die Felder, die eine ältere Version
+	 * noch nicht kannte — leer, ohne Vorhandenes anzufassen. Läuft nur auf
+	 * Aufruf: Nach einem Update ungefragt in fremde Dateien zu schreiben wäre
+	 * das Letzte, was man will.
+	 */
+	async felderErgaenzen(): Promise<void> {
+		const daten = new Datenzugriff(this.app, this);
+		const nachtragen = new Nachtragen(this.app);
+		const nachtraege = nachtragen.suchen(daten.verwalteteNotizen());
+
+		if (nachtraege.length === 0) {
+			new Notice("Alle Notizen sind auf dem Stand des Plugins.");
+			return;
+		}
+
+		try {
+			const gezaehlt = await nachtragen.alleNachtragen(nachtraege);
+			new Notice(`${gezaehlt} Notizen ergänzt: ${nachAgeordnet(nachtraege)}.`);
+		} catch (fehler) {
+			new Notice(`Das Ergänzen brach ab: ${String(fehler)}`);
+		}
 	}
 
 	async loadSettings(): Promise<void> {

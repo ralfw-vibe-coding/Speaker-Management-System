@@ -143,6 +143,23 @@ export class Datenzugriff {
 			.sort((a, b) => a.name.localeCompare(b.name, "de"));
 	}
 
+	/** Alle Notizen in den eigenen Ordnern — Grundlage fürs Nachtragen. */
+	verwalteteNotizen(): TFile[] {
+		return this.app.vault
+			.getMarkdownFiles()
+			.filter((datei) => this.eigeneOrdner().some((praefix) => datei.path.startsWith(praefix)));
+	}
+
+	private eigeneOrdner(): string[] {
+		return [
+			this.plugin.settings.speakerOrdner,
+			this.plugin.settings.veranstalterOrdner,
+			this.plugin.settings.konferenzenOrdner,
+		]
+			.filter((eigener) => eigener.length > 0)
+			.map((eigener) => eigener.replace(/\/+$/, "") + "/");
+	}
+
 	/**
 	 * Notizen in den eigenen Ordnern, die das Plugin nicht einordnen kann: ohne
 	 * `type`, weil das Frontmatter kaputt ist oder fehlt, oder mit einem `type`,
@@ -154,17 +171,8 @@ export class Datenzugriff {
 	 */
 	unbekannteNotizen(): { datei: TFile; text: string }[] {
 		const bekannt = new Set(["speaker", "veranstalter", "konferenz", "engagement", "beitrag"]);
-		const ordner = [
-			this.plugin.settings.speakerOrdner,
-			this.plugin.settings.veranstalterOrdner,
-			this.plugin.settings.konferenzenOrdner,
-		]
-			.filter((eigener) => eigener.length > 0)
-			.map((eigener) => eigener.replace(/\/+$/, "") + "/");
 
-		return this.app.vault
-			.getMarkdownFiles()
-			.filter((datei) => ordner.some((praefix) => datei.path.startsWith(praefix)))
+		return this.verwalteteNotizen()
 			.map((datei) => {
 				const typ = this.frontmatter(datei)?.type;
 				if (typ === undefined) {

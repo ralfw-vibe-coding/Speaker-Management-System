@@ -143,6 +143,41 @@ hier mit; wer eine Regel ändert, sieht hier, was daran hing.
 Neue Fachlogik gehört in diese Module und nicht in eine Sicht — sonst ist sie nicht
 prüfbar.
 
+## Wenn ein Feld dazukommt
+
+Ein neues Feld wird in `schema.ts` eingetragen — dort und nicht anderswo. Daraus folgt
+das Gerüst neuer Notizen, das Ergänzen alter, und der Test, der die ausgelieferte Doku
+dagegenhält. Zu tun bleibt: der Typ in `modell.ts`, das Lesen in `lesen.ts`, die
+Bedeutung in `sms-datenmodell.md`.
+
+**Bestehende Notizen kennen das Feld nicht.** Das ist kein Fehler — gelesen wird
+tolerant —, aber Obsidian zeigt eine Eigenschaft nicht an, die in der Datei fehlt.
+Deshalb weist die Konferenzübersicht darauf hin und bietet „Felder ergänzen" an; denselben
+Vorgang gibt es als Befehl. **Das Plugin schreibt von sich aus nie**, auch nicht nach
+einem Update.
+
+**Zwei Regeln, die daran hängen:**
+
+- **Ein fehlender Wert wird nur dann als 0 gerechnet, wenn null die richtige Aussage
+  ist** — sonst wird er als „unbekannt" ausgewiesen. Jedes Zahlenfeld sagt das in
+  `schema.ts`; ein Test besteht darauf.
+- **Die Bedeutung eines Feldes wird nie geändert.** Ändert sie sich, bekommt es einen
+  neuen Namen. Eine Umbenennung ist erkennbar, eine verschobene Bedeutung nicht — alte
+  Dateien parsen sauber und rechnen falsch.
+
+Umformende Schritte (umbenennen, zusammenlegen) gibt es noch nicht. Sie gehören in
+`migration.ts` und wären alles oder nichts; dafür steht `SCHEMA_VERSION` bereit, und der
+Vault merkt sich seinen Stand in der `data.json` des Plugins.
+
+## Beim Veröffentlichen
+
+Ein Release, das am Schema rührt, muss es **an erster Stelle** in der
+Release-Beschreibung nennen — nicht in Zeile zwölf zwischen zwei Fehlerbehebungen. Dazu
+gehören drei Angaben: ob die Änderung **additiv** ist (neue Felder) oder **umformend**
+(Werte wandern), was **zu tun** ist, und was passiert, **wenn man nichts tut**. Bei
+additiven Änderungen ist die Antwort: nichts, außer dass neue Felder in alten Notizen
+nicht auftauchen, bis man sie ergänzt.
+
 ## Verbindliche Entscheidungen
 
 Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
@@ -202,6 +237,11 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 
 - `src/main.ts` — Plugin, Ribbon-Icon, Kommando, Öffnen des Views
 - `src/settings.ts` — die drei Datenordner konfigurierbar
+- `src/daten/schema.ts` — **die eine Feldliste** je Notiztyp: Name, Art, Bedeutung,
+  frühere Namen und wie ein fehlender Wert zu rechnen ist. Daraus entstehen das Gerüst
+  beim Anlegen und das Ergänzen; ein Test hält die ausgelieferte Doku dagegen.
+- `src/daten/migration.ts` — findet Notizen, denen neuere Felder fehlen, und trägt sie
+  leer nach
 - `src/daten/modell.ts` — die Typen, die Formatwerte, die Reihenfolge des Funnels
 - `src/daten/felder.ts` — das tolerante Lesen einzelner Frontmatter-Felder
 - `src/daten/namen.ts` — Dateinamen und Terminspannen

@@ -1,7 +1,9 @@
-import { Notice, type TFile } from "obsidian";
+import { Notice, type App, type TFile } from "obsidian";
 import type { Datenzugriff } from "../daten/lesen";
 import type { Datenschreiber } from "../daten/schreiben";
 import { verwaisteVerweise } from "../daten/projektion";
+import { nachAgeordnet, Nachtragen } from "../daten/migration";
+import { BestaetigenModal } from "./rasterModale";
 import {
 	KONFERENZSTATUS,
 	KONFERENZSTATUS_TITEL,
@@ -46,6 +48,7 @@ const MONATE = [
  */
 export class Konferenzuebersicht {
 	constructor(
+		private app: App,
 		private daten: Datenzugriff,
 		private schreiber: Datenschreiber,
 		private notizOeffnen: (datei: TFile) => void,
@@ -72,6 +75,7 @@ export class Konferenzuebersicht {
 			this.konferenzAnlegen(karten.map((karte) => karte.konferenz.name)),
 		);
 
+		this.nachtraegeZeichnen(buehne);
 		this.beanstandungenZeichnen(buehne);
 
 		if (karten.length === 0) {
@@ -129,6 +133,53 @@ export class Konferenzuebersicht {
 				imPool: eigeneBeitraege.filter((beitrag) => beitrag.bloecke.length === 0).length,
 			};
 		});
+	}
+
+	/**
+	 * Notizen, die eine ältere Version angelegt hat, kennen neuere Felder nicht.
+	 * Schaden entsteht dadurch keiner — gelesen wird tolerant —, aber Obsidian
+	 * zeigt eine Eigenschaft nicht an, die in der Datei fehlt. Deshalb dieser
+	 * Hinweis: **erkannt vom Plugin, ausgeführt auf Klick.** Von selbst schreibt
+	 * es nach einem Update in keine einzige Notiz.
+	 */
+	private nachtraegeZeichnen(buehne: HTMLElement): void {
+		const nachtragen = new Nachtragen(this.app);
+		const nachtraege = nachtragen.suchen(this.daten.verwalteteNotizen());
+		if (nachtraege.length === 0) return;
+
+		const kasten = buehne.createDiv({ cls: "sms-nachtrag" });
+		kasten.createDiv({
+			cls: "sms-nachtrag-kopf",
+			text: `${nachtraege.length} Notizen kennen neuere Felder noch nicht`,
+		});
+		kasten.createDiv({
+			cls: "sms-beanstandung",
+			text: `${nachAgeordnet(nachtraege)} — die Felder werden leer ergänzt, nichts Vorhandenes geändert.`,
+		});
+
+		const knopf = kasten.createEl("button", { cls: "sms-chip", text: "Felder ergänzen" });
+		knopf.addEventListener("click", () => void this.nachtragen(nachtragen, nachtraege));
+	}
+
+	private async nachtragen(
+		nachtragen: Nachtragen,
+		nachtraege: ReturnType<Nachtragen["suchen"]>,
+	): Promise<void> {
+		const ja = await new BestaetigenModal(
+			this.app,
+			"Felder ergänzen?",
+			`${nachtraege.length} Notizen bekommen die fehlenden Felder leer hinzugefügt ` +
+				`(${nachAgeordnet(nachtraege)}). Vorhandene Werte und Prosa bleiben unangetastet.`,
+			"Ergänzen",
+		).frage();
+		if (!ja) return;
+
+		try {
+			const gezaehlt = await nachtragen.alleNachtragen(nachtraege);
+			new Notice(`${gezaehlt} Notizen ergänzt.`);
+		} catch (fehler) {
+			new Notice(`Das Ergänzen brach ab: ${String(fehler)}`);
+		}
 	}
 
 	/**

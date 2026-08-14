@@ -49,6 +49,7 @@ export class SmsView extends ItemView {
 		const oeffnen = (datei: TFile) => void this.notizOeffnen(datei);
 
 		this.uebersicht = new Konferenzuebersicht(
+			plugin.app,
 			this.daten,
 			this.schreiber,
 			oeffnen,
