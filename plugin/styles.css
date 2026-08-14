@@ -500,8 +500,17 @@
 	gap: 8px;
 }
 
+/*
+ * Gestrichen ist ein Ausgang, kein Fehler — die Spalte war zu laut. Der feste
+ * Farbwert kommt aus der Absprache; damit die Überschrift darauf in hellem wie
+ * dunklem Theme lesbar bleibt, bekommt sie einen eigenen dunklen Ton.
+ */
 .sms-spalte-gestrichen {
-	background: var(--background-modifier-error-hover);
+	background: #f6b6c2;
+}
+
+.sms-spalte-gestrichen .sms-spalte-kopf {
+	color: #6b3a45;
 }
 
 .sms-spalte-kopf {
