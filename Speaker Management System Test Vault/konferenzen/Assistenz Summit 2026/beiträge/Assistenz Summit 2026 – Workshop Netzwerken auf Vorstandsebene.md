@@ -1,13 +1,14 @@
 ---
 type: beitrag
 konferenz: "[[Assistenz Summit 2026]]"
-speaker: ["[[Bettina Kuraszkiewicz]]"]
+speaker:
+  - "[[Bettina Kuraszkiewicz]]"
 titel: "Workshop: Netzwerken auf Vorstandsebene"
 format: workshop
 dauer: 180
 max_teilnehmer: 20
-block: b7
-track: t4
+block: b11
+track: t2
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
