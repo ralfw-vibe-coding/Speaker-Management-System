@@ -656,6 +656,13 @@
 	color: var(--text-faint);
 }
 
+.sms-blockplaetze {
+	margin-top: 6px;
+	font-size: 0.9em;
+	color: var(--text-faint);
+	line-height: 1.3;
+}
+
 .sms-fixblock {
 	background: var(--background-secondary);
 	border-radius: 6px;

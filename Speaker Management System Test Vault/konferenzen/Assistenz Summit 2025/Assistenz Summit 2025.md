@@ -3,6 +3,7 @@ type: konferenz
 untertitel: "Zwischen Anspruch und Alltag"
 veranstalter: "[[Acme Events]]"
 status: gelaufen
+teilnehmer: 140
 honorarbudget: 12000
 tracks:
   - id: t1

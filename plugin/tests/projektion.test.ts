@@ -6,6 +6,8 @@ import {
 	frueherGehalten,
 	heimatlos,
 	parallelStehende,
+	plaetzeEinesBlocks,
+	plaetzeEinesSlots,
 	slotZustand,
 	ueberschneidungen,
 	verschoben,
@@ -187,6 +189,84 @@ describe("zielBloecke", () => {
 	it("am Ende des Tages bleibt er kürzer, statt zu erfinden", () => {
 		const lang = beitrag({ bloecke: ["b3", "b4"] });
 		assert.deepEqual(zielBloecke(lang, eigenerTag, "b4"), ["b4"]);
+	});
+});
+
+describe("plaetzeEinesSlots", () => {
+	it("ein leerer Slot bietet niemandem einen Platz", () => {
+		assert.equal(plaetzeEinesSlots(undefined, 400), undefined);
+	});
+
+	it("ohne beide Angaben ist die Zahl unbekannt, nicht null", () => {
+		assert.equal(plaetzeEinesSlots(beitrag(), undefined), undefined);
+	});
+
+	it("nimmt den Raum, wenn der Beitrag nichts vorgibt", () => {
+		assert.equal(plaetzeEinesSlots(beitrag(), 150), 150);
+	});
+
+	it("nimmt den Wunsch, wenn der Raum nichts vorgibt", () => {
+		assert.equal(plaetzeEinesSlots(beitrag({ maxTeilnehmer: 20 }), undefined), 20);
+	});
+
+	it("nimmt das Minimum — der Wunsch ist ein Wunsch, der Raum eine Wand", () => {
+		assert.equal(plaetzeEinesSlots(beitrag({ maxTeilnehmer: 20 }), 400), 20);
+		assert.equal(plaetzeEinesSlots(beitrag({ maxTeilnehmer: 40 }), 30), 30);
+	});
+});
+
+describe("plaetzeEinesBlocks", () => {
+	const eigene = konferenz({
+		tracks: [
+			track("t1", "Bühne", { kapazitaet: 400 }),
+			track("t2", "Werkstatt", { kapazitaet: 30 }),
+		],
+		tage: [
+			tag("2026-11-04", ["t1", "t2"], [
+				block("b1", "09:00", "09:30", { plenar: true }),
+				block("b2", "09:30", "10:00", { fix: "Pause" }),
+				block("b3", "10:00", "10:45"),
+			]),
+		],
+	});
+	const eigenerTag = eigene.tage[0];
+	const kapazitaet = (_blockId: string, trackId?: string) =>
+		eigene.tracks.find((eigener) => eigener.id === trackId)?.kapazitaet;
+
+	it("zählt die belegten Slots zusammen", () => {
+		const beitraege = [
+			beitrag({ bloecke: ["b3"], track: "t1" }),
+			beitrag({ bloecke: ["b3"], track: "t2", maxTeilnehmer: 20 }),
+		];
+		const gezaehlt = plaetzeEinesBlocks(eigene, eigenerTag, eigenerTag.bloecke[2], beitraege, kapazitaet);
+		assert.equal(gezaehlt.plaetze, 420);
+		assert.equal(gezaehlt.frei, 0);
+	});
+
+	it("ein leerer Slot zählt nicht mit, sondern als frei", () => {
+		const beitraege = [beitrag({ bloecke: ["b3"], track: "t2", maxTeilnehmer: 20 })];
+		const gezaehlt = plaetzeEinesBlocks(eigene, eigenerTag, eigenerTag.bloecke[2], beitraege, kapazitaet);
+		assert.equal(gezaehlt.plaetze, 20);
+		assert.equal(gezaehlt.frei, 1);
+	});
+
+	it("ein Beitrag ohne jede Zahl bleibt unbekannt statt null", () => {
+		const beitraege = [beitrag({ bloecke: ["b3"], track: "t1" })];
+		const gezaehlt = plaetzeEinesBlocks(eigene, eigenerTag, eigenerTag.bloecke[2], beitraege, () => undefined);
+		assert.equal(gezaehlt.unbekannt, 1);
+		assert.equal(gezaehlt.plaetze, 0);
+	});
+
+	it("ein Fixblock hat keine Plätze", () => {
+		const gezaehlt = plaetzeEinesBlocks(eigene, eigenerTag, eigenerTag.bloecke[1], [], kapazitaet);
+		assert.deepEqual(gezaehlt, { plaetze: 0, unbekannt: 0, frei: 0 });
+	});
+
+	it("der plenare Block ist ein Slot, nicht drei", () => {
+		const beitraege = [beitrag({ bloecke: ["b1"] })];
+		const gezaehlt = plaetzeEinesBlocks(eigene, eigenerTag, eigenerTag.bloecke[0], beitraege, () => 400);
+		assert.equal(gezaehlt.plaetze, 400);
+		assert.equal(gezaehlt.frei, 0);
 	});
 });
 

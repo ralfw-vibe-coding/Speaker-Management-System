@@ -11,6 +11,8 @@ import {
 	minuten,
 	nachZeit,
 	parallelStehende,
+	plaetzeEinesBlocks,
+	plaetzeEinesSlots,
 	slotZustand,
 	ueberschneidungen,
 	verschoben,
@@ -299,7 +301,7 @@ export class Agenda {
 			}
 
 			const block = eintrag.block;
-			this.zeitZeichnen(raster, block, zeile);
+			this.zeitZeichnen(raster, block, zeile, tag, beitraege);
 
 			// Ein Fixblock hat keine Slots: Pause, Registrierung, Abendprogramm.
 			if (block.fix) {
@@ -399,6 +401,9 @@ export class Agenda {
 			text: speaker ?? "Speaker noch offen",
 		});
 
+		// Raum und Kapazität kaskadieren; sie entscheiden über die Plätze.
+		const ort = raumFuer(konferenz, block.id, trackId);
+
 		const fuss = zelle.createDiv({ cls: "sms-slot-fuss" });
 		if (block.plenar) fuss.createSpan({ cls: "sms-abzeichen", text: "plenar" });
 		if (beitrag.format) {
@@ -415,6 +420,21 @@ export class Agenda {
 			fuss.createSpan({ cls: "sms-abzeichen", text: `${beitrag.bloecke.length} Blöcke` });
 		}
 
+		// Die Plätze dieses Slots: das Minimum aus Wunsch und Raum.
+		const plaetze = plaetzeEinesSlots(beitrag, ort.kapazitaet);
+		if (plaetze !== undefined) {
+			fuss.createSpan({
+				cls: "sms-abzeichen",
+				text: `${plaetze} Plätze`,
+				attr: {
+					title:
+						beitrag.maxTeilnehmer !== undefined && ort.kapazitaet !== undefined
+							? `Beitrag für ${beitrag.maxTeilnehmer}, Raum für ${ort.kapazitaet}`
+							: "aus Beitrag oder Raum",
+				},
+			});
+		}
+
 		// Ein Beitrag darf über mehrere Blöcke laufen — hier wächst er.
 		if (!this.archiv) {
 			this.werkzeug(fuss, "⤓", () => void this.laenger(beitrag), "Einen Block länger");
@@ -423,8 +443,7 @@ export class Agenda {
 			}
 		}
 
-		// Raum und Kapazität kaskadieren; genannt wird nur die Abweichung.
-		const ort = raumFuer(konferenz, block.id, trackId);
+		// Genannt wird nur die Abweichung vom Track.
 		if (ort.abweichend && ort.raum) {
 			zelle.createDiv({ cls: "sms-slot-hinweis", text: `Raum: ${ort.raum}` });
 		}
@@ -563,6 +582,40 @@ export class Agenda {
 	}
 
 	/**
+	 * Was die Zeile aufnimmt: die Plätze aller belegten Slots zusammen. Bei
+	 * parallelen Workshops ist das die Zahl, die zählt — nicht, wie viele Stühle
+	 * im Haus stehen, sondern wie viele Gäste um elf Uhr etwas zu tun haben.
+	 */
+	private plaetzeZeichnen(zeit: HTMLElement, block: Block, tag: Tag, beitraege: Beitrag[]): void {
+		const konferenz = this.konferenz;
+		if (!konferenz || block.fix) return;
+
+		const gezaehlt = plaetzeEinesBlocks(konferenz, tag, block, beitraege, (blockId, trackId) =>
+			raumFuer(konferenz, blockId, trackId).kapazitaet,
+		);
+		if (gezaehlt.plaetze === 0 && gezaehlt.unbekannt === 0) return;
+
+		const knapp =
+			konferenz.teilnehmer !== undefined &&
+			gezaehlt.unbekannt === 0 &&
+			gezaehlt.plaetze < konferenz.teilnehmer;
+
+		const zeile = zeit.createDiv({
+			cls: knapp ? "sms-blockplaetze sms-hinweis-rot" : "sms-blockplaetze",
+		});
+		zeile.setText(
+			knapp
+				? `${gezaehlt.plaetze} von ${konferenz.teilnehmer} Plätzen`
+				: `${gezaehlt.plaetze} Plätze`,
+		);
+
+		const offen: string[] = [];
+		if (gezaehlt.frei > 0) offen.push(`+${gezaehlt.frei} frei`);
+		if (gezaehlt.unbekannt > 0) offen.push(`${gezaehlt.unbekannt} ohne Zahl`);
+		if (offen.length > 0) zeit.createDiv({ cls: "sms-blockplaetze", text: offen.join(", ") });
+	}
+
+	/**
 	 * Zwischen zwei Blöcken: eine Lücke ist unverplante Zeit, eine
 	 * Überschneidung ein Fehler im Raster. Beides fällt sonst niemandem auf,
 	 * weil das Gitter die Zeilen bündig untereinander zeichnet.
@@ -589,12 +642,20 @@ export class Agenda {
 		);
 	}
 
-	private zeitZeichnen(raster: HTMLElement, block: Block, zeile: number): void {
+	private zeitZeichnen(
+		raster: HTMLElement,
+		block: Block,
+		zeile: number,
+		tag?: Tag,
+		beitraege: Beitrag[] = [],
+	): void {
 		const zeit = raster.createDiv({ cls: "sms-zeit" });
 		zeit.style.gridRow = String(zeile);
 		zeit.style.gridColumn = "1";
 		zeit.createDiv({ text: block.von ?? "" });
 		zeit.createDiv({ cls: "sms-zeit-bis", text: block.bis ?? "" });
+
+		if (tag) this.plaetzeZeichnen(zeit, block, tag, beitraege);
 
 		if (this.archiv) return;
 		const werkzeuge = zeit.createDiv({ cls: "sms-werkzeuge" });

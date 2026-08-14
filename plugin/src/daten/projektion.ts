@@ -134,6 +134,79 @@ export function zeitgleich(beitrag: Beitrag, alle: Beitrag[]): Beitrag[] {
 	);
 }
 
+/**
+ * Die Plätze eines Slots: das Minimum aus dem, was der Beitrag verträgt, und
+ * dem, was der Raum fasst. Nur eine der beiden Zahlen zu nehmen wäre falsch —
+ * die eine ist ein Wunsch, die andere eine Wand.
+ *
+ * `undefined` heißt: nicht bezifferbar. Ein leerer Slot bietet niemandem einen
+ * Platz, und ein Beitrag ohne beide Angaben sagt nichts über seine Größe.
+ */
+export function plaetzeEinesSlots(
+	beitrag: Beitrag | undefined,
+	kapazitaet: number | undefined,
+): number | undefined {
+	if (!beitrag) return undefined;
+
+	const zahlen = [beitrag.maxTeilnehmer, kapazitaet].filter(
+		(wert): wert is number => wert !== undefined,
+	);
+	return zahlen.length === 0 ? undefined : Math.min(...zahlen);
+}
+
+/** Was eine Blockzeile insgesamt aufnimmt. */
+export interface Blockplaetze {
+	/** Summe über die Slots, die belegt sind und eine Zahl haben. */
+	plaetze: number;
+	/** Belegte Slots, zu denen weder Beitrag noch Raum etwas sagen. */
+	unbekannt: number;
+	/** Slots ohne Beitrag — sie bieten niemandem einen Platz. */
+	frei: number;
+}
+
+/**
+ * Wie viele Menschen das Programm zu dieser Zeit aufnimmt. Gezählt werden nur
+ * belegte Slots: Ein Raum, in dem nichts stattfindet, ist kein Angebot, auch
+ * wenn Stühle darin stehen.
+ */
+export function plaetzeEinesBlocks(
+	konferenz: Konferenz,
+	tag: Tag,
+	block: Block,
+	beitraege: Beitrag[],
+	kapazitaetVon: (blockId: string, trackId?: string) => number | undefined,
+): Blockplaetze {
+	const gezaehlt: Blockplaetze = { plaetze: 0, unbekannt: 0, frei: 0 };
+	if (block.fix) return gezaehlt;
+
+	const zaehlen = (trackId?: string) => {
+		const beitrag = beitraege.find(
+			(eigener) =>
+				eigener.bloecke.includes(block.id) &&
+				(trackId === undefined || eigener.track === trackId),
+		);
+		if (!beitrag) {
+			gezaehlt.frei++;
+			return;
+		}
+		const plaetze = plaetzeEinesSlots(beitrag, kapazitaetVon(block.id, trackId));
+		if (plaetze === undefined) gezaehlt.unbekannt++;
+		else gezaehlt.plaetze += plaetze;
+	};
+
+	if (block.plenar) {
+		zaehlen();
+		return gezaehlt;
+	}
+
+	for (const track of konferenz.tracks) {
+		if (!tag.tracks.includes(track.id)) continue;
+		if (block.nur.length > 0 && !block.nur.includes(track.id)) continue;
+		zaehlen(track.id);
+	}
+	return gezaehlt;
+}
+
 /** Eine Notiz, die das Plugin nicht einordnen kann, samt Grund. */
 export interface Beanstandung {
 	datei: Beitrag["datei"];

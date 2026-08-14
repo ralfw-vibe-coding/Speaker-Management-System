@@ -104,6 +104,7 @@ export class Datenzugriff {
 					veranstalter: linkName(fm.veranstalter),
 					status: text(fm.status),
 					honorarbudget: zahl(fm.honorarbudget),
+					teilnehmer: zahl(fm.teilnehmer),
 					deadlineProgramm: text(fm.deadline_programm),
 					tracks: tracksLesen(fm.tracks),
 					tage: tageLesen(fm.tage),

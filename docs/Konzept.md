@@ -307,6 +307,10 @@ Block-Attribute: `plenar` belegt alle Tracks des Tages, `fix` ist ein Programmpu
 ohne Speaker (Pause, Registrierung, Abendprogramm), `nur` schränkt den Block auf
 bestimmte Tracks ein.
 
+`teilnehmer` sind die erwarteten Gäste — die Zahl, die der Veranstalter nennt. Sie ist
+kein Selbstzweck, sondern der Maßstab für die Plätze je Block: Ohne sie ist „74 Plätze"
+eine Zahl ohne Vergleich.
+
 Der `untertitel` ist der thematische Zusatz, der im Kopf der Sichten neben dem
 Veranstalter und der Datumsspanne steht. Die Spanne selbst wird aus `tage` gerechnet
 und nicht gepflegt.
@@ -435,6 +439,22 @@ ableiten: Ein Workshop dauert 90 Minuten oder vier Stunden, je nachdem. Wo beide
 dastehen, vergleicht das Plugin sie und meldet, wenn der Platz nicht reicht. Fixblöcke,
 über die ein langer Workshop hinwegläuft, zählen dabei nicht mit — in der Kaffeepause
 arbeitet niemand.
+
+#### Plätze
+
+**Die Plätze eines Slots sind das Minimum aus `max_teilnehmer` und `kapazitaet`** — dem
+Wunsch des Beitrags und der Wand des Raums. Nur eine der beiden Zahlen zu nehmen wäre
+falsch: Ein Workshop für 20 im Raum für 30 hat 20 Plätze, derselbe Workshop im Raum für
+15 hat 15.
+
+**Je Blockzeile werden sie aufsummiert.** Das ist die Zahl, die bei parallelen Workshops
+zählt: Wie viele Gäste nimmt das Programm um elf Uhr auf? Steht die erwartete
+Teilnehmerzahl der Konferenz dagegen, wird daraus eine Aussage — „74 von 180".
+
+Leere Slots zählen **nicht** mit. Ein Raum, in dem nichts stattfindet, bietet niemandem
+einen Platz, auch wenn Stühle darin stehen; er erscheint daneben als „+1 frei". Ein
+belegter Slot, zu dem weder Beitrag noch Raum eine Zahl sagen, wird als „ohne Zahl"
+gezählt statt als Null — sonst sähe eine Lücke im Wissen aus wie eine Lücke im Programm.
 
 `max_teilnehmer` ist die Obergrenze, die der Beitrag selbst mitbringt — meist ein
 Workshop, der in kleiner Runde stattfinden soll. Sie ist optional und hat nichts mit der
@@ -578,6 +598,8 @@ Beitragsnotizen. Es gibt keine Datenbank neben den Notizen.
 | „1 im Pool" | ein Beitrag ohne `block` |
 | „Assistenz Summit 2025 · bezahlt · ★★★★" | die Engagements, die auf diesen Speaker zeigen, mit `status` und `bewertung` |
 | „Saal Elbe · 150 Plätze" am Slot | der Track, überschrieben durch einen Eintrag in `slots` |
+| „20 Plätze" auf der Karte | Minimum aus `max_teilnehmer` und `kapazitaet` |
+| „74 von 180 Plätzen" an der Blockzeile | Summe der Slots dieser Zeile gegen `teilnehmer` |
 | „⚠ Workshop für 40, Raum für 30" | `max_teilnehmer` des Beitrags gegen die `kapazitaet` des Slots |
 
 Nichts davon wird gespeichert — deshalb hat das Engagement keine Beitragsliste im

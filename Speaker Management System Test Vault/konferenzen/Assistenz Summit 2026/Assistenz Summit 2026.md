@@ -4,6 +4,7 @@ untertitel: "Die Zukunft der Vorstandsassistenz"
 veranstalter: "[[Acme Events]]"
 status: planung
 deadline_programm: 2026-09-30
+teilnehmer: 180
 honorarbudget: 25000
 tracks:
   - id: t1

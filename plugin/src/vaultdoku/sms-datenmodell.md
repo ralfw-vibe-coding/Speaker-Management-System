@@ -133,10 +133,16 @@ aller Engagements und Beiträge dieser Konferenz.
 | `veranstalter` | Wikilink | |
 | `status` | `idee`, `planung`, `programm-steht`, `gelaufen`, `abgesagt` | |
 | `honorarbudget` | Zahl | Rahmen, gegen den die Engagement-Honorare laufen |
+| `teilnehmer` | Zahl | erwartete Gäste; Maßstab für die Plätze je Block |
 | `deadline_programm` | Datum `JJJJ-MM-TT` | |
 | `tracks` | Liste | die Spalten des Rasters, konferenzweit |
 | `tage` | Liste | je Tag die Zeilen des Rasters |
 | `slots` | Liste | **nur Ausnahmen** von Raum und Kapazität |
+
+Die **Plätze eines Slots** sind das Minimum aus `max_teilnehmer` des Beitrags und der
+`kapazitaet` seines Raums — der Wunsch gegen die Wand. Je Blockzeile werden sie
+aufsummiert: So viele Gäste nimmt das Programm zu dieser Zeit auf. Leere Slots zählen
+nicht mit, ein Raum ohne Beitrag ist kein Angebot. Gerechnet, nirgends gespeichert.
 
 Bei `gelaufen` und `abgesagt` gilt das Programm als Archiv: Die Agenda ist gesperrt, die
 Statustafel bleibt bedienbar, weil Rechnungen und Zahlungen erst danach kommen.

@@ -173,6 +173,8 @@ export interface Konferenz {
 	veranstalter?: string;
 	status?: string;
 	honorarbudget?: number;
+	/** Erwartete Gäste — der Maßstab, gegen den die Plätze je Block gerechnet werden. */
+	teilnehmer?: number;
 	deadlineProgramm?: string;
 	tracks: Track[];
 	tage: Tag[];

@@ -65,6 +65,8 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
 
 ## Kennzahlen, die stimmen sollten
 
+- 180 erwartete Gäste — der Maßstab für die Plätze je Blockzeile. Die Workshop-Zeilen
+  bleiben deutlich darunter, die Vortragszeilen liegen darüber.
 - Honorarsumme **18.400 €** von 25.000 € Budget — aus sechs Engagements: 4.000 €,
   3.400 €, 3.000 €, 2.900 €, 2.700 €, 2.400 €. Die übrigen sieben tragen keinen Betrag,
   darunter Sonja Ehrlich, mit der noch verhandelt wird.
