@@ -147,9 +147,10 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
 - **Ein einziger View** mit interner Umschaltung zwischen Konferenzübersicht,
   Speakerkatalog, Statustafel und Agenda — kein eigener View-Typ je Sicht.
 - **Details in der Notiz, nicht im Formular.** Ein Klick auf eine Karte öffnet die
-  Notiz im Nachbar-Pane. Ausgenommen sind einzelne Zahlen, die man im Gespräch ändert:
-  Honorar und Reisekosten werden auf der Statustafel-Karte eingetippt. Die Regel richtet
-  sich gegen Eingabemasken, nicht gegen ein Feld.
+  Notiz im Nachbar-Pane. Ausgenommen sind einzelne Zahlen, die man im Gespräch
+  oder im Rückblick nachträgt: Honorar, Reisekosten und Bewertung auf der
+  Statustafel-Karte, die Teilnehmerbegrenzung auf der Slot-Karte. Die Regel richtet sich
+  gegen Eingabemasken, nicht gegen ein Feld.
 - **Das Plugin besitzt die Dateien.** Notizen entstehen durch den View, nicht von Hand;
   damit sind Namen eindeutig und Frontmatter korrekt.
 - **Eng schreiben, tolerant lesen.** Beim Schreiben nur die eigenen Felder anfassen,

@@ -5,6 +5,7 @@ import { heimatlos } from "../daten/projektion";
 import { StreichenModal } from "./StreichenModal";
 import {
 	FUNNEL,
+	istArchiv,
 	FUNNEL_TITEL,
 	ZUGESAGT_UND_WEITER,
 	type Beitrag,
@@ -247,6 +248,8 @@ export class Statustafel {
 		this.betragZeichnen(zeile, kasten, engagement, "honorar", "Honorar");
 		this.betragZeichnen(zeile, kasten, engagement, "reisekosten", "Reise");
 
+		this.bewertungZeichnen(kasten, engagement);
+
 		if (karte.gesamt > 0 && karte.erledigt > 0) {
 			const balken = kasten.createDiv({ cls: "sms-balken" });
 			const fuellung = balken.createDiv({ cls: "sms-balken-fuellung" });
@@ -277,6 +280,37 @@ export class Statustafel {
 			hinweise.createDiv({
 				cls: "sms-hinweis sms-hinweis-gelb",
 				text: `⏱ ${karte.wochenOhneAntwort} Wochen ohne Antwort`,
+			});
+		}
+	}
+
+	/**
+	 * Die Bewertung als Sterne zum Anklicken — der fünfte Stern setzt fünf, ein
+	 * Klick auf den aktuellen Wert löscht ihn wieder. Sie erscheint erst, wenn
+	 * sie etwas bedeuten kann: nach der Rechnung oder wenn die Konferenz
+	 * gelaufen ist. Vorher gibt es nichts zu bewerten.
+	 */
+	private bewertungZeichnen(kasten: HTMLElement, engagement: Engagement): void {
+		const rueckblick =
+			engagement.bewertung !== undefined ||
+			engagement.status === "rechnung" ||
+			engagement.status === "bezahlt" ||
+			istArchiv(this.konferenz);
+		if (!rueckblick) return;
+
+		const zeile = kasten.createDiv({ cls: "sms-bewertung" });
+		for (const stufe of [1, 2, 3, 4, 5]) {
+			const gefuellt = (engagement.bewertung ?? 0) >= stufe;
+			const stern = zeile.createSpan({
+				cls: gefuellt ? "sms-stern is-gefuellt" : "sms-stern",
+				text: gefuellt ? "★" : "☆",
+				attr: { title: `${stufe} von 5` },
+			});
+			stern.addEventListener("click", (ereignis) => {
+				ereignis.stopPropagation();
+				// Noch einmal auf denselben Stern: Bewertung wieder offen.
+				const neu = engagement.bewertung === stufe ? undefined : stufe;
+				void this.betragSchreiben(engagement, "bewertung", neu);
 			});
 		}
 	}
@@ -337,12 +371,12 @@ export class Statustafel {
 
 	private async betragSchreiben(
 		engagement: Engagement,
-		feld: "honorar" | "reisekosten",
+		feld: "honorar" | "reisekosten" | "bewertung",
 		wert: number | undefined,
 	): Promise<void> {
 		if (engagement[feld] === wert) return;
 		try {
-			await this.schreiber.betragSetzen(engagement.datei, feld, wert);
+			await this.schreiber.zahlSetzen(engagement.datei, feld, wert);
 		} catch (fehler) {
 			new Notice(`Der Betrag ließ sich nicht schreiben: ${String(fehler)}`);
 		}

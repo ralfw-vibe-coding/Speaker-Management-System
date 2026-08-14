@@ -420,6 +420,8 @@ export class Agenda {
 			fuss.createSpan({ cls: "sms-abzeichen", text: `${beitrag.bloecke.length} Blöcke` });
 		}
 
+		this.maxTeilnehmerZeichnen(fuss, zelle, beitrag);
+
 		// Die Plätze dieses Slots: das Minimum aus Wunsch und Raum.
 		const plaetze = plaetzeEinesSlots(beitrag, ort.kapazitaet);
 		if (plaetze !== undefined) {
@@ -1134,6 +1136,65 @@ export class Agenda {
 			return { tag, block, track };
 		}
 		return undefined;
+	}
+
+	/**
+	 * Die Teilnehmerbegrenzung des Beitrags zum Anklicken. Sie steht nur da,
+	 * wenn sie gesetzt ist — sonst erscheint sie beim Überfahren der Karte.
+	 * Ein Vortrag im großen Saal braucht sie nicht, ein Workshop schon.
+	 */
+	private maxTeilnehmerZeichnen(fuss: HTMLElement, zelle: HTMLElement, beitrag: Beitrag): void {
+		if (this.archiv) return;
+
+		const wert = beitrag.maxTeilnehmer;
+		const anzeige = fuss.createSpan({
+			cls: wert === undefined ? "sms-abzeichen sms-max is-offen" : "sms-abzeichen sms-max",
+			text: wert === undefined ? "max. —" : `max. ${wert}`,
+			attr: { title: "Wie viele Teilnehmende der Beitrag verträgt" },
+		});
+
+		anzeige.addEventListener("click", (ereignis) => {
+			ereignis.stopPropagation();
+
+			const feld = fuss.createEl("input", { cls: "sms-betragfeld" });
+			feld.type = "number";
+			feld.value = wert === undefined ? "" : String(wert);
+			anzeige.replaceWith(feld);
+
+			// In einem ziehbaren Element ließe sich sonst nichts markieren.
+			zelle.draggable = false;
+			feld.focus();
+			feld.select();
+
+			let fertig = false;
+			const beenden = (schreiben: boolean) => {
+				if (fertig) return;
+				fertig = true;
+				zelle.draggable = true;
+				if (!schreiben) {
+					feld.replaceWith(anzeige);
+					return;
+				}
+				const zahl = feld.value.trim() === "" ? undefined : Number(feld.value);
+				void this.zahlSchreiben(beitrag, Number.isFinite(zahl) ? zahl : undefined);
+			};
+
+			feld.addEventListener("keydown", (taste) => {
+				if (taste.key === "Enter") beenden(true);
+				if (taste.key === "Escape") beenden(false);
+			});
+			feld.addEventListener("blur", () => beenden(true));
+			feld.addEventListener("click", (eigenes) => eigenes.stopPropagation());
+		});
+	}
+
+	private async zahlSchreiben(beitrag: Beitrag, wert: number | undefined): Promise<void> {
+		if (beitrag.maxTeilnehmer === wert) return;
+		try {
+			await this.schreiber.zahlSetzen(beitrag.datei, "max_teilnehmer", wert);
+		} catch (fehler) {
+			new Notice(`Die Teilnehmerzahl ließ sich nicht schreiben: ${String(fehler)}`);
+		}
 	}
 
 	/**

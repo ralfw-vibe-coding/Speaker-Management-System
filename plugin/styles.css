@@ -958,3 +958,36 @@
 	padding: 0 4px;
 	font-size: 1em;
 }
+
+/* Die Bewertung im Rückblick: Sterne zum Anklicken. */
+.sms-bewertung {
+	margin-top: 6px;
+	letter-spacing: 1px;
+	cursor: pointer;
+}
+
+.sms-stern {
+	color: var(--text-faint);
+}
+
+.sms-stern.is-gefuellt {
+	color: var(--color-yellow);
+}
+
+.sms-bewertung:hover .sms-stern {
+	color: var(--color-yellow);
+}
+
+/* Die Teilnehmerbegrenzung stört nicht, wo sie fehlt — sie kommt beim Überfahren. */
+.sms-max {
+	cursor: text;
+}
+
+.sms-max.is-offen {
+	display: none;
+	color: var(--text-faint);
+}
+
+.sms-slot:hover .sms-max.is-offen {
+	display: inline-flex;
+}

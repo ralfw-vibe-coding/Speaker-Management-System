@@ -118,14 +118,14 @@ export class Datenschreiber {
 	}
 
 	/**
-	 * Setzt einen Betrag am Engagement — Honorar oder Reisekosten. Ohne Wert
-	 * verschwindet das Feld: Leer heißt „noch nicht vereinbart", und ein
-	 * gelöschter Schlüssel sagt das deutlicher als eine Null, die wie ein
-	 * vereinbarter Betrag von 0 € aussähe.
+	 * Setzt eine einzelne Zahl in einer Notiz — die Werte, die man im Gespräch
+	 * oder im Rückblick nachträgt. Ohne Wert verschwindet das Feld: Leer heißt
+	 * „noch nicht vereinbart", und ein gelöschter Schlüssel sagt das deutlicher
+	 * als eine Null, die wie ein vereinbarter Betrag von 0 € aussähe.
 	 */
-	async betragSetzen(
+	async zahlSetzen(
 		datei: TFile,
-		feld: "honorar" | "reisekosten",
+		feld: "honorar" | "reisekosten" | "bewertung" | "max_teilnehmer",
 		wert: number | undefined,
 	): Promise<void> {
 		await this.app.fileManager.processFrontMatter(datei, (fm) => {
