@@ -11,9 +11,14 @@
  * sicher sitzt (7,39:1). Auf allen vier anderen ist der Text dunkel, deshalb
  * steht er hier als eigener Wert und wird nicht dem Theme überlassen.
  *
- * Nicht angefasst werden die **Signalfarben**: Grün für erledigt, Rot für
- * heimatlos, das Rosa der gestrichenen Spalte, die Ampel der Slots. Die sagen
- * etwas und dürfen nicht zur Deko werden.
+ * Auch die **Signale** kommen von hier — Ampel, Warnungen, Funnel-Abzeichen —,
+ * aber sie bleiben Signale: Ein Signal darf zur Palette passen, es darf nur
+ * nicht in ihr verschwinden. Deshalb steht neben jedem der Zweck, und deshalb
+ * ist das Signalgrün kräftig, wo das Salbei der Slots ruhig ist.
+ *
+ * Aus dem Theme kommt im ganzen View keine Farbe mehr. Der einzige fremde Wert
+ * ist das Rosa der gestrichenen Spalte — das hat der Auftraggeber selbst
+ * gewählt.
  */
 .sms-view {
 	--sms-koralle: #E9765B;
@@ -69,6 +74,23 @@
 	--sms-wahl-1: #C4667F;
 	--sms-wahl-2: #E3AABA;
 	--sms-wahl-3: #F6E4E9;
+
+	/*
+	 * Die übrigen Signale, ebenfalls aus der Palettenfamilie statt aus dem Theme.
+	 * Obsidians Blau war der einzige kalte Ton im ganzen View und fiel heraus.
+	 *
+	 * Jeder Slot-Zustand hat einen Rand **und** eine ganz leichte Fläche: Ein
+	 * blasser Rand allein trägt zu wenig Kontrast, die Fläche macht den Zustand
+	 * über die ganze Kachel lesbar.
+	 */
+	--sms-ocker: #C89A5B;
+	--sms-ocker-zart: #FBF4EA;
+	--sms-bernstein: #D9773F;
+	--sms-bernstein-zart: #FDF0E8;
+	--sms-bernstein-schrift: #9C6B1E;
+	--sms-salbei-zart: #F0F5EE;
+	--sms-karmin: #B3435A;
+	--sms-karmin-zart: #FBEDF0;
 
 	/* Der Bereich, in dem man gerade ist. Wird je Reiter überschrieben. */
 	--sms-bereich: var(--sms-koralle);
@@ -335,8 +357,8 @@
 }
 
 .sms-thema.sms-warnung {
-	background: var(--background-modifier-error);
-	color: var(--text-error);
+	background: var(--sms-karmin-zart);
+	color: var(--sms-karmin);
 }
 
 .sms-zeile {
@@ -413,15 +435,15 @@
 .sms-beanstandungen {
 	margin-bottom: 16px;
 	padding: 10px 14px;
-	border: 1px solid var(--color-red);
+	border: 1px solid var(--sms-karmin);
 	border-radius: 8px;
-	background: var(--background-modifier-error);
+	background: var(--sms-karmin-zart);
 	font-size: 0.85em;
 }
 
 .sms-beanstandungen-kopf {
 	font-weight: 600;
-	color: var(--text-error);
+	color: var(--sms-karmin);
 	margin-bottom: 4px;
 }
 
@@ -463,7 +485,7 @@
 }
 
 .sms-status-planung {
-	background: var(--color-blue);
+	background: var(--sms-tuerkis);
 	color: var(--text-on-accent);
 }
 
@@ -478,7 +500,7 @@
 }
 
 .sms-status-abgesagt {
-	background: var(--color-red);
+	background: var(--sms-karmin);
 	color: var(--text-on-accent);
 }
 
@@ -599,15 +621,15 @@
 .sms-status-verhandlung,
 .sms-status-angefragt,
 .sms-status-geantwortet {
-	color: var(--color-orange);
+	color: var(--sms-bernstein);
 }
 
 .sms-status-gestrichen {
-	color: var(--text-error);
+	color: var(--sms-karmin);
 }
 
 .sms-sterne {
-	color: var(--color-yellow);
+	color: var(--sms-bernstein-schrift);
 	letter-spacing: -1px;
 }
 
@@ -647,7 +669,7 @@
 	gap: 10px;
 	min-height: 24px;
 	margin: 4px 0 12px;
-	color: var(--text-error);
+	color: var(--sms-karmin);
 	font-size: 0.85em;
 }
 
@@ -769,8 +791,8 @@
 }
 
 .sms-marke-rot {
-	background: var(--background-modifier-error);
-	color: var(--text-error);
+	background: var(--sms-karmin-zart);
+	color: var(--sms-karmin);
 }
 
 .sms-spalten {
@@ -833,11 +855,11 @@
 .sms-punkt-angefragt,
 .sms-punkt-geantwortet,
 .sms-punkt-verhandlung {
-	background: var(--color-orange);
+	background: var(--sms-bernstein);
 }
 
 .sms-punkt-gestrichen {
-	background: var(--color-red);
+	background: var(--sms-karmin);
 }
 
 .sms-tafel-karte.is-vollstaendig {
@@ -981,9 +1003,9 @@
 }
 
 .sms-zwischenraum.sms-ueberschneidung {
-	color: var(--text-error);
-	border-color: var(--color-red);
-	background: var(--background-modifier-error);
+	color: var(--sms-karmin);
+	border-color: var(--sms-karmin);
+	background: var(--sms-karmin-zart);
 }
 
 .sms-slot {
@@ -1019,15 +1041,19 @@
  */
 .sms-slot-gruen {
 	border-color: var(--sms-salbei);
-	background: #F0F5EE;
+	background: var(--sms-salbei-zart);
 }
 
+/* Gefüllt, aber ohne Zusage: Das soll man sehen, ohne dass es alarmiert. */
 .sms-slot-verdacht {
-	border-color: var(--color-orange);
+	border-color: var(--sms-bernstein);
+	background: var(--sms-bernstein-zart);
 }
 
+/* Erst eine Hälfte da — ein Thema ohne Speaker oder umgekehrt. */
 .sms-slot-halb {
-	border-color: var(--color-blue);
+	border-color: var(--sms-ocker);
+	background: var(--sms-ocker-zart);
 }
 
 .sms-slot-titel {
@@ -1072,12 +1098,12 @@
 .sms-abzeichen-angefragt,
 .sms-abzeichen-geantwortet,
 .sms-abzeichen-verhandlung {
-	background: var(--color-orange);
+	background: var(--sms-bernstein);
 	color: var(--text-on-accent);
 }
 
 .sms-abzeichen-gestrichen {
-	background: var(--color-red);
+	background: var(--sms-karmin);
 	color: var(--text-on-accent);
 }
 
@@ -1099,7 +1125,7 @@
 }
 
 .sms-poolkarte.is-heimatlos {
-	border-color: var(--color-red);
+	border-color: var(--sms-karmin);
 }
 
 .sms-kandidat {
@@ -1198,11 +1224,11 @@
 }
 
 .sms-hinweis-rot {
-	color: var(--text-error);
+	color: var(--sms-karmin);
 }
 
 .sms-hinweis-gelb {
-	color: var(--color-orange);
+	color: var(--sms-bernstein);
 }
 
 /* ------------------------------------------------------------ Speakerfoto */
@@ -1349,11 +1375,11 @@
 }
 
 .sms-stern.is-gefuellt {
-	color: var(--color-yellow);
+	color: var(--sms-bernstein-schrift);
 }
 
 .sms-bewertung:hover .sms-stern {
-	color: var(--color-yellow);
+	color: var(--sms-bernstein-schrift);
 }
 
 /* Die Teilnehmerbegrenzung stört nicht, wo sie fehlt — sie kommt beim Überfahren. */
