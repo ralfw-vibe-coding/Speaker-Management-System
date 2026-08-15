@@ -40,6 +40,11 @@ ob das Frontmatter noch parst.
 - `type` ordnet die Notiz einem der fünf Typen zu: `speaker`, `veranstalter`,
   `konferenz`, `engagement`, `beitrag`. Fehlt oder passt der Wert nicht, ist die Notiz
   für alle Sichten unsichtbar.
+- **Freie Notizen sind erlaubt.** Im Ordner einer Konferenz darf ohne `type` liegen, was
+  man selbst ablegt — Gesprächsnotizen, Angebote, Skizzen. Verlangt wird `type` nur in
+  `engagements/` und `beiträge/` sowie für die Konferenznotiz, die wie ihr Ordner heißt;
+  dort wäre ein fehlendes `type` ein zerschossenes Frontmatter. `type: notiz` nimmt eine
+  Notiz überall ausdrücklich aus.
 - Verweise sind Wikilinks in Anführungszeichen: `veranstalter: "[[Acme Events]]"`.
   Gelesen wird der Name zwischen den Klammern; ein Alias (`[[Name|Anzeige]]`) wird
   toleriert.

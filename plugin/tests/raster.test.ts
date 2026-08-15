@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 import { raumFuer, slotsEinesTages } from "../src/daten/modell";
-import { istPlatzhalterName, ohneVerbotene, tageZwischen } from "../src/daten/namen";
+import { brauchtTyp, istPlatzhalterName, ohneVerbotene, tageZwischen } from "../src/daten/namen";
 import { block, konferenz, tag, track } from "./hilfe";
 
 /**
@@ -141,5 +141,32 @@ describe("Namen", () => {
 			istPlatzhalterName("Assistenz Summit 2026 – Macht ohne Titel", "Assistenz Summit 2026"),
 			false,
 		);
+	});
+});
+
+describe("brauchtTyp", () => {
+	const ordner = "konferenzen";
+
+	it("Engagements und Beiträge müssen einen type tragen — dort legt nur das Plugin ab", () => {
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/engagements/Summit 2026 – Wer.md", ordner), true);
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/beiträge/Summit 2026 – Was.md", ordner), true);
+	});
+
+	it("die Konferenznotiz heißt wie ihr Ordner und muss ihn tragen", () => {
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/Summit 2026.md", ordner), true);
+	});
+
+	it("eine freie Notiz im Konferenzordner darf ohne type bleiben", () => {
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/Gespräch mit Acme.md", ordner), false);
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/material/Angebot.md", ordner), false);
+	});
+
+	it("ausserhalb des Konferenzordners bleibt es streng", () => {
+		assert.equal(brauchtTyp("speaker/Petra Vahlbruch.md", ordner), true);
+		assert.equal(brauchtTyp("veranstalter/Acme Events.md", ordner), true);
+	});
+
+	it("verträgt einen Ordnernamen mit Schrägstrich am Ende", () => {
+		assert.equal(brauchtTyp("konferenzen/Summit 2026/Notiz.md", "konferenzen/"), false);
 	});
 });

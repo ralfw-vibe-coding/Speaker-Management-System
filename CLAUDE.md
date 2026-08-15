@@ -215,6 +215,10 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   oder im Rückblick nachträgt: Honorar, Reisekosten und Bewertung auf der
   Statustafel-Karte, die Teilnehmerbegrenzung auf der Slot-Karte. Die Regel richtet sich
   gegen Eingabemasken, nicht gegen ein Feld.
+- **Eigene Notizen sind erlaubt.** Im Konferenzordner darf ohne `type` liegen, was der
+  Nutzer selbst ablegt — Gesprächsnotizen, Angebote, Skizzen. Beanstandet wird ein
+  fehlendes `type` nur dort, wo das Plugin selbst ablegt: in `engagements/`, `beiträge/`
+  und für die Konferenznotiz. `type: notiz` nimmt eine Notiz überall ausdrücklich aus.
 - **Das Plugin besitzt die Dateien.** Notizen entstehen durch den View, nicht von Hand;
   damit sind Namen eindeutig und Frontmatter korrekt.
 - **Eng schreiben, tolerant lesen.** Beim Schreiben nur die eigenen Felder anfassen,

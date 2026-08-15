@@ -73,3 +73,34 @@ export function tageZwischen(von?: string, bis?: string): string[] {
 	}
 	return tage;
 }
+
+/** Die Unterordner je Konferenz. Stehen so im Konzept und sind nicht konfigurierbar. */
+export const BEITRAGSORDNER = "beiträge";
+export const ENGAGEMENTORDNER = "engagements";
+
+/**
+ * Muss diese Notiz ein `type` tragen, damit das Plugin sie einordnen kann — oder
+ * darf sie eine freie Notiz sein?
+ *
+ * Zuständig ist das Plugin dort, wo es selbst ablegt: in `engagements/` und
+ * `beiträge/`, und für die Konferenznotiz, die wie ihr Ordner heisst. Alles
+ * andere im Konferenzordner gehört dem Menschen — Gesprächsnotizen, Angebote,
+ * Skizzen. Es taucht in keiner Sicht auf, und das ist keine Beanstandung
+ * wert, sondern der Zweck.
+ *
+ * Ausserhalb des Konferenzordners bleibt es streng: Der Speakerordner ist flach
+ * und enthält nur Speaker; eine Notiz ohne `type` ist dort ein zerschossenes
+ * Frontmatter und soll auffallen.
+ */
+export function brauchtTyp(pfad: string, konferenzenOrdner: string): boolean {
+	const gestutzt = konferenzenOrdner.replace(/\/+$/, "");
+	if (gestutzt.length === 0 || !pfad.startsWith(`${gestutzt}/`)) return true;
+
+	const teile = pfad.split("/");
+	const datei = teile[teile.length - 1];
+	const ordner = teile[teile.length - 2] ?? "";
+
+	if (ordner === BEITRAGSORDNER || ordner === ENGAGEMENTORDNER) return true;
+	// Die Konferenznotiz trägt den Namen ihres Ordners.
+	return datei === `${ordner}.md`;
+}

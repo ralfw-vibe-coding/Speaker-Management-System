@@ -1,6 +1,7 @@
 import { App, TFile } from "obsidian";
 import type SmsPlugin from "../main";
 import { eintraege, jaNein, liste, linkName, text, zahl, zuordnung } from "./felder";
+import { brauchtTyp } from "./namen";
 import type {
 	Aufgaben,
 	Beitrag,
@@ -180,9 +181,17 @@ export class Datenzugriff {
 		return this.verwalteteNotizen()
 			.map((datei) => {
 				const typ = this.frontmatter(datei)?.type;
+
+				// Eine freie Notiz im Konferenzordner ist kein Fehler, sondern der
+				// Zweck des Ordners: Gesprächsnotizen, Angebote, Skizzen. Das Plugin
+				// zeigt sie nirgends und beanstandet sie deshalb auch nicht.
 				if (typ === undefined) {
+					if (!brauchtTyp(datei.path, this.plugin.settings.konferenzenOrdner)) return undefined;
 					return { datei, text: "ohne `type` — steht das Frontmatter richtig da?" };
 				}
+
+				// Ausdrücklich ausgenommen: „gehört mir, nicht dem Plugin."
+				if (typ === "notiz") return undefined;
 				if (typeof typ !== "string" || !bekannt.has(typ)) {
 					return { datei, text: `unbekannter type: ${String(typ)}` };
 				}

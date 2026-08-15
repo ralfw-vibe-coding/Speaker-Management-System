@@ -1,12 +1,17 @@
 import { App, normalizePath, TFile, TFolder } from "obsidian";
 import type SmsPlugin from "../main";
 import type { Block, Konferenz, Strang, Tag, Track } from "./modell";
-import { HOECHSTENS_TAGE, istPlatzhalterName, ohneVerbotene, tageZwischen, vorlaeufigerName, VERBOTENE_ZEICHEN } from "./namen";
+import {
+	BEITRAGSORDNER,
+	ENGAGEMENTORDNER,
+	HOECHSTENS_TAGE,
+	istPlatzhalterName,
+	ohneVerbotene,
+	tageZwischen,
+	vorlaeufigerName,
+	VERBOTENE_ZEICHEN,
+} from "./namen";
 import { geruest, schemaFuer } from "./schema";
-
-/** Die Unterordner je Konferenz. Stehen so im Konzept und sind nicht konfigurierbar. */
-const BEITRAGSORDNER = "beiträge";
-const ENGAGEMENTORDNER = "engagements";
 
 
 /**

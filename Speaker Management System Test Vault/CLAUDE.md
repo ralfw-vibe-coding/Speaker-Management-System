@@ -66,6 +66,24 @@ Fehler, sondern der Normalfall am Anfang der Planung.
 - **`obsidian-cli`** — Obsidians eingebaute Kommandozeile für Backlinks, Properties,
   Tasks und Tags, wenn die Frage von Obsidians eigener Metadaten-Logik profitiert.
 
+## Eigene Notizen sind erlaubt
+
+Im Ordner einer Konferenz darf **alles liegen, was man selbst ablegen will** —
+Gesprächsnotizen, Angebote, Skizzen, Checklisten. Das Plugin zeigt sie nirgends an und
+beanstandet sie auch nicht; sie brauchen kein Frontmatter und kein `type`.
+
+Zuständig ist das Plugin nur dort, wo es selbst ablegt:
+
+- alles in `engagements/` und `beiträge/`
+- die Konferenznotiz, die wie ihr Ordner heißt
+
+Dort ist ein fehlendes `type` ein Fehler und wird gemeldet — sonst verschwände eine
+Notiz mit zerschossenem Frontmatter lautlos aus allen Sichten.
+
+Im Speaker- und Veranstalterordner gilt dasselbe strenger: Sie sind flach und enthalten
+nur, was sie im Namen tragen. Wer dort trotzdem etwas Eigenes ablegen will, schreibt
+`type: notiz` ins Frontmatter — dieser Wert heißt „gehört mir, nicht dem Plugin".
+
 ## Womit man rechnen muss
 
 Normalerweise legt **das Plugin** diese Notizen an und pflegt ihr Frontmatter; von Hand
