@@ -89,6 +89,7 @@ nur, was sie im Namen tragen. Wer dort trotzdem etwas Eigenes ablegen will, schr
 Normalerweise legt **das Plugin** diese Notizen an und pflegt ihr Frontmatter; von Hand
 geschrieben wird der Freitext im Body. Wer von außen schreibt, übernimmt damit die
 Verantwortung für Namenseindeutigkeit und Feldform — beides prüft das Plugin beim Lesen
-nur so weit, dass es nicht abstürzt. Notizen in den Plugin-Ordnern, deren `type` fehlt
-oder unbekannt ist, tauchen in keiner Sicht auf; das Plugin sammelt sie in der
-Konferenzübersicht als Beanstandung ein.
+nur so weit, dass es nicht abstürzt. Eine Notiz mit **unbekanntem** `type` taucht in
+keiner Sicht auf; sie sammelt das Plugin in der Konferenzübersicht als Beanstandung ein.
+Dasselbe gilt für ein **fehlendes** `type` an den Stellen, an denen eines hingehört —
+siehe oben. Freie Notizen bleiben unbehelligt.
