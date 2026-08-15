@@ -3,6 +3,9 @@
  *
  * Fünf Farben, an einer Stelle. Vier davon gehören je einem Bereich — sie
  * unterscheiden sich im *Farbton* und sind deshalb auseinanderzuhalten. Das
+ * Rosenholz der Konferenzen ist heller als das Altrosa der Statustafel und
+ * liegt eine Spur wärmer; verwechselbar sind sie damit nicht, aber sie sind
+ * die beiden nächsten Nachbarn der Palette. Das
  * Türkis ist kein Ausreißer, sondern Absicht: Eine Palette aus lauter warmen
  * Tönen wird monoton, und der kühle Gegenpol hält die Agenda ausserdem von den
  * warmen Warnfarben fern.
@@ -21,7 +24,7 @@
  * gewählt.
  */
 .sms-view {
-	--sms-koralle: #E9765B;
+	--sms-rosenholz: #EFA0AC;
 	--sms-honig: #F2B33D;
 	--sms-altrosa: #D98BA0;
 	--sms-tuerkis: #5AA6A0;
@@ -31,13 +34,13 @@
 	 * Die Flächen tragen die Farben voll — jede von ihnen hält dunklen Text mit
 	 * über 6:1, deshalb muss hier keine aufgehellt werden.
 	 */
-	--sms-koralle-flaeche: var(--sms-koralle);
+	--sms-rosenholz-flaeche: var(--sms-rosenholz);
 	--sms-honig-flaeche: var(--sms-honig);
 	--sms-altrosa-flaeche: var(--sms-altrosa);
 	--sms-tuerkis-flaeche: var(--sms-tuerkis);
 
 	/* Für große ruhige Flächen, hinter denen viel steht: Spalten, Pool, Raster. */
-	--sms-koralle-zart: #FDEEEA;
+	--sms-rosenholz-zart: #FDEFF1;
 	--sms-honig-zart: #FEF5E4;
 	--sms-altrosa-zart: #FBEFF2;
 	--sms-tuerkis-zart: #E9F4F3;
@@ -93,15 +96,15 @@
 	--sms-karmin-zart: #FBEDF0;
 
 	/* Der Bereich, in dem man gerade ist. Wird je Reiter überschrieben. */
-	--sms-bereich: var(--sms-koralle);
-	--sms-bereich-flaeche: var(--sms-koralle-flaeche);
-	--sms-bereich-zart: var(--sms-koralle-zart);
+	--sms-bereich: var(--sms-rosenholz);
+	--sms-bereich-flaeche: var(--sms-rosenholz-flaeche);
+	--sms-bereich-zart: var(--sms-rosenholz-zart);
 }
 
 .sms-bereich-konferenzen {
-	--sms-bereich: var(--sms-koralle);
-	--sms-bereich-flaeche: var(--sms-koralle-flaeche);
-	--sms-bereich-zart: var(--sms-koralle-zart);
+	--sms-bereich: var(--sms-rosenholz);
+	--sms-bereich-flaeche: var(--sms-rosenholz-flaeche);
+	--sms-bereich-zart: var(--sms-rosenholz-zart);
 }
 
 .sms-bereich-katalog {
