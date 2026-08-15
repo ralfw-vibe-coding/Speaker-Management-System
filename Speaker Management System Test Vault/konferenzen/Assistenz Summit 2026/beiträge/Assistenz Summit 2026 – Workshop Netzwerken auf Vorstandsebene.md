@@ -9,6 +9,8 @@ dauer: 180
 max_teilnehmer: 20
 block: b11
 track: t2
+strang:
+verworfen_am:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

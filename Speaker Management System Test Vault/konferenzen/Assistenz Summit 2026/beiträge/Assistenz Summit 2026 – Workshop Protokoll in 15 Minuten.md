@@ -8,6 +8,8 @@ max_teilnehmer: 40
 block: b11
 track: t3
 dauer:
+strang:
+verworfen_am:
 ---
 ## Zu klären
 - [x] Abstract eingereicht

@@ -11,6 +11,8 @@ block:
   - b1
   - b3
 track: t1
+strang:
+verworfen_am:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht

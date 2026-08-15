@@ -8,6 +8,8 @@ block: b9
 track: t2
 dauer:
 max_teilnehmer:
+strang:
+verworfen_am:
 ---
 ## Zu klären
 - [ ] Abstract eingereicht
