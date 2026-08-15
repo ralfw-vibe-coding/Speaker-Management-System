@@ -28,6 +28,7 @@
 	--sms-honig: #F2B33D;
 	--sms-altrosa: #D98BA0;
 	--sms-tuerkis: #7BB8B3;
+	--sms-flieder: #C9A9D1;
 	--sms-tief: #8C3A52;
 
 	/*
@@ -38,12 +39,14 @@
 	--sms-honig-flaeche: var(--sms-honig);
 	--sms-altrosa-flaeche: var(--sms-altrosa);
 	--sms-tuerkis-flaeche: var(--sms-tuerkis);
+	--sms-flieder-flaeche: var(--sms-flieder);
 
 	/* Für große ruhige Flächen, hinter denen viel steht: Spalten, Pool, Raster. */
 	--sms-rosenholz-zart: #FDEFF1;
 	--sms-honig-zart: #FEF5E4;
 	--sms-altrosa-zart: #FBEFF2;
 	--sms-tuerkis-zart: #E9F4F3;
+	--sms-flieder-zart: #F5EEF7;
 
 	/*
 	 * Die Neutralen. Obsidians eigene sind **kühl** — `background-secondary` ist
@@ -123,6 +126,12 @@
 	--sms-bereich: var(--sms-tuerkis);
 	--sms-bereich-flaeche: var(--sms-tuerkis-flaeche);
 	--sms-bereich-zart: var(--sms-tuerkis-zart);
+}
+
+.sms-bereich-konzeption {
+	--sms-bereich: var(--sms-flieder);
+	--sms-bereich-flaeche: var(--sms-flieder-flaeche);
+	--sms-bereich-zart: var(--sms-flieder-zart);
 }
 
 .sms-view {
@@ -1427,4 +1436,188 @@ body.theme-dark .sms-view {
 	--sms-rand: var(--background-modifier-border);
 	--sms-grund: var(--background-secondary);
 	--sms-grund-tief: var(--background-modifier-hover);
+}
+
+/* ---------------------------------------------------------------- Konzeption */
+
+/*
+ * Eine Pinnwand statt eines Rasters. Die Spalten sind Stränge — Themenlinien,
+ * die entstehen und wieder vergehen dürfen. Kein Gitter, keine Zeitachse: Wer
+ * hier schon Blöcke schiebt, plant, statt zu denken.
+ */
+.sms-straenge {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(230px, 1fr);
+	gap: 10px;
+	align-items: start;
+	overflow-x: auto;
+	padding-bottom: 4px;
+}
+
+.sms-strang {
+	background: var(--sms-grund);
+	border-radius: 8px;
+	padding: 9px;
+	min-height: 90px;
+}
+
+/* Der Eingang ist offen gezeichnet: Hier wird hineingeworfen, nicht abgelegt. */
+.sms-strang.is-ohne {
+	background: var(--sms-bereich-zart);
+	border: 1px dashed var(--sms-bereich);
+}
+
+/* Der Ausgang tritt zurück — aufgehoben, aber nicht mehr im Rennen. */
+.sms-strang.is-verworfen {
+	background: transparent;
+	border: 1px dashed var(--sms-rand);
+	opacity: 0.75;
+}
+
+.sms-strang.is-verworfen:hover {
+	opacity: 1;
+}
+
+.sms-strang.is-ziel {
+	outline: 2px dashed var(--sms-tief);
+	outline-offset: 2px;
+}
+
+.sms-idee {
+	background: var(--background-primary);
+	border: 1px solid var(--sms-rand);
+	border-radius: 7px;
+	padding: 8px 10px;
+	margin-bottom: 6px;
+	cursor: grab;
+}
+
+.sms-idee:hover {
+	border-color: var(--sms-bereich);
+}
+
+.sms-idee.is-zieht {
+	opacity: 0.4;
+}
+
+.sms-idee-titel {
+	font-weight: 600;
+	font-size: 0.88em;
+}
+
+/* Eine Idee ohne Titel ist kein Titel — sie sieht auch nicht so aus. */
+.sms-idee-titel.is-offen {
+	font-weight: 400;
+	font-style: italic;
+	color: var(--text-faint);
+}
+
+.sms-idee-wer {
+	margin-top: 3px;
+	font-size: 0.78em;
+	cursor: pointer;
+}
+
+.sms-idee-name {
+	color: var(--text-muted);
+	border-bottom: 1px dotted transparent;
+}
+
+.sms-idee-wer:hover .sms-idee-name {
+	color: var(--sms-tief);
+	border-bottom-color: var(--sms-tief);
+}
+
+/* „wer?" steht auch dann da, wenn niemand eingetragen ist — sonst findet man das Feld nie. */
+.sms-idee-name.is-offen {
+	color: var(--text-faint);
+	font-style: italic;
+}
+
+.sms-idee-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-top: 5px;
+}
+
+.sms-idee-chips > span {
+	font-size: 0.72em;
+	padding: 1px 8px;
+	border-radius: 999px;
+	border: 1px solid var(--sms-rand);
+	color: var(--text-muted);
+}
+
+.sms-chip-format {
+	background: var(--sms-bereich-zart);
+	border-color: var(--sms-bereich);
+	color: var(--sms-auf-farbe);
+}
+
+.sms-chip-zugesagt {
+	background: var(--sms-gruen);
+	border-color: var(--sms-gruen);
+	color: #fff;
+}
+
+/* Was schon im Raster steht, ist keine Idee mehr — das darf man sehen. */
+.sms-chip-eingeplant {
+	background: var(--sms-salbei-zart);
+	border-color: var(--sms-salbei);
+	color: var(--sms-auf-farbe);
+}
+
+.sms-idee .sms-werkzeug {
+	margin-top: 4px;
+	font-size: 0.75em;
+	opacity: 0;
+}
+
+.sms-idee:hover .sms-werkzeug {
+	opacity: 1;
+}
+
+.sms-idee-neu {
+	width: 100%;
+	border: 1px dashed var(--sms-rand);
+	background: transparent;
+	color: var(--text-muted);
+	border-radius: 7px;
+	padding: 6px;
+	font-size: 0.8em;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.sms-idee-neu:hover {
+	border-color: var(--sms-tief);
+	color: var(--sms-tief);
+}
+
+/* Die Rechnung, um die es in dieser Phase geht: welches Raster daraus folgt. */
+.sms-konzeption-fuss {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-top: 14px;
+	padding: 12px 14px;
+	background: var(--sms-grund);
+	border-left: 4px solid var(--sms-tief);
+	border-radius: 8px;
+}
+
+.sms-konzeption-rechnung {
+	flex: 1;
+	font-size: 0.88em;
+}
+
+.sms-konzeption-nachsatz {
+	color: var(--text-muted);
+}
+
+.sms-dialog-zeile {
+	border-top: none;
+	padding-top: 4px;
 }

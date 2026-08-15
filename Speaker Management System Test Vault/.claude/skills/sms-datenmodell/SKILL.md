@@ -151,6 +151,7 @@ aller Engagements und Beiträge dieser Konferenz.
 | `honorarbudget` | Zahl | Rahmen, gegen den die Engagement-Honorare laufen |
 | `teilnehmer` | Zahl | erwartete Gäste; Maßstab für die Plätze je Block |
 | `deadline_programm` | Datum `JJJJ-MM-TT` | |
+| `straenge` | Liste | die Themenlinien der Konzeption, **vor** dem Raster |
 | `tracks` | Liste | die Spalten des Rasters, konferenzweit |
 | `tage` | Liste | je Tag die Zeilen des Rasters |
 | `slots` | Liste | **nur Ausnahmen** von Raum und Kapazität |
@@ -162,6 +163,27 @@ nicht mit, ein Raum ohne Beitrag ist kein Angebot. Gerechnet, nirgends gespeiche
 
 Bei `gelaufen` und `abgesagt` gilt das Programm als Archiv: Die Agenda ist gesperrt, die
 Statustafel bleibt bedienbar, weil Rechnungen und Zahlungen erst danach kommen.
+
+### Die Stränge
+
+Ein **Strang** ist eine Themenlinie in der Konzeption — der Phase, in der die Konferenz
+noch eine Idee ist. Er ist bewusst **kein Track**: Er darf entstehen und wieder vergehen,
+ohne dass am Raster etwas passiert, und er kennt weder Raum noch Kapazität.
+
+```yaml
+straenge:
+  - id: rolle
+    name: "Rolle & Zukunft"
+  - id: werkzeuge
+    name: "Werkzeuge & KI"
+```
+
+Eine blosse Namensliste (`straenge: [Rolle, Werkzeuge]`) wird ebenfalls gelesen; der Name
+ist dann zugleich die Id. In dieser Phase tippt man schnell.
+
+Aus Strängen werden Tracks erst beim Übergang zur echten Konferenz. Der Strang **bleibt
+danach am Beitrag stehen** — damit ist der Entwurf aufgehoben und man sieht Jahre später
+noch, aus welcher Idee das Programm entstanden ist.
 
 ### Das Raster
 
@@ -290,6 +312,17 @@ track:
 ```
 
 `block` verträgt einen einzelnen Wert wie eine Liste — der Normalfall ist ein Wert.
+
+**Eine Idee ist ein Beitrag ohne Block.** Genau das ist die Konzeptionsphase: Titel und
+`strang` stehen, `block` fehlt. Es gibt keinen eigenen Notiztyp dafür — was man in der
+Konzeption schiebt, sind dieselben Notizen, die später im Raster stehen.
+
+**`verworfen_am` heisst aufgehoben, nicht gelöscht.** Eine verworfene Idee behält ihren
+Strang und verschwindet aus Pool, Raster und Statustafel, bleibt aber im Vault; beim
+Planen des nächsten Jahres schaut man dort hinein. Wer sie zurückholt, löscht das Feld.
+
+Wer von aussen schreibt, muss beides mitfiltern: Ein Beitrag mit `verworfen_am` zählt
+nirgends mit — nicht als Beitrag, nicht in einer Checkliste, nicht im Pool.
 
 ### Die Reifegrade eines Beitrags
 

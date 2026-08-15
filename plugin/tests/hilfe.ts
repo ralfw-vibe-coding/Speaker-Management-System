@@ -29,6 +29,7 @@ export function konferenz(teile: Partial<Konferenz> = {}): Konferenz {
 	return {
 		datei: datei("Testkonferenz"),
 		name: "Testkonferenz",
+		straenge: [],
 		tracks: [],
 		tage: [],
 		slots: [],

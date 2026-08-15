@@ -49,6 +49,95 @@ export class BestaetigenModal extends Modal {
 	}
 }
 
+/**
+ * Eine einzelne Zeile Text erfragen — für alles, was in dieser Phase schnell
+ * getippt wird: eine Idee, ein Strangname, ein Name als Einfall.
+ *
+ * Antwortet mit `undefined`, wenn abgebrochen wurde. Ein leeres Feld ist nur
+ * dann eine Antwort, wenn `leerErlaubt` gesetzt ist — dann heisst es „nimm den
+ * Wert wieder heraus".
+ */
+export class TextModal extends Modal {
+	private antwort: ((wert: string | undefined) => void) | undefined;
+	private wert = "";
+
+	constructor(
+		app: App,
+		private angaben: {
+			titel: string;
+			beschriftung: string;
+			hinweis?: string;
+			vorgabe?: string;
+			/** Namen zur Auswahl — Obsidians Eingabefeld bekommt eine Vorschlagsliste. */
+			vorschlaege?: string[];
+			knopf: string;
+			leerErlaubt?: boolean;
+		},
+	) {
+		super(app);
+		this.wert = angaben.vorgabe ?? "";
+	}
+
+	frage(): Promise<string | undefined> {
+		return new Promise((aufloesen) => {
+			this.antwort = aufloesen;
+			this.open();
+		});
+	}
+
+	onOpen(): void {
+		this.titleEl.setText(this.angaben.titel);
+
+		if (this.angaben.hinweis) {
+			this.contentEl.createEl("p", { cls: "sms-dialog-abschnitt", text: this.angaben.hinweis });
+		}
+
+		const feld = new Setting(this.contentEl).setName(this.angaben.beschriftung).addText((eingabe) => {
+			eingabe.setValue(this.wert).onChange((neuer) => {
+				this.wert = neuer;
+			});
+			// Enter schliesst ab — man tippt hier schnell und will nicht zur Maus.
+			eingabe.inputEl.addEventListener("keydown", (ereignis) => {
+				if (ereignis.key === "Enter") {
+					ereignis.preventDefault();
+					this.abschliessen();
+				}
+			});
+			window.setTimeout(() => eingabe.inputEl.focus(), 0);
+
+			if (this.angaben.vorschlaege && this.angaben.vorschlaege.length > 0) {
+				const liste = this.contentEl.createEl("datalist");
+				liste.id = "sms-vorschlaege";
+				for (const vorschlag of this.angaben.vorschlaege) {
+					liste.createEl("option", { value: vorschlag });
+				}
+				eingabe.inputEl.setAttribute("list", liste.id);
+			}
+		});
+		feld.settingEl.addClass("sms-dialog-zeile");
+
+		new Setting(this.contentEl)
+			.addButton((knopf) => knopf.setButtonText("Abbrechen").onClick(() => this.close()))
+			.addButton((knopf) =>
+				knopf.setButtonText(this.angaben.knopf).setCta().onClick(() => this.abschliessen()),
+			);
+	}
+
+	private abschliessen(): void {
+		const sauber = this.wert.trim();
+		if (sauber.length === 0 && !this.angaben.leerErlaubt) return;
+		this.antwort?.(sauber);
+		this.antwort = undefined;
+		this.close();
+	}
+
+	onClose(): void {
+		this.antwort?.(undefined);
+		this.antwort = undefined;
+		this.contentEl.empty();
+	}
+}
+
 /** Ein Tag ist nur ein Datum — das Raster daran hängt am Tag, nicht am Dialog. */
 export class TagModal extends Modal {
 	private datum: string;

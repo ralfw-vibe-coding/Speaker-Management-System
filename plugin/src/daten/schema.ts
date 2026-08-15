@@ -126,6 +126,12 @@ const KONFERENZ: Notizschema = {
 			fehlend: "unbekannt",
 		},
 		{ name: "deadline_programm", art: "text", bedeutung: "Datum JJJJ-MM-TT" },
+		{
+			name: "straenge",
+			art: "liste",
+			bedeutung: "die Themenlinien der Konzeption, vor dem Raster",
+			imGeruest: false,
+		},
 		// Das Raster schreibt das Plugin; im Gerüst steht es nur beim Anlegen mit Termin.
 		{ name: "tracks", art: "liste", bedeutung: "die Spalten des Rasters", imGeruest: false },
 		{ name: "tage", art: "liste", bedeutung: "je Tag die Zeilen des Rasters", imGeruest: false },
@@ -218,6 +224,16 @@ const BEITRAG: Notizschema = {
 			art: "zahl",
 			bedeutung: "Obergrenze, die der Beitrag mitbringt",
 			fehlend: "unbekannt",
+		},
+		{
+			name: "strang",
+			art: "text",
+			bedeutung: "die Themenlinie in der Konzeption; bleibt stehen, wenn ein Track dazukommt",
+		},
+		{
+			name: "verworfen_am",
+			art: "text",
+			bedeutung: "Datum — gesetzt heißt: in der Konzeption aussortiert, aber aufgehoben",
 		},
 		{
 			name: "block",

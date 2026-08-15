@@ -110,7 +110,11 @@ export class Agenda {
 		const alleBeitraege = this.daten.beitraege();
 		this.alleBeitraege = alleBeitraege;
 		this.alleKonferenzen = this.daten.konferenzen();
-		const beitraege = alleBeitraege.filter((beitrag) => beitrag.konferenz === konferenz.name);
+		// Verworfenes bleibt in der Konzeption liegen: Es ist aufgehoben, nicht
+		// eingeplant, und hätte im Pool nichts zu suchen.
+		const beitraege = alleBeitraege.filter(
+			(beitrag) => beitrag.konferenz === konferenz.name && !beitrag.verworfenAm,
+		);
 		const engagements = new Map(
 			this.daten
 				.engagements()

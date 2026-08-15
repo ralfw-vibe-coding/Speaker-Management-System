@@ -197,8 +197,19 @@ Diese Punkte sind entschieden, nicht offen. Begründungen stehen im Konzept.
   Wikilinks.
 - **Sichten sind Projektionen.** Statustafel und Agenda halten keinen eigenen Zustand;
   alles auf den Karten ist gerechnet. Nichts Abgeleitetes wird zusätzlich gespeichert.
-- **Ein einziger View** mit interner Umschaltung zwischen Konferenzübersicht,
-  Speakerkatalog, Statustafel und Agenda — kein eigener View-Typ je Sicht.
+- **Ein einziger View** mit interner Umschaltung zwischen Speakerkatalog,
+  Konferenzübersicht, Agenda, Statustafel und Konzeption — kein eigener View-Typ je Sicht.
+- **Ein Strang ist kein Track.** Die Konzeption ist die Phase, in der die Konferenz noch
+  eine Idee ist; ihre Spalten sind Themenlinien, die entstehen und wieder vergehen
+  dürfen, ohne dass am Raster etwas passiert. Deshalb ein eigenes Feld `strang` statt
+  `track`. Aus Strängen werden Tracks nur beim „Raster daraus bauen" — und der Strang
+  bleibt danach stehen, damit der Entwurf nachlesbar ist.
+- **Eine Idee ist ein Beitrag ohne Block.** Kein eigener Notiztyp: Was in der Konzeption
+  geschoben wird, sind dieselben Notizen, die später im Raster stehen. Der Übergang ist
+  deshalb ein Platzieren, kein Umwandeln.
+- **Verworfen ist nicht gelöscht.** `verworfen_am` nimmt eine Idee aus Pool, Raster und
+  Statustafel, lässt sie aber im Vault und in ihrem Strang liegen — beim Planen des
+  nächsten Jahres schaut man dort hinein.
 - **Details in der Notiz, nicht im Formular.** Ein Klick auf eine Karte öffnet die
   Notiz im Nachbar-Pane. Ausgenommen sind einzelne Zahlen, die man im Gespräch
   oder im Rückblick nachträgt: Honorar, Reisekosten und Bewertung auf der
@@ -271,7 +282,9 @@ Datenschicht, Speakerkatalog und Statustafel stehen, lesend:
 - `src/view/SpeakerAnlegenModal.ts` — fragt nur nach dem Namen
 - `src/view/statustafel.ts` — die acht Spalten des Funnels mit ihren Karten
 - `src/view/agenda.ts` — das Raster je Tag, der Pool, die Kandidaten ohne Beitrag
-- `src/view/SmsView.ts` — der View mit drei Reitern und der Konferenzauswahl
+- `src/view/konzeption.ts` — die Pinnwand der Ideenphase: Stränge, verworfene Ideen,
+  die Rechnung „welches Raster folgt daraus" und der Übergang dorthin
+- `src/view/SmsView.ts` — der View mit fünf Reitern und der Konferenzauswahl
 
 Geschrieben wird zweierlei: „+ Speaker" im Katalog legt eine Notiz an, und das Ziehen
 einer Karte auf der Statustafel schreibt `status` und `position` — über

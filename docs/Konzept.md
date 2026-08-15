@@ -617,7 +617,7 @@ Status des zugehörigen Engagements.
 
 ## 5. Sichten
 
-Alle vier leben in **einem einzigen Obsidian-View**, der über ein Ribbon-Icon geöffnet
+Alle fünf leben in **einem einzigen Obsidian-View**, der über ein Ribbon-Icon geöffnet
 wird und intern umschaltet. Sie teilen sich denselben Zustand — welche Konferenz gerade
 dran ist —, man springt ständig zwischen ihnen, und Drag & Drop zwischen Pool und
 Raster funktioniert ohnehin nur innerhalb eines Views. Eigene View-Typen wären
@@ -628,6 +628,37 @@ Entscheidung, keine Beschriftung. Er sperrt die Agenda, sobald die Konferenz gel
 ist, und er ist der einzige Weg dorthin — ohne ihn käme keine Konferenz je ins Archiv,
 ohne dass jemand ins Frontmatter greift. Umgekehrt öffnet er ein Archiv wieder, wenn
 darin doch etwas zu berichtigen ist.
+
+**Konzeption** — je Konferenz, die Phase vor der Planung. Eine Pinnwand, deren Spalten
+**Stränge** sind: Themenlinien, die sich beim Nachdenken herausbilden. Ganz links steht,
+was noch keinem Strang zugeordnet ist, ganz rechts, was verworfen wurde. Karten werden
+zwischen den Spalten gezogen, Stränge angelegt, umbenannt und aufgelöst.
+
+Was hier fehlt, fehlt mit Absicht: **keine Uhrzeiten, keine Räume, keine Kapazitäten,
+keine Parallelität.** Das ist die Agenda. Wer in dieser Phase schon Blöcke schiebt,
+plant, statt zu denken.
+
+**Ein Strang ist kein Track.** Er ist eine Denkfigur, die entstehen und wieder vergehen
+darf, ohne dass am Raster etwas passiert; ein Track dagegen ist eine Spalte im Programm
+mit Raum und Kapazität. Deshalb steht der Strang in einem eigenen Feld und nicht in
+`track`. Aus Strängen werden Tracks erst beim **Raster daraus bauen** — dem einen
+Vorgang, der die Konzeption in eine Konferenz überführt: Er legt Tracks und Blöcke so
+an, dass die Ideen hineinpassen, und schreibt an jeder Karte den `track` dazu.
+
+**Der Strang bleibt danach stehen.** Er wird nicht in `track` umgezogen, sondern ergänzt.
+Damit ist der Entwurf aufgehoben: Man sieht Jahre später noch, aus welcher Idee das
+Programm entstanden ist, und die Konzeption zeigt weiterhin alle Beiträge — auch die
+längst eingeplanten.
+
+**Verworfen ist nicht gelöscht.** Eine verworfene Idee behält ihren Strang und liegt in
+der letzten Spalte; sie verschwindet aus Pool, Raster und Statustafel, aber nicht aus dem
+Vault. Beim Planen des nächsten Jahres schaut man dort hinein — was diesmal nicht
+passte, passt vielleicht dann. Zurückgeholt wird sie, indem man sie wieder in einen
+Strang zieht.
+
+Was auf einer Ideenkarte steht: Titel, Format, und der Name, falls schon jemand dafür im
+Kopf ist. Der Name ist hier ein **Einfall, keine Zusage** — er lässt sich mit einem Klick
+ändern oder wieder entfernen. Ob daraus ein Engagement wird, entscheidet die Statustafel.
 
 **Konferenzübersicht** — konferenzübergreifend. Was ansteht, aufsteigend nach Termin,
 darunter das Archiv absteigend. Je Konferenz Termin, Veranstalter, Status, belegte

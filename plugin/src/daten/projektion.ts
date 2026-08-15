@@ -19,6 +19,50 @@ export function slotZustand(
 	return "verdacht";
 }
 
+/** Was in der Konzeption steht und welches Raster daraus folgt. */
+export interface Entwurfsbild {
+	/** Ideen, die noch im Rennen sind. */
+	ideen: number;
+	/** Aussortiert, aber aufgehoben. */
+	verworfen: number;
+	/** Ideen, die noch keinem Strang zugeordnet sind. */
+	ohneStrang: number;
+	/** Wie viele Blöcke das Programm bräuchte, wenn alle Stränge parallel laufen. */
+	bloecke: number;
+	/** Je Strang: wie viele Blöcke er füllt. Der längste bestimmt das Raster. */
+	proStrang: Map<string, number>;
+}
+
+/**
+ * Rechnet aus den Ideen das Raster, das sie aufnehmen müsste.
+ *
+ * Die Stränge laufen parallel, also bestimmt der **längste** die Zahl der
+ * Blöcke — nicht die Summe. Ein Beitrag, der länger dauert als ein Block,
+ * zählt entsprechend mehrfach; ohne Angabe zählt er einfach.
+ *
+ * Ideen ohne Strang bleiben aussen vor: Sie stehen noch nicht im Programm,
+ * sondern daneben. Sie werden getrennt ausgewiesen, damit man sieht, dass die
+ * Rechnung noch nicht alles umfasst.
+ */
+export function entwurfsbild(beitraege: Beitrag[], takt = 45): Entwurfsbild {
+	const lebendig = beitraege.filter((beitrag) => !beitrag.verworfenAm);
+	const proStrang = new Map<string, number>();
+
+	for (const beitrag of lebendig) {
+		if (!beitrag.strang) continue;
+		const einheiten = beitrag.dauer && takt > 0 ? Math.max(1, Math.ceil(beitrag.dauer / takt)) : 1;
+		proStrang.set(beitrag.strang, (proStrang.get(beitrag.strang) ?? 0) + einheiten);
+	}
+
+	return {
+		ideen: lebendig.length,
+		verworfen: beitraege.length - lebendig.length,
+		ohneStrang: lebendig.filter((beitrag) => !beitrag.strang).length,
+		bloecke: Math.max(0, ...proStrang.values()),
+		proStrang,
+	};
+}
+
 /** Die Historie eines Speakers, geteilt in das, was läuft, und das, was war. */
 export interface Historienbild {
 	/** Konferenzen, an denen noch etwas offen ist — einzeln zu zeigen. */

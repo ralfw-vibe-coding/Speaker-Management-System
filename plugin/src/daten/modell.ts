@@ -182,6 +182,18 @@ export interface Beitrag {
 	bloecke: string[];
 	/** Entfällt bei plenaren Blöcken. */
 	track?: string;
+	/**
+	 * Die Themenlinie in der Konzeption. Sie bleibt stehen, wenn später ein
+	 * `track` dazukommt — damit ist der Entwurf aufgehoben und man sieht Jahre
+	 * später noch, aus welcher Idee das Programm entstanden ist.
+	 */
+	strang?: string;
+	/**
+	 * Gesetzt heißt: in der Konzeption aussortiert. Verworfenes verschwindet aus
+	 * Pool, Raster und Statustafel, bleibt aber im Vault und in seinem Strang —
+	 * beim Planen des nächsten Jahres schaut man dort hinein.
+	 */
+	verworfenAm?: string;
 	aufgaben: Aufgaben;
 }
 
@@ -190,6 +202,18 @@ export interface Track {
 	name: string;
 	raum?: string;
 	kapazitaet?: number;
+}
+
+/**
+ * Eine Themenlinie der Konzeption — die Vorstufe eines Tracks, aber bewusst
+ * nicht dasselbe: Ein Strang darf entstehen und wieder vergehen, ohne dass am
+ * Raster etwas passiert, und er kennt weder Raum noch Kapazität. Aus Strängen
+ * werden Tracks erst beim „Raster daraus bauen"; der Strang bleibt danach
+ * stehen, damit der Entwurf nachlesbar ist.
+ */
+export interface Strang {
+	id: string;
+	name: string;
 }
 
 export interface Block {
@@ -227,6 +251,8 @@ export interface Konferenz {
 	/** Erwartete Gäste — der Maßstab, gegen den die Plätze je Block gerechnet werden. */
 	teilnehmer?: number;
 	deadlineProgramm?: string;
+	/** Die Themenlinien der Konzeption. Leer, sobald nie eine angelegt wurde. */
+	straenge: Strang[];
 	tracks: Track[];
 	tage: Tag[];
 	/** Trägt nur die Ausnahmen; der Normalfall steht am Track. */

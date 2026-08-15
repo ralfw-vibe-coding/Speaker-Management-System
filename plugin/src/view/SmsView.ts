@@ -8,18 +8,25 @@ import { KonferenzAnlegenModal } from "./KonferenzAnlegenModal";
 import { Speakerkatalog } from "./katalog";
 import { Konferenzuebersicht } from "./konferenzen";
 import { SpeakerAnlegenModal } from "./SpeakerAnlegenModal";
+import { Konzeption } from "./konzeption";
 import { Statustafel } from "./statustafel";
 
 export const VIEW_TYPE_SMS = "sms-arbeitsplatz";
 
 /** Die Sichten, zwischen denen der eine View umschaltet. */
-type Sicht = "konferenzen" | "katalog" | "statustafel" | "agenda";
+type Sicht = "katalog" | "konferenzen" | "agenda" | "statustafel" | "konzeption";
 
+/**
+ * Die Reihenfolge ist die des Auftraggebers, nicht die des Arbeitsflusses: Der
+ * Katalog steht vorn, weil er konferenzübergreifend ist und am häufigsten
+ * gebraucht wird; die Konzeption hinten, obwohl sie zeitlich zuerst kommt.
+ */
 const SICHTEN: { id: Sicht; titel: string }[] = [
-	{ id: "konferenzen", titel: "Konferenzen" },
 	{ id: "katalog", titel: "Speakerkatalog" },
-	{ id: "statustafel", titel: "Statustafel" },
+	{ id: "konferenzen", titel: "Konferenzen" },
 	{ id: "agenda", titel: "Agenda" },
+	{ id: "statustafel", titel: "Statustafel" },
+	{ id: "konzeption", titel: "Konzeption" },
 ];
 
 /**
@@ -38,6 +45,7 @@ export class SmsView extends ItemView {
 	private katalog: Speakerkatalog;
 	private statustafel: Statustafel;
 	private agenda: Agenda;
+	private konzeption: Konzeption;
 
 	constructor(leaf: WorkspaceLeaf, private plugin: SmsPlugin) {
 		super(leaf);
@@ -66,6 +74,7 @@ export class SmsView extends ItemView {
 		);
 		this.statustafel = new Statustafel(plugin.app, this.daten, this.schreiber, oeffnen);
 		this.agenda = new Agenda(plugin.app, this.daten, this.schreiber, oeffnen);
+		this.konzeption = new Konzeption(plugin.app, this.daten, this.schreiber, oeffnen);
 	}
 
 	private konferenzAnlegen(vorhandene: string[]): void {
@@ -190,6 +199,11 @@ export class SmsView extends ItemView {
 
 		if (this.sicht === "statustafel") {
 			await this.statustafel.zeichnen(buehne, konferenz);
+			return;
+		}
+
+		if (this.sicht === "konzeption") {
+			await this.konzeption.zeichnen(buehne, konferenz);
 			return;
 		}
 

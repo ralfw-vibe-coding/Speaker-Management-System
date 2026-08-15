@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	dauerImRaster,
 	doppeltBelegte,
+	entwurfsbild,
 	erwartetBeitrag,
 	frueherGehalten,
 	hatRolle,
@@ -446,5 +447,43 @@ describe("historienbild", () => {
 	it("eine Note an einer laufenden Konferenz zieht den Schnitt der früheren nicht", () => {
 		const bewertetLaufend = { ...laufend("2026"), bewertung: 1 };
 		assert.equal(historienbild([bewertetLaufend, vorbei("2025", 5)]).schnitt, 5);
+	});
+});
+
+describe("entwurfsbild", () => {
+	const idee = (strang?: string, dauer?: number) => beitrag({ titel: "Idee", strang, dauer });
+	const weg = (strang?: string) => beitrag({ titel: "Idee", strang, verworfenAm: "2026-08-15" });
+
+	it("zählt, was im Rennen ist, und was aussortiert wurde", () => {
+		const bild = entwurfsbild([idee("a"), idee("a"), weg("a")]);
+		assert.equal(bild.ideen, 2);
+		assert.equal(bild.verworfen, 1);
+	});
+
+	it("weist Ideen ohne Strang getrennt aus — die Rechnung umfasst sie nicht", () => {
+		const bild = entwurfsbild([idee("a"), idee(undefined), idee(undefined)]);
+		assert.equal(bild.ohneStrang, 2);
+		assert.equal(bild.bloecke, 1);
+	});
+
+	it("der längste Strang bestimmt die Blöcke, nicht die Summe", () => {
+		const bild = entwurfsbild([idee("a"), idee("a"), idee("a"), idee("b")]);
+		assert.equal(bild.bloecke, 3);
+	});
+
+	it("ein langer Workshop belegt mehrere Blöcke", () => {
+		assert.equal(entwurfsbild([idee("a", 180)]).bloecke, 4);
+	});
+
+	it("ohne Dauerangabe zählt eine Idee einfach", () => {
+		assert.equal(entwurfsbild([idee("a"), idee("a")]).bloecke, 2);
+	});
+
+	it("Verworfenes zählt nicht ins Raster", () => {
+		assert.equal(entwurfsbild([idee("a"), weg("a"), weg("a")]).bloecke, 1);
+	});
+
+	it("ohne Ideen gibt es kein Raster", () => {
+		assert.equal(entwurfsbild([]).bloecke, 0);
 	});
 });

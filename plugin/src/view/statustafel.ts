@@ -111,7 +111,9 @@ export class Statustafel {
 			.filter((engagement) => engagement.konferenz === konferenz.name);
 		const beitraege = this.daten
 			.beitraege()
-			.filter((beitrag) => beitrag.konferenz === konferenz.name);
+			// Verworfene Ideen zählen nicht mit — weder als Beitrag noch in der
+			// Checkliste. Sie liegen in der Konzeption.
+			.filter((beitrag) => beitrag.konferenz === konferenz.name && !beitrag.verworfenAm);
 		const speaker = new Map((await this.daten.speaker()).map((s) => [s.name, s]));
 
 		return engagements.map((engagement) => {

@@ -1,6 +1,6 @@
 import { App, normalizePath, TFile, TFolder } from "obsidian";
 import type SmsPlugin from "../main";
-import type { Block, Konferenz, Tag, Track } from "./modell";
+import type { Block, Konferenz, Strang, Tag, Track } from "./modell";
 import { HOECHSTENS_TAGE, istPlatzhalterName, ohneVerbotene, tageZwischen, vorlaeufigerName, VERBOTENE_ZEICHEN } from "./namen";
 import { geruest, schemaFuer } from "./schema";
 
@@ -109,6 +109,59 @@ export class Datenschreiber {
 			if (wert === undefined) delete fm[feld];
 			else fm[feld] = wert;
 		});
+	}
+
+	/**
+	 * Hängt eine Idee an einen Strang — oder nimmt sie heraus. Anders als beim
+	 * Verschieben im Raster passiert dabei sonst nichts: Ein Strang ist eine
+	 * Denkfigur, kein Platz im Programm.
+	 */
+	async strangSetzen(datei: TFile, strang: string | undefined): Promise<void> {
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			if (strang === undefined) delete fm.strang;
+			else fm.strang = strang;
+		});
+	}
+
+	/**
+	 * Verwerfen heisst aufheben, nicht löschen: Die Notiz bleibt mitsamt ihrem
+	 * Strang, verschwindet aber aus Pool, Raster und Statustafel. Beim Planen
+	 * des nächsten Jahres schaut man dort hinein.
+	 */
+	async verwerfen(datei: TFile, verworfen: boolean): Promise<void> {
+		const heute = new Date().toISOString().slice(0, 10);
+		await this.app.fileManager.processFrontMatter(datei, (fm) => {
+			if (verworfen) fm.verworfen_am = heute;
+			else delete fm.verworfen_am;
+		});
+	}
+
+	/** Die Stränge einer Konferenz — dieselbe Sorte Schreibvorgang wie das Raster. */
+	async straengeSchreiben(konferenz: Konferenz, straenge: Strang[]): Promise<void> {
+		await this.app.fileManager.processFrontMatter(konferenz.datei, (fm) => {
+			if (straenge.length === 0) delete fm.straenge;
+			else fm.straenge = straenge.map((strang) => ({ id: strang.id, name: strang.name }));
+		});
+	}
+
+	/**
+	 * Eine Idee entsteht als Beitragsnotiz mit Titel und Strang, sonst nichts.
+	 * Kein Speaker, kein Block — genau das macht sie zur Idee.
+	 */
+	async ideeAnlegen(konferenz: Konferenz, titel: string, strang?: string): Promise<TFile> {
+		const ordner = `${konferenz.datei.parent?.path ?? ""}/${BEITRAGSORDNER}`;
+		await this.ordnerSicherstellen(ordner);
+
+		const name = await this.freierName(ordner, `${konferenz.name} – ${ohneVerbotene(titel)}`);
+
+		return this.app.vault.create(
+			`${ordner}/${name}.md`,
+			geruest(schemaFuer("beitrag")!, {
+				konferenz: `"[[${konferenz.name}]]"`,
+				titel: `"${titel.replace(/"/g, "'")}"`,
+				...(strang ? { strang } : {}),
+			}),
+		);
 	}
 
 	/**

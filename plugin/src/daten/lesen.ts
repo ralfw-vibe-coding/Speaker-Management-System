@@ -9,6 +9,7 @@ import type {
 	Konferenz,
 	SlotAngabe,
 	Speaker,
+	Strang,
 	Tag,
 	Track,
 } from "./modell";
@@ -94,6 +95,8 @@ export class Datenzugriff {
 				dauer: zahl(fm.dauer),
 				bloecke: liste(fm.block),
 				track: text(fm.track),
+				strang: text(fm.strang),
+				verworfenAm: text(fm.verworfen_am),
 				aufgaben: this.aufgaben(datei),
 			};
 		});
@@ -112,6 +115,7 @@ export class Datenzugriff {
 					honorarbudget: zahl(fm.honorarbudget),
 					teilnehmer: zahl(fm.teilnehmer),
 					deadlineProgramm: text(fm.deadline_programm),
+					straenge: straengeLesen(fm.straenge),
 					tracks: tracksLesen(fm.tracks),
 					tage: tageLesen(fm.tage),
 					slots: slotsLesen(fm.slots),
@@ -273,6 +277,25 @@ function tracksLesen(wert: unknown): Track[] {
 			kapazitaet: zahl(roh.kapazitaet),
 		}))
 		.filter((track) => track.id.length > 0);
+}
+
+/**
+ * Stränge werden so tolerant gelesen wie Tracks — und zusätzlich als blosse
+ * Namensliste: `straenge: [Rolle, Werkzeuge]` von Hand geschrieben soll
+ * funktionieren, denn in dieser Phase tippt man schnell.
+ */
+function straengeLesen(wert: unknown): Strang[] {
+	if (Array.isArray(wert) && wert.every((eintrag) => typeof eintrag === "string")) {
+		return (wert as string[])
+			.map((name) => ({ id: name.trim(), name: name.trim() }))
+			.filter((strang) => strang.id.length > 0);
+	}
+	return eintraege(wert)
+		.map((roh) => ({
+			id: text(roh.id) ?? "",
+			name: text(roh.name) ?? text(roh.id) ?? "",
+		}))
+		.filter((strang) => strang.id.length > 0);
 }
 
 function bloeckeLesen(wert: unknown): Block[] {
