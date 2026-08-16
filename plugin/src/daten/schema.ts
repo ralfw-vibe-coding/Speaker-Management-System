@@ -96,6 +96,7 @@ const SPEAKER: Notizschema = {
 	abschnitte: [
 		{ titel: "Profil" },
 		{ titel: "Notizen" },
+		{ titel: "Eigene Eindrücke" },
 	],
 };
 

@@ -114,13 +114,21 @@ honorarrahmen: 2500
 Wer dieser Mensch ist — der Text, der **nach aussen darf**.
 
 ## Notizen
-Eigene Eindrücke, Gesprächsverläufe, Merkposten. Bleibt im Haus.
+Was war: Gesprächsverläufe, Absprachen, Merkposten. Bleibt im Haus.
+
+## Eigene Eindrücke
+Was man davon hält: „gut im Dialog, braucht langen Vorlauf". Bleibt erst recht im Haus.
 ```
 
-**Die Trennlinie liegt zwischen Profil und Notizen.** Was unter `## Profil` steht, ist
-für den Veranstalter bestimmt und geht später in den Speaker-Einseiter; `## Notizen` ist
-für einen selbst. Wer dort „2025 am Honorar gescheitert" notiert, will nicht, dass es
+**Die Trennlinie liegt nach dem Profil.** Was unter `## Profil` steht, ist für den
+Veranstalter bestimmt und geht später in den Speaker-Einseiter. Alles darunter ist für
+einen selbst — wer „2025 am Honorar gescheitert" notiert, will nicht, dass es
 mitverschickt wird.
+
+`## Notizen` und `## Eigene Eindrücke` unterscheiden sich in der Art der Aussage:
+Notizen halten fest, **was war**, Eindrücke, **was man davon hält**. Das eine kann man
+belegen, das andere nicht. Die Eindrücke stehen zuletzt, weil man sie am seltensten
+braucht und am ehesten überschreibt.
 
 **`bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das Bild
 erscheint — Programmheft, Website, Einseiter. Deshalb steht er im Frontmatter und nicht

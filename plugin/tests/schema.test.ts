@@ -95,13 +95,16 @@ describe("fehlende Felder und Abschnitte", () => {
 	});
 
 	it("findet fehlende Abschnitte", () => {
-		assert.deepEqual(fehlendeAbschnitte(speaker, ["Profil"]), ["Notizen"]);
-		assert.deepEqual(fehlendeAbschnitte(speaker, ["Profil", "Notizen"]), []);
+		assert.deepEqual(fehlendeAbschnitte(speaker, ["Profil"]), ["Notizen", "Eigene Eindrücke"]);
+		assert.deepEqual(fehlendeAbschnitte(speaker, ["Profil", "Notizen", "Eigene Eindrücke"]), []);
 	});
 
 	it("beanstandet nichts, was das Schema nicht mehr kennt", () => {
 		// „Bio" ist entfallen; wer sie noch stehen hat, soll deswegen nichts hören.
-		assert.deepEqual(fehlendeAbschnitte(speaker, ["Bio", "Profil", "Notizen"]), []);
+		assert.deepEqual(
+			fehlendeAbschnitte(speaker, ["Bio", "Profil", "Notizen", "Eigene Eindrücke"]),
+			[],
+		);
 	});
 });
 

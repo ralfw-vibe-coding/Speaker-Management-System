@@ -211,24 +211,34 @@ honorarrahmen: 2500
 bildnachweis: Anna Meier Fotografie
 ---
 ## Profil
-Wer dieser Mensch ist — der Text, mit dem man ihn beschreibt.
+Wer dieser Mensch ist — der Text, der nach außen darf.
 
 ## Notizen
 „Antwortet erst nach mehrfachem Nachfassen."
+
+## Eigene Eindrücke
+„Gut im Dialog, braucht langen Vorlauf."
 ```
 
 **Zwei Abschnitte, eine Trennlinie.** Ein dritter, `## Bio`, war einmal für den Text des
 Speakers gedacht, der nach außen darf. Er ist entfallen: In der Praxis schreibt man
 beides an einer Stelle, und eine Trennlinie, die niemand einhält, ist keine.
 
-Die Linie liegt jetzt zwischen den beiden verbliebenen: **`## Profil` darf nach außen**
-und wird der Text des Speaker-Einseiters, sobald es einen gibt; **`## Notizen` bleibt im
-Haus**. Die Trennung ist keine Ordnungsliebe — sie entscheidet darüber, ob „2025 am
-Honorar gescheitert" beim Auftraggeber landet.
+Die Linie liegt jetzt **nach dem Profil**: `## Profil` darf nach außen und wird der Text
+des Speaker-Einseiters, sobald es einen gibt. Alles darunter bleibt im Haus. Die
+Trennung ist keine Ordnungsliebe — sie entscheidet darüber, ob „2025 am Honorar
+gescheitert" beim Auftraggeber landet.
+
+Darunter stehen zwei Abschnitte, und sie unterscheiden sich in der **Art der Aussage**:
+`## Notizen` hält fest, was war — Gesprächsverläufe, Absprachen, Merkposten. `## Eigene
+Eindrücke` hält fest, was man davon hält. Das eine lässt sich belegen, das andere nicht,
+und wer beides in einen Topf wirft, traut später der eigenen Notiz nicht mehr. Die
+Eindrücke stehen zuletzt, weil man sie am seltensten braucht und am ehesten
+überschreibt.
 
 Damit hat `## Profil` seine Bedeutung gewechselt: Früher standen dort eigene Eindrücke.
-Wer sie noch dort stehen hat, verschiebt sie in die Notizen, **bevor** der erste
-Einseiter verschickt wird.
+Wer sie noch dort stehen hat, verschiebt sie nach unten, **bevor** der erste Einseiter
+verschickt wird.
 
 **Der `bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das
 Bild erscheint. Deshalb ein Feld und keine Zeile im Fließtext: Was mitgenommen werden

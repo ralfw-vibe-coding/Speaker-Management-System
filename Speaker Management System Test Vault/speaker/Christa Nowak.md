@@ -22,7 +22,7 @@ ort: Frankfurt
 honorarrahmen: 1200
 web:
 ---
-## Bio
+
 
 
 ## Profil
