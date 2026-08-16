@@ -66,6 +66,11 @@ const SPEAKER: Notizschema = {
 	felder: [
 		{ name: "rolle", art: "text", bedeutung: "Funktion oder Firma, erscheint auf der Katalogkarte" },
 		{ name: "foto", art: "text", bedeutung: "Bild im Vault: Wikilink, Pfad oder Adresse" },
+		{
+			name: "bildnachweis",
+			art: "text",
+			bedeutung: "wer das Foto gemacht hat — muss mit, wo das Bild erscheint",
+		},
 		{ name: "email", art: "text", bedeutung: "Kontakt" },
 		{ name: "telefon", art: "text", bedeutung: "Kontakt" },
 		{ name: "web", art: "text", bedeutung: "Profil, Blog, Referenzen" },
@@ -89,7 +94,6 @@ const SPEAKER: Notizschema = {
 		},
 	],
 	abschnitte: [
-		{ titel: "Bio" },
 		{ titel: "Profil" },
 		{ titel: "Notizen" },
 	],

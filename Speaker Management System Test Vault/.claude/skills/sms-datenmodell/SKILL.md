@@ -81,6 +81,7 @@ Konferenzübergreifend, das Langzeitkapital. Dateiname ist der blanke Personenna
 | `type` | `speaker` | |
 | `rolle` | Text | Funktion oder Firma, erscheint auf der Katalogkarte |
 | `foto` | Wikilink, Pfad oder URL | Bild im Vault; erscheint auf der Katalogkarte |
+| `bildnachweis` | Text | wer das Foto gemacht hat |
 | `email`, `telefon`, `web` | Text | Kontakt |
 | `zielgruppe` | Liste | für wen der Mensch passt; im Katalog ein Filter |
 | `themen` | Liste Text | Freies Vokabular, keine feste Liste |
@@ -97,6 +98,8 @@ Person. Themen ohne Eintrag sind schlicht nicht eingeschätzt.
 ---
 type: speaker
 rolle: Beraterin
+foto: "[[bettina.jpg]]"
+bildnachweis: Anna Meier Fotografie
 themen: [chief-of-staff, führung]
 zielgruppe: [vorstandsassistenz, führungskräfte]
 wahl:
@@ -107,19 +110,19 @@ sprachen: [de, en]
 ort: Zürich
 honorarrahmen: 2500
 ---
-## Bio
-Der Text des Speakers. **Darf nach außen** — Programmheft, Website, Einseiter.
-
 ## Profil
-Eigene Eindrücke. Bleibt im Haus.
+Wer dieser Mensch ist — der Text, mit dem man ihn beschreibt.
 
 ## Notizen
-Die erste Zeile hier erscheint als Vorschau auf der Katalogkarte.
+Eigene Eindrücke, Gesprächsverläufe, Merkposten.
 ```
 
-`## Bio` und `## Profil` sind nicht dasselbe: Was unter `Bio` steht, ist für den
-Veranstalter bestimmt; `Profil` und `Notizen` sind interne Einschätzungen und dürfen
-nicht in etwas landen, das verschickt wird.
+**`bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das Bild
+erscheint — Programmheft, Website, Einseiter. Deshalb steht er im Frontmatter und nicht
+im Fließtext: Was gerechnet oder mitgenommen werden muss, gehört strukturiert abgelegt.
+
+Ein früherer Abschnitt `## Bio` ist entfallen. Wer ihn in alten Notizen stehen hat, darf
+ihn behalten — gelesen wird er nicht mehr, beanstandet auch nicht.
 
 ## veranstalter
 

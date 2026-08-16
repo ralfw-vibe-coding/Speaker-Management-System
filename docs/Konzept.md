@@ -208,30 +208,37 @@ formate: [keynote, vortrag, workshop]
 sprachen: [de, en]
 ort: Hamburg
 honorarrahmen: 2500
+bildnachweis: Anna Meier Fotografie
 ---
-## Bio
-Was der Speaker selbst liefert. Darf nach außen.
-
 ## Profil
-Eigene Eindrücke: „gut im Dialog, braucht langen Vorlauf".
+Wer dieser Mensch ist — der Text, mit dem man ihn beschreibt.
 
 ## Notizen
 „Antwortet erst nach mehrfachem Nachfassen."
 ```
 
-**Drei Abschnitte, eine Trennlinie.** `## Bio` ist der Text des Speakers und für den
-Veranstalter bestimmt; `## Profil` und `## Notizen` sind eigene Einschätzungen und
-bleiben im Haus. Die Trennung ist keine Ordnungsliebe: Sobald ein Einseiter aus diesen
-Daten entsteht und verschickt wird, entscheidet sie darüber, ob „2025 am Honorar
-gescheitert" beim Auftraggeber landet.
+**Zwei Abschnitte.** Ein dritter, `## Bio`, war einmal für den Text des Speakers
+gedacht, der nach außen darf. Er ist entfallen: In der Praxis schreibt man beides
+an einer Stelle, und eine Trennlinie, die niemand einhält, ist keine.
+
+**Das bleibt ein offener Punkt.** Sobald ein Einseiter aus diesen Daten entsteht und
+verschickt wird, braucht es eine Antwort darauf, welcher Text nach außen darf — sonst
+landet „2025 am Honorar gescheitert" beim Auftraggeber. Bis dahin gilt: Was im Profil
+steht, kann jemand anders lesen; was in den Notizen steht, ist für einen selbst.
+
+**Der `bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das
+Bild erscheint. Deshalb ein Feld und keine Zeile im Fließtext: Was mitgenommen werden
+muss, gehört strukturiert abgelegt — wer den Nachweis vergisst, hat ein Rechteproblem,
+keinen Formfehler.
 
 Das `foto` zeigt auf einen Anhang im Vault — Wikilink, Pfad oder Adresse, tolerant
 gelesen. Im Vault statt im Netz, weil ein Link irgendwann tot ist und das Bild, das
 jemand per Mail schickt, ohnehin nirgends im Web steht. Findet sich die Datei nicht,
 bleibt die Karte ohne Bild: Ein totes Bild ist schlimmer als keines.
 
-Bio und Foto sind nicht zufällig die beiden Punkte, die auf jeder Engagement-Checkliste
-stehen. Es sind die zwei Dinge, die man von jedem Speaker einsammeln muss.
+Text und Foto sind nicht zufällig die beiden Punkte, die auf jeder
+Engagement-Checkliste stehen. Es sind die zwei Dinge, die man von jedem Speaker
+einsammeln muss.
 
 Gesetzt wird sie im Katalog: Ein Klick auf den Themen-Chip schaltet zwischen erster,
 zweiter, dritter Wahl und „nicht eingeschätzt" weiter. Sie ist das Einzige am Speaker,

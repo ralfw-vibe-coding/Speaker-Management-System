@@ -41,6 +41,7 @@ export class Datenzugriff {
 					name: datei.basename,
 					rolle: text(fm.rolle),
 					foto: text(fm.foto),
+					bildnachweis: text(fm.bildnachweis),
 					fotoQuelle: this.bildQuelle(text(fm.foto), datei),
 					email: text(fm.email),
 					telefon: text(fm.telefon),
@@ -53,7 +54,6 @@ export class Datenzugriff {
 					ort: text(fm.ort),
 					honorarrahmen: zahl(fm.honorarrahmen),
 					notiz: await this.ersteZeileUnter(datei, "Notizen"),
-					bio: await this.ersteZeileUnter(datei, "Bio"),
 				};
 			}),
 		);

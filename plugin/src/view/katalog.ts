@@ -158,7 +158,6 @@ export class Speakerkatalog {
 				speaker.rolle ?? "",
 				speaker.ort ?? "",
 				speaker.notiz ?? "",
-				speaker.bio ?? "",
 				...speaker.themen,
 				...speaker.zielgruppen,
 			]
@@ -341,7 +340,13 @@ export class Speakerkatalog {
 		if (speaker.fotoQuelle) {
 			oben.createEl("img", {
 				cls: "sms-foto",
-				attr: { src: speaker.fotoQuelle, alt: speaker.name },
+				attr: {
+					src: speaker.fotoQuelle,
+					alt: speaker.name,
+					// Der Nachweis steht am Bild, nicht auf der Karte: Gebraucht wird
+					// er, wenn man das Foto weitergibt — und dann schaut man es an.
+					...(speaker.bildnachweis ? { title: `Foto: ${speaker.bildnachweis}` } : {}),
+				},
 			});
 		}
 
@@ -351,7 +356,6 @@ export class Speakerkatalog {
 		if (speaker.ort) kopf.createSpan({ cls: "sms-ort", text: speaker.ort });
 
 		if (speaker.rolle) angaben.createDiv({ cls: "sms-rolle", text: speaker.rolle });
-		if (speaker.bio) angaben.createDiv({ cls: "sms-bio", text: speaker.bio });
 
 		if (speaker.themen.length > 0 || speaker.wahl.size > 0) {
 			const themen = karte.createDiv({ cls: "sms-themen" });
