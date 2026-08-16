@@ -62,7 +62,7 @@ Engagements und Beiträge tragen im Body eine Checkliste unter der Überschrift
 
 ```markdown
 ## Zu klären
-- [x] Bio erhalten
+- [x] Profiltext erhalten
 - [ ] Vertrag zurück
 ```
 
@@ -111,11 +111,16 @@ ort: Zürich
 honorarrahmen: 2500
 ---
 ## Profil
-Wer dieser Mensch ist — der Text, mit dem man ihn beschreibt.
+Wer dieser Mensch ist — der Text, der **nach aussen darf**.
 
 ## Notizen
-Eigene Eindrücke, Gesprächsverläufe, Merkposten.
+Eigene Eindrücke, Gesprächsverläufe, Merkposten. Bleibt im Haus.
 ```
+
+**Die Trennlinie liegt zwischen Profil und Notizen.** Was unter `## Profil` steht, ist
+für den Veranstalter bestimmt und geht später in den Speaker-Einseiter; `## Notizen` ist
+für einen selbst. Wer dort „2025 am Honorar gescheitert" notiert, will nicht, dass es
+mitverschickt wird.
 
 **`bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das Bild
 erscheint — Programmheft, Website, Einseiter. Deshalb steht er im Frontmatter und nicht

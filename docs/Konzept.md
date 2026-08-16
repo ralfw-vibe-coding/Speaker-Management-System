@@ -217,14 +217,18 @@ Wer dieser Mensch ist — der Text, mit dem man ihn beschreibt.
 „Antwortet erst nach mehrfachem Nachfassen."
 ```
 
-**Zwei Abschnitte.** Ein dritter, `## Bio`, war einmal für den Text des Speakers
-gedacht, der nach außen darf. Er ist entfallen: In der Praxis schreibt man beides
-an einer Stelle, und eine Trennlinie, die niemand einhält, ist keine.
+**Zwei Abschnitte, eine Trennlinie.** Ein dritter, `## Bio`, war einmal für den Text des
+Speakers gedacht, der nach außen darf. Er ist entfallen: In der Praxis schreibt man
+beides an einer Stelle, und eine Trennlinie, die niemand einhält, ist keine.
 
-**Das bleibt ein offener Punkt.** Sobald ein Einseiter aus diesen Daten entsteht und
-verschickt wird, braucht es eine Antwort darauf, welcher Text nach außen darf — sonst
-landet „2025 am Honorar gescheitert" beim Auftraggeber. Bis dahin gilt: Was im Profil
-steht, kann jemand anders lesen; was in den Notizen steht, ist für einen selbst.
+Die Linie liegt jetzt zwischen den beiden verbliebenen: **`## Profil` darf nach außen**
+und wird der Text des Speaker-Einseiters, sobald es einen gibt; **`## Notizen` bleibt im
+Haus**. Die Trennung ist keine Ordnungsliebe — sie entscheidet darüber, ob „2025 am
+Honorar gescheitert" beim Auftraggeber landet.
+
+Damit hat `## Profil` seine Bedeutung gewechselt: Früher standen dort eigene Eindrücke.
+Wer sie noch dort stehen hat, verschiebt sie in die Notizen, **bevor** der erste
+Einseiter verschickt wird.
 
 **Der `bildnachweis` gehört zum Foto, nicht zur Person.** Er muss überall mit, wo das
 Bild erscheint. Deshalb ein Feld und keine Zeile im Fließtext: Was mitgenommen werden

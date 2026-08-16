@@ -70,7 +70,7 @@ describe("geruest", () => {
 	it("bringt die Abschnitte des Bodys mit, Checklisten samt Punkten", () => {
 		const text = geruest(schemaFuer("engagement")!);
 		assert.ok(text.includes("## Zu klären"));
-		assert.ok(text.includes("- [ ] Bio erhalten"));
+		assert.ok(text.includes("- [ ] Profiltext erhalten"));
 		assert.ok(text.includes("## Gesprächsnotizen"));
 	});
 });

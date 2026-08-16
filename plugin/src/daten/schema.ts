@@ -199,7 +199,7 @@ const ENGAGEMENT: Notizschema = {
 		{
 			titel: "Zu klären",
 			zeilen: [
-				"- [ ] Bio erhalten",
+				"- [ ] Profiltext erhalten",
 				"- [ ] Foto erhalten",
 				"- [ ] Vertrag zurück",
 				"- [ ] Reisekosten geklärt",
