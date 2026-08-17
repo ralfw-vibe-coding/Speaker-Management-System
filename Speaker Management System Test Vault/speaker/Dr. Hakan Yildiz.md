@@ -16,12 +16,11 @@ telefon:
 web:
 honorarrahmen:
 ---
-## Bio
-
 
 ## Profil
-Empfehlung von Maria Kern. Juristischer Hintergrund.
-Noch kein Kontakt aufgenommen.
 
 ## Notizen
 
+## Eigene Eindrücke
+Empfehlung von Maria Kern. Juristischer Hintergrund.
+Noch kein Kontakt aufgenommen.

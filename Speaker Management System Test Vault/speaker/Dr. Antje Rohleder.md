@@ -18,12 +18,12 @@ sprachen: [de, en]
 ort: Zürich
 honorarrahmen: 2800
 ---
-## Bio
-
 
 ## Profil
-Ehemalige Vorstandsassistentin eines DAX-Konzerns, heute Beraterin.
-Trägt sehr souverän vor, braucht aber lange Vorlaufzeit.
 
 ## Notizen
 Keynote 2024 auf der ACO war der meistgelobte Beitrag.
+
+## Eigene Eindrücke
+Ehemalige Vorstandsassistentin eines DAX-Konzerns, heute Beraterin.
+Trägt sehr souverän vor, braucht aber lange Vorlaufzeit.

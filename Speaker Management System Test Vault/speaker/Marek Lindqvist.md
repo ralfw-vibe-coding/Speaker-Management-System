@@ -19,12 +19,12 @@ sprachen: [de, en]
 ort: Hamburg
 honorarrahmen: 1500
 ---
-## Bio
-
 
 ## Profil
-Kommt aus der Prozessberatung, arbeitet sehr praktisch.
-Liefert Unterlagen immer pünktlich.
 
 ## Notizen
 Macht gern Vortrag und Workshop im Paket, das rechnet sich für beide Seiten.
+
+## Eigene Eindrücke
+Kommt aus der Prozessberatung, arbeitet sehr praktisch.
+Liefert Unterlagen immer pünktlich.

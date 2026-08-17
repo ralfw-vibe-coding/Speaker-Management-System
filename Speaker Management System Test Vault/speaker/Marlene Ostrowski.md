@@ -18,11 +18,11 @@ sprachen: [de]
 ort: Bremen
 honorarrahmen: 1500
 ---
-## Bio
-
 
 ## Profil
-Schreibt einen viel gelesenen Blog über Werkzeuge im Assistenzalltag.
 
 ## Notizen
 2025 schon einmal dabei, hat gut funktioniert.
+
+## Eigene Eindrücke
+Schreibt einen viel gelesenen Blog über Werkzeuge im Assistenzalltag.

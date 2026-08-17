@@ -19,12 +19,11 @@ telefon:
 web:
 honorarrahmen:
 ---
-## Bio
-
 
 ## Profil
-Auf der ACO 2025 gesehen, hat dort einen guten Vortrag gehalten.
-Noch nie mit uns gearbeitet.
 
 ## Notizen
 
+## Eigene Eindrücke
+Auf der ACO 2025 gesehen, hat dort einen guten Vortrag gehalten.
+Noch nie mit uns gearbeitet.

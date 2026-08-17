@@ -17,12 +17,12 @@ ort: München
 honorarrahmen: 1700
 web:
 ---
-## Bio
-
 
 ## Profil
-Wird über ihre Agentur gebucht, die auch die Rechnung stellt.
-Sehr erfahren, seit Jahren dieselbe hohe Qualität.
 
 ## Notizen
 Rechnung kommt bei Vertragsschluss, nicht nach der Konferenz.
+
+## Eigene Eindrücke
+Wird über ihre Agentur gebucht, die auch die Rechnung stellt.
+Sehr erfahren, seit Jahren dieselbe hohe Qualität.

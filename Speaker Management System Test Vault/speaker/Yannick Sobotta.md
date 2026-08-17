@@ -19,11 +19,11 @@ sprachen: [de]
 ort: Berlin
 honorarrahmen: 1500
 ---
-## Bio
-
 
 ## Profil
-Baut KI-Werkzeuge für Assistenzteams. Sehr gute Demos, redet schnell.
 
 ## Notizen
 Braucht stabiles WLAN für Live-Demos — vorher mit dem Veranstalter klären.
+
+## Eigene Eindrücke
+Baut KI-Werkzeuge für Assistenzteams. Sehr gute Demos, redet schnell.

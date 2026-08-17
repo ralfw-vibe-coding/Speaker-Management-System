@@ -17,11 +17,11 @@ ort: Wien
 honorarrahmen: 1400
 web:
 ---
-## Bio
-
 
 ## Profil
-Macht ausschließlich Workshops, keine Vorträge. Kleine Gruppen, max. 20 Personen.
 
 ## Notizen
 Braucht einen Raum mit beweglichen Stühlen und Moderationswänden.
+
+## Eigene Eindrücke
+Macht ausschließlich Workshops, keine Vorträge. Kleine Gruppen, max. 20 Personen.

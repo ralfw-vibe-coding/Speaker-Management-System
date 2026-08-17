@@ -18,11 +18,11 @@ ort: Köln
 honorarrahmen: 2400
 web:
 ---
-## Bio
-
 
 ## Profil
-Starke Bühnenpräsenz, verhandelt aber hart beim Honorar.
 
 ## Notizen
 2025 nicht zustande gekommen, weil das Budget nicht reichte.
+
+## Eigene Eindrücke
+Starke Bühnenpräsenz, verhandelt aber hart beim Honorar.

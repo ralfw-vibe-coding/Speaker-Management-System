@@ -14,11 +14,9 @@ ort:
 honorarrahmen: 2000
 zielgruppe: []
 ---
-## Bio
-
 
 ## Profil
 
-
 ## Notizen
 
+## Eigene Eindrücke

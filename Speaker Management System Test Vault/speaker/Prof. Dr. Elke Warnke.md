@@ -17,11 +17,11 @@ honorarrahmen: 3000
 telefon:
 web:
 ---
-## Bio
-
 
 ## Profil
-Wissenschaftlicher Blick auf das Thema, sehr gefragt.
 
 ## Notizen
 Für 2026 wegen Terminkonflikt abgesagt. Früh anfragen, wenn wir sie 2027 wollen.
+
+## Eigene Eindrücke
+Wissenschaftlicher Blick auf das Thema, sehr gefragt.

@@ -17,11 +17,11 @@ ort: Hannover
 honorarrahmen: 3500
 web:
 ---
-## Bio
-
 
 ## Profil
-Inhaltlich stark, aber Honorarvorstellung deutlich über unserem Rahmen.
 
 ## Notizen
 Für 2027 vormerken, falls das Budget wächst.
+
+## Eigene Eindrücke
+Inhaltlich stark, aber Honorarvorstellung deutlich über unserem Rahmen.

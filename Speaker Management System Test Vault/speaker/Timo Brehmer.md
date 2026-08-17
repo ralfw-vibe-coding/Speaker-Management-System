@@ -14,11 +14,10 @@ ort: Stuttgart
 web:
 honorarrahmen:
 ---
-## Bio
-
 
 ## Profil
-Leitet ein Assistenzteam von zwölf Personen. Erster Kontakt lief gut.
 
 ## Notizen
 
+## Eigene Eindrücke
+Leitet ein Assistenzteam von zwölf Personen. Erster Kontakt lief gut.
