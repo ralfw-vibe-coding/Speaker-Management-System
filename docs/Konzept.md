@@ -473,8 +473,8 @@ nur, *dass* jemand dabei war, sondern *wie es war*.
 **Die Reisekosten stehen daneben, nicht darin.** Ein eigener Betrag, weil der
 Veranstalter sie gesondert erstattet — meist nach Beleg bis zu einer Obergrenze, die in
 seinen Konditionen steht. Sie laufen deshalb **nicht** gegen das `honorarbudget`: Die
-Sichten zeigen zwei Zahlen nebeneinander, „Honorar 18.400 € von 25.000 € · Reisekosten
-1.510 €". Sie zu addieren würde eine Grenze überschreiten lassen, die für sie gar nicht
+Sichten zeigen zwei Zahlen nebeneinander, „Honorar 22.400 € von 25.000 € · Reisekosten
+2.110 €". Sie zu addieren würde eine Grenze überschreiten lassen, die für sie gar nicht
 gilt.
 
 **Das Honorar gehört ebenfalls hierher, nicht an den Beitrag.** Verhandelt wird mit dem

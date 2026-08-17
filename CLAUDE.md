@@ -24,7 +24,7 @@ Entwürfe abbildet** — siehe `Speaker Management System Test Vault/Demodaten.m
 Sonderfall: titelloser Beitrag, heimatloser Beitrag, Pool, plenarer Block, Speaker mit
 mehreren Beiträgen, Checklisten in jedem Reifegrad, ein zweiter Tag mit anderem Raster.
 Beim Bauen einer Sicht ist er Testdatensatz und Sollbild zugleich; die Kennzahlen dort
-(18.400 €, 21 Slots, 15 belegt) müssen herauskommen.
+(22.400 €, 21 Slots, 18 belegt) müssen herauskommen.
 
 Um Aussagen über einen Vault unabhängig von der Plugin-Fachlogik gegenzuprüfen (z.B.
 Frontmatter-Felder, Backlinks, Checklisten-Status), eignet sich die native

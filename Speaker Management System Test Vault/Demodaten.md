@@ -63,18 +63,24 @@ Sichten baut, kann sein Ergebnis direkt daneben halten.
   weil die Zusammenarbeit zäh war; 2026 wartet man wieder seit acht Wochen auf ihre
   Antwort. Das Muster soll im Katalog sichtbar werden.
 
+- **Eine Moderatorin, die auch vorträgt.** Sabine Sonders führt durch den Assistenz
+  Summit 2026 — `rollen: [moderation]` an ihrem Engagement — und hält zusätzlich
+  „Automatisierung der Reiseplanung". Sie ist der einzige Datensatz mit einer Rolle: Ihr
+  Honorar zählt gegen das Budget, obwohl die Moderation keinen Slot belegt, und sie
+  steht in der Agenda über dem Raster statt darin.
+
 ## Kennzahlen, die stimmen sollten
 
 - 180 erwartete Gäste — der Maßstab für die Plätze je Blockzeile. Die Workshop-Zeilen
   bleiben deutlich darunter, die Vortragszeilen liegen darüber.
-- Honorarsumme **18.400 €** von 25.000 € Budget — aus sechs Engagements: 4.000 €,
-  3.400 €, 3.000 €, 2.900 €, 2.700 €, 2.400 €. Die übrigen sieben tragen keinen Betrag,
-  darunter Sonja Ehrlich, mit der noch verhandelt wird.
-- Reisekosten **1.510 €** aus sechs Engagements — eine eigene Zahl, die nicht gegen das
+- Honorarsumme **22.400 €** von 25.000 € Budget — aus sieben Engagements: 4.000 €,
+  4.000 €, 3.400 €, 3.000 €, 2.900 €, 2.700 €, 2.400 €. Die übrigen tragen keinen
+  Betrag, darunter Sonja Ehrlich, mit der noch verhandelt wird.
+- Reisekosten **2.110 €** aus sieben Engagements — eine eigene Zahl, die nicht gegen das
   Honorarbudget läuft. Lindqvist wohnt in Hamburg und steht mit 0 € da; das ist etwas
   anderes als „noch nicht vereinbart", wo das Feld leer bleibt.
-- 21 Slots, davon 15 belegt und 6 frei
-- 11 aktive Kandidaten, 2 gestrichen
+- 21 Slots, davon 18 belegt und 3 frei, dazu 1 heimatloser Beitrag
+- 12 aktive Kandidaten, 2 gestrichen
 - 1 von 11 Kandidaten inhaltlich fertig — alle Häkchen im Engagement und in beiden
   Beiträgen
 
@@ -82,12 +88,12 @@ Weichen die Sichten davon ab, stimmt etwas in der Projektion nicht.
 
 ## Kennzahlen für den Speakerkatalog
 
-- **13 Speaker**, davon 11 mit einer `wahl`, 2 noch nicht eingeschätzt
-  (Falkenrath, Brehmer)
+- **15 Speaker**, die meisten mit einer `wahl`; Falkenrath und Brehmer sind noch nicht
+  eingeschätzt
 - 8 Speaker sind zu mindestens einem Thema **erste Wahl**
 - Filter **Format**: 11 halten Vorträge, 6 machen Workshops, 3 Keynotes, 2 sitzen auf
   Panels, 1 moderiert
-- 10 Speaker haben einen `honorarrahmen`, 10 eine Telefonnummer, alle 13 eine `rolle`
+- 10 Speaker haben einen `honorarrahmen`, 10 eine Telefonnummer, fast alle eine `rolle`
 - Filter **Zielgruppe**: 7 für Vorstandsassistenz, 5 für Teamassistenz, 5 für
   Führungskräfte, 5 für Erfahrene, je 3 für Office-Management und Einsteiger
 - Filter **Sprache**: 13 deutsch, 5 englisch, je einer polnisch und türkisch
